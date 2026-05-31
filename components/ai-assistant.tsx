@@ -57,7 +57,6 @@ export function AIAssistant() {
   }, [messages, isOpen])
 
   const handleOpenToggle = () => {
-    console.log("[AI-CHAT] Toggle state clicked. New state:", !isOpen)
     setIsOpen(!isOpen)
     setHasNewMessage(false)
   }
@@ -159,7 +158,15 @@ export function AIAssistant() {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div 
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          left: 'auto',
+          zIndex: 99999,
+        }}
+      >
         <button
           onClick={handleOpenToggle}
           aria-label="Open AI Assistant"
@@ -182,15 +189,21 @@ export function AIAssistant() {
       </div>
 
       {/* Floating Chat Window */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed bottom-24 right-6 w-[340px] sm:w-[380px] h-[480px] glass noise rounded-2xl border border-border/80 shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col z-50 font-sans"
-          >
+      {isOpen && (
+        <div
+          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col font-sans animate-in fade-in slide-in-from-bottom-5 duration-200"
+          style={{
+            position: 'fixed',
+            bottom: '88px',
+            right: '20px',
+            left: 'auto',
+            width: '360px',
+            maxWidth: 'calc(100vw - 40px)',
+            height: '500px',
+            maxHeight: 'calc(100vh - 120px)',
+            zIndex: 99999,
+          }}
+        >
             {/* Header */}
             <div className="h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
               <div className="flex items-center gap-2.5">
@@ -296,9 +309,8 @@ export function AIAssistant() {
                 <Send size={12} />
               </button>
             </form>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </>
   )
 }
