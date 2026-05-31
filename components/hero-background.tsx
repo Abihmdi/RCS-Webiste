@@ -100,6 +100,27 @@ function FloatingCore() {
   const ring3Ref = useRef<THREE.Mesh>(null)
   const innerRef = useRef<THREE.Mesh>(null)
 
+  // Generate unique vertices of the icosahedron for network nodes
+  const vertices = useMemo(() => {
+    const geom = new THREE.IcosahedronGeometry(1.6, 1)
+    const posAttr = geom.getAttribute("position")
+    const verts: [number, number, number][] = []
+    const seen = new Set<string>()
+
+    for (let i = 0; i < posAttr.count; i++) {
+      const x = Number(posAttr.getX(i).toFixed(4))
+      const y = Number(posAttr.getY(i).toFixed(4))
+      const z = Number(posAttr.getZ(i).toFixed(4))
+      const key = `${x},${y},${z}`
+      if (!seen.has(key)) {
+        seen.add(key)
+        verts.push([x, y, z])
+      }
+    }
+    geom.dispose()
+    return verts
+  }, [])
+
   useFrame((state) => {
     const { width } = state.viewport
     const isDesktop = width > 7
@@ -155,6 +176,14 @@ function FloatingCore() {
       <mesh ref={icoRef}>
         <icosahedronGeometry args={[1.6, 1]} />
         <meshBasicMaterial color="#C3E633" wireframe transparent opacity={0.22} />
+        
+        {/* Glowing Network Nodes at Vertices */}
+        {vertices.map((pos, idx) => (
+          <mesh key={idx} position={pos}>
+            <sphereGeometry args={[0.04, 8, 8]} />
+            <meshBasicMaterial color="#C3E633" transparent opacity={0.8} />
+          </mesh>
+        ))}
       </mesh>
 
       {/* Inner solid glow core */}
