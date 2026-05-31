@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, useInView } from "framer-motion"
 import { Mail, MapPin, Send, Terminal as TermIcon, ArrowRight, Copy, Compass } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -36,6 +36,27 @@ export function ContactSection() {
     const timestamp = new Date().toLocaleTimeString()
     setLogs((prev) => [...prev.slice(-4), `[${timestamp}] ${message}`])
   }
+
+  // Handle system logging events from command palette
+  useEffect(() => {
+    const handleLogEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<string>
+      if (customEvent.detail) {
+        addLog(customEvent.detail)
+      }
+    }
+    const handleClearEvent = () => {
+      setLogs(["Console cleared."])
+    }
+    
+    window.addEventListener("console-log", handleLogEvent)
+    window.addEventListener("console-clear", handleClearEvent)
+    
+    return () => {
+      window.removeEventListener("console-log", handleLogEvent)
+      window.removeEventListener("console-clear", handleClearEvent)
+    }
+  }, [])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

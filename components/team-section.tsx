@@ -81,8 +81,7 @@ export function TeamSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-5"
-          style={{ height: "580px" }}
+          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-5 md:h-[580px]"
         >
           {/* Header Row (Always at Top) - Col span 5 */}
           <div className="col-span-5 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30">
@@ -98,7 +97,7 @@ export function TeamSection() {
           </div>
 
           {/* Left Column: Command Directory Sidebar (Col span 2) */}
-          <div className="col-span-2 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 h-[calc(100%-48px)] overflow-hidden">
+          <div className="col-span-2 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-auto">
             <div>
               {/* Search Mockup */}
               <div className="p-4 border-b border-border/60 flex items-center gap-2">
@@ -143,11 +142,6 @@ export function TeamSection() {
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[9px] font-mono bg-background border border-border px-1.5 py-0.5 rounded text-muted-foreground">
-                          ⌥ {index + 1}
-                        </span>
-                      </div>
                     </button>
                   )
                 })}
@@ -173,7 +167,7 @@ export function TeamSection() {
           </div>
 
           {/* Right Column: Profile Workspace (Col span 3) */}
-          <div className="col-span-3 flex flex-col justify-between h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          <div className="col-span-3 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-auto relative">
             
             {/* Ambient Background Glow matching active founder */}
             <div 
@@ -297,9 +291,6 @@ export function TeamSection() {
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">↵</span> Open Profile</span>
                 <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">Tab</span> Navigate</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌥ 1-2</span> Select
               </div>
             </div>
 

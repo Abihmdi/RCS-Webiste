@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo } from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
-import { Smartphone, Globe, Database, Building2, Search, Download, Star, Terminal, BookOpen } from "lucide-react"
+import { Smartphone, Globe, Database, Building2, Search, Download, Star, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
 
 const categories = ["All", "Mobile", "Web", "Enterprise"] as const
@@ -114,6 +114,22 @@ const projects = [
     rating: "4.9",
     type: "Extension",
   },
+  {
+    id: 8,
+    title: "Aksara AI",
+    slug: "aksara-ai",
+    subtitle: "Chrome Extension & Second Brain",
+    category: "Web",
+    caseStudy: "Users struggle to digest long-form web articles, draft context-aware replies, and retain knowledge across multiple browser tabs, causing information overload and fractured productivity.",
+    solution: "We engineered Aksara AI, a Chrome extension that serves as a context-aware second brain. It allows users to summarize articles, draft email/social replies with custom tones, translate line-by-line, and save searchable highlights locally.",
+    features: ["Instant Summarizer", "AI Reply Generator", "Local Vector Memory", "Inline Translator", "No-Setup Groq Integration"],
+    icon: Chrome,
+    color: "#C3E633",
+    installs: "3.2k",
+    rating: "5.0",
+    type: "Extension",
+    url: "https://aksara.qzz.io/",
+  },
 ]
 
 export function PortfolioSection() {
@@ -188,8 +204,7 @@ export function PortfolioSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10"
-          style={{ height: "640px" }}
+          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px]"
         >
           {/* Header Row - Col span 10 */}
           <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
@@ -218,7 +233,7 @@ export function PortfolioSection() {
           </div>
 
           {/* Left Column: Side categories filter & list (Col span 5) */}
-          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 h-[calc(100%-48px)] overflow-hidden">
+          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-hidden">
             <div className="flex flex-col h-full">
               {/* Category selector row */}
               <div className="flex gap-1.5 p-3 overflow-x-auto border-b border-border/60 no-scrollbar">
@@ -319,7 +334,7 @@ export function PortfolioSection() {
           </div>
 
           {/* Right Column: Extension Detailed View (Col span 5) */}
-          <div className="col-span-5 flex flex-col justify-between h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          <div className="col-span-5 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
             {activeProject ? (
               <>
                 {/* Ambient glow */}
@@ -368,9 +383,22 @@ export function PortfolioSection() {
                           </div>
                         </div>
 
-                        <span className="text-[9px] font-mono bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
-                          RELEASED
-                        </span>
+                        <div className="flex flex-col items-end gap-1.5 shrink-0">
+                          <span className="text-[9px] font-mono bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
+                            RELEASED
+                          </span>
+                          {activeProject.url && (
+                            <a
+                              href={activeProject.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-[9px] font-mono text-[#C3E633] bg-[#C3E633]/8 hover:bg-[#C3E633]/15 border border-[#C3E633]/30 px-2 py-0.5 rounded transition-colors"
+                            >
+                              <span>View Web</span>
+                              <ArrowRight size={10} className="-rotate-45" />
+                            </a>
+                          )}
+                        </div>
                       </div>
 
                       {/* Case Study Readme section */}

@@ -125,8 +125,8 @@ const en: Translations = {
   hero_heading_2: "RESULTS",
   hero_description:
     "We optimize business outcomes through digitalisation. Strategy meets execution to build your next-generation digital presence.",
-  hero_cta_primary: "Start Command",
-  hero_cta_secondary: "View Registry",
+  hero_cta_primary: "Start a Project",
+  hero_cta_secondary: "See Our Work",
   hero_telemetry_label: "System Telemetry",
 
   // About
@@ -225,7 +225,7 @@ const id: Translations = {
   nav_team: "Tim",
   nav_portfolio: "Portofolio",
   nav_contact: "Kontak",
-  nav_get_started: "Mulai Sekarang",
+  nav_get_started: "Mulai",
 
   // Hero
   hero_pill: "Mitra Transformasi Digital",

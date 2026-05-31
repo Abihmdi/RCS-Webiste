@@ -96,11 +96,10 @@ export function ServicesSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10"
-          style={{ height: "600px" }}
+          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[600px]"
         >
           {/* Header Row */}
-          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
+          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20 shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
@@ -114,7 +113,7 @@ export function ServicesSection() {
           </div>
 
           {/* Left Column: Services Commands List (Col span 5) */}
-          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 h-[calc(100%-48px)] overflow-hidden">
+          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-hidden">
             <div>
               {/* Fake Search bar inside palette list */}
               <div className="p-4 border-b border-border/60 flex items-center gap-2">
@@ -186,7 +185,7 @@ export function ServicesSection() {
           </div>
 
           {/* Right Column: Execution Workspace & Timeline Flow (Col span 5) */}
-          <div className="col-span-5 flex flex-col justify-between h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          <div className="col-span-5 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
             
             {/* Ambient glow matching selected service */}
             <div 

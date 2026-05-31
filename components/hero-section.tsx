@@ -113,7 +113,8 @@ export function HeroSection() {
             {/* Command bar */}
             <motion.div
               variants={fadeUp}
-              className="w-full max-w-lg bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 flex items-center justify-between mb-9 group hover:border-white/[0.12] transition-colors cursor-default"
+              onClick={() => window.dispatchEvent(new CustomEvent("toggle-command-palette"))}
+              className="w-full max-w-lg bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 flex items-center justify-between mb-9 group hover:border-white/[0.12] transition-colors cursor-pointer"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <span className="text-white/25 font-mono text-sm shrink-0">$</span>
