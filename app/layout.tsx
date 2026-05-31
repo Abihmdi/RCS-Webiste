@@ -36,6 +36,11 @@ export const metadata: Metadata = {
     title: 'RCS - Ruang Cipta Solusi',
     description: 'Transform your business with cutting-edge technology solutions',
   },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/apple-icon.png',
+  },
 }
 
 export const viewport: Viewport = {
