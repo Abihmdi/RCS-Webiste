@@ -8,7 +8,7 @@ import { useLanguage } from "@/components/language-context"
 const categories = ["All", "Mobile", "Web", "Enterprise"] as const
 type Category = typeof categories[number]
 
-const projects = [
+export const projects = [
   {
     id: 1,
     title: "Aksara AI",
@@ -133,7 +133,7 @@ const projects = [
 ]
 
 export function PortfolioSection() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
   
@@ -398,6 +398,13 @@ export function PortfolioSection() {
                               <ArrowRight size={10} className="-rotate-45" />
                             </a>
                           )}
+                          <a
+                            href={`/portfolio/${activeProject.slug}`}
+                            className="inline-flex items-center gap-1 text-[9px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2 py-0.5 rounded transition-colors"
+                          >
+                            <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
+                            <ArrowRight size={10} />
+                          </a>
                         </div>
                       </div>
 
