@@ -5,127 +5,264 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import * as THREE from "three"
 
-function ParticleField() {
+/* ─── Flowing particle galaxy with sine-wave depth ──── */
+function GalaxyField() {
   const ref = useRef<THREE.Points>(null)
+  const count = 5000
 
-  const particles = useMemo(() => {
-    const count = 5000
-    const positions = new Float32Array(count * 3)
-
+  const [positions, basePositions] = useMemo(() => {
+    const pos = new Float32Array(count * 3)
+    const base = new Float32Array(count * 3)
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 25
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 25
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 25
+      const theta = Math.random() * Math.PI * 2
+      const phi = Math.acos(2 * Math.random() - 1)
+      const r = 4 + Math.random() * 14
+      const x = r * Math.sin(phi) * Math.cos(theta)
+      const y = r * Math.sin(phi) * Math.sin(theta)
+      const z = r * Math.cos(phi)
+      pos[i * 3] = x
+      pos[i * 3 + 1] = y
+      pos[i * 3 + 2] = z
+      base[i * 3] = x
+      base[i * 3 + 1] = y
+      base[i * 3 + 2] = z
     }
-
-    return positions
+    return [pos, base]
   }, [])
 
   useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.015
-      ref.current.rotation.y = state.clock.elapsedTime * 0.02
+    if (!ref.current) return
+    const t = state.clock.elapsedTime
+    const geo = ref.current.geometry
+    const posAttr = geo.getAttribute("position") as THREE.BufferAttribute
+
+    for (let i = 0; i < count; i++) {
+      const bx = basePositions[i * 3]
+      const by = basePositions[i * 3 + 1]
+      const bz = basePositions[i * 3 + 2]
+      // Each particle drifts in a unique sine path
+      posAttr.array[i * 3]     = bx + Math.sin(t * 0.15 + i * 0.003) * 0.6
+      posAttr.array[i * 3 + 1] = by + Math.cos(t * 0.12 + i * 0.005) * 0.5
+      posAttr.array[i * 3 + 2] = bz + Math.sin(t * 0.1 + i * 0.007) * 0.4
     }
+    posAttr.needsUpdate = true
+    ref.current.rotation.y = t * 0.008
   })
 
   return (
-    <Points ref={ref} positions={particles} stride={3} frustumCulled={false}>
+    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#ffffff"
-        size={0.015}
-        sizeAttenuation={true}
+        color="#C3E633"
+        size={0.022}
+        sizeAttenuation
         depthWrite={false}
-        opacity={0.4}
+        opacity={0.35}
+        blending={THREE.AdditiveBlending}
       />
     </Points>
   )
 }
 
-function FloatingTorus() {
-  const meshRef = useRef<THREE.Mesh>(null)
+/* ─── Inner micro-dust for depth ────────────────────── */
+function MicroDust() {
+  const ref = useRef<THREE.Points>(null)
+  const count = 2500
+
+  const positions = useMemo(() => {
+    const pos = new Float32Array(count * 3)
+    for (let i = 0; i < count; i++) {
+      pos[i * 3]     = (Math.random() - 0.5) * 18
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 18
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 18
+    }
+    return pos
+  }, [])
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.08
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.12
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.5
+    if (ref.current) {
+      ref.current.rotation.x = -state.clock.elapsedTime * 0.005
+      ref.current.rotation.y =  state.clock.elapsedTime * 0.007
     }
   })
 
   return (
-    <mesh ref={meshRef} position={[3.5, 0, -3]}>
-      <torusGeometry args={[1.2, 0.4, 16, 50]} />
-      <meshBasicMaterial color="#ffffff" wireframe opacity={0.15} transparent />
-    </mesh>
+    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
+      <PointMaterial
+        transparent
+        color="#FFFFFF"
+        size={0.014}
+        sizeAttenuation
+        depthWrite={false}
+        opacity={0.18}
+        blending={THREE.AdditiveBlending}
+      />
+    </Points>
   )
 }
 
-function FloatingOctahedron() {
-  const meshRef = useRef<THREE.Mesh>(null)
+/* ─── Floating Icosahedron with orbit rings ─────────── */
+function FloatingCore() {
+  const groupRef = useRef<THREE.Group>(null)
+  const icoRef   = useRef<THREE.Mesh>(null)
+  const ring1Ref = useRef<THREE.Mesh>(null)
+  const ring2Ref = useRef<THREE.Mesh>(null)
+  const ring3Ref = useRef<THREE.Mesh>(null)
+  const innerRef = useRef<THREE.Mesh>(null)
 
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.1
-      meshRef.current.rotation.z = state.clock.elapsedTime * 0.08
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.4 + 1) * 0.4
+    const { width } = state.viewport
+    const isDesktop = width > 7
+    const targetX = isDesktop ? width / 5.5 : 0
+    const targetY = isDesktop ? 0.15 : -1.0
+    const targetScale = isDesktop ? 1 : 0.65
+    const t = state.clock.elapsedTime
+
+    if (groupRef.current) {
+      // Mouse tilt follow
+      const rotX = -state.pointer.y * 0.25
+      const rotY =  state.pointer.x * 0.25
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, rotX, 0.04)
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, rotY, 0.04)
+      groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, targetX, 0.04)
+      groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, targetY, 0.04)
+      const s = THREE.MathUtils.lerp(groupRef.current.scale.x, targetScale, 0.04)
+      groupRef.current.scale.setScalar(s)
+    }
+
+    // Icosahedron steady spin + subtle float
+    if (icoRef.current) {
+      icoRef.current.rotation.y = t * 0.08
+      icoRef.current.rotation.z = t * 0.05
+      icoRef.current.position.y = Math.sin(t * 0.4) * 0.12
+    }
+
+    // Inner glow core pulsing
+    if (innerRef.current) {
+      const pulse = 0.85 + Math.sin(t * 1.2) * 0.15
+      innerRef.current.scale.setScalar(pulse)
+    }
+
+    // Orbit rings at different speeds/axes
+    if (ring1Ref.current) {
+      ring1Ref.current.rotation.z = t * 0.2
+      ring1Ref.current.rotation.x = Math.PI / 3
+    }
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.z = -t * 0.15
+      ring2Ref.current.rotation.x = Math.PI / 2.2
+      ring2Ref.current.rotation.y = t * 0.1
+    }
+    if (ring3Ref.current) {
+      ring3Ref.current.rotation.z = t * 0.12
+      ring3Ref.current.rotation.y = Math.PI / 2.8
     }
   })
 
   return (
-    <mesh ref={meshRef} position={[-3, 1, -2]}>
-      <octahedronGeometry args={[0.8, 0]} />
-      <meshBasicMaterial color="#ffffff" wireframe opacity={0.12} transparent />
-    </mesh>
+    <group ref={groupRef}>
+      {/* Main wireframe icosahedron */}
+      <mesh ref={icoRef}>
+        <icosahedronGeometry args={[1.6, 1]} />
+        <meshBasicMaterial color="#C3E633" wireframe transparent opacity={0.22} />
+      </mesh>
+
+      {/* Inner solid glow core */}
+      <mesh ref={innerRef}>
+        <icosahedronGeometry args={[0.65, 2]} />
+        <meshBasicMaterial color="#C3E633" transparent opacity={0.06} />
+      </mesh>
+
+      {/* Central bright point */}
+      <mesh>
+        <sphereGeometry args={[0.08, 16, 16]} />
+        <meshBasicMaterial color="#C3E633" transparent opacity={0.9} />
+      </mesh>
+
+      {/* Orbit ring 1 */}
+      <mesh ref={ring1Ref}>
+        <torusGeometry args={[2.4, 0.012, 8, 128]} />
+        <meshBasicMaterial color="#C3E633" transparent opacity={0.18} />
+      </mesh>
+
+      {/* Orbit ring 2 */}
+      <mesh ref={ring2Ref}>
+        <torusGeometry args={[2.8, 0.008, 8, 128]} />
+        <meshBasicMaterial color="#FFFFFF" transparent opacity={0.10} />
+      </mesh>
+
+      {/* Orbit ring 3 (widest, faintest) */}
+      <mesh ref={ring3Ref}>
+        <torusGeometry args={[3.2, 0.006, 8, 128]} />
+        <meshBasicMaterial color="#C3E633" transparent opacity={0.06} />
+      </mesh>
+
+      {/* Outer wireframe sphere shell */}
+      <mesh>
+        <sphereGeometry args={[3.5, 24, 24]} />
+        <meshBasicMaterial color="#FFFFFF" wireframe transparent opacity={0.025} />
+      </mesh>
+    </group>
   )
 }
 
-function FloatingSphere() {
-  const meshRef = useRef<THREE.Mesh>(null)
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.05
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.25 + 2) * 0.3 - 1
-    }
-  })
-
-  return (
-    <mesh ref={meshRef} position={[0, -1, -4]}>
-      <sphereGeometry args={[1.5, 32, 32]} />
-      <meshBasicMaterial color="#ffffff" wireframe opacity={0.08} transparent />
-    </mesh>
-  )
-}
-
+/* ─── Main hero background component ───────────────── */
 export function HeroBackground() {
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasWebGL, setHasWebGL] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100)
+    try {
+      const canvas = document.createElement("canvas")
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+      if (gl) setHasWebGL(true)
+    } catch { /* no WebGL */ }
     return () => clearTimeout(timer)
   }, [])
 
   return (
-    <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-      <Canvas
-        camera={{ position: [0, 0, 6], fov: 55 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <color attach="background" args={["#050505"]} />
-        <fog attach="fog" args={["#050505", 6, 18]} />
-        <ambientLight intensity={0.3} />
-        <ParticleField />
-        <FloatingTorus />
-        <FloatingOctahedron />
-        <FloatingSphere />
-      </Canvas>
+    <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"} bg-background`}>
+      {hasWebGL ? (
+        <Canvas
+          camera={{ position: [0, 0, 7], fov: 52 }}
+          dpr={[1, 2]}
+          gl={{ antialias: true, alpha: true }}
+        >
+          <color attach="background" args={["#050505"]} />
+          <fog attach="fog" args={["#050505", 6, 22]} />
+          <ambientLight intensity={0.3} />
 
-      {/* Gradient overlays for premium feel */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-      <div className="absolute inset-0 bg-gradient-to-r from-background/60 via-transparent to-background/60" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--background)_70%)]" />
+          <GalaxyField />
+          <MicroDust />
+          <FloatingCore />
+        </Canvas>
+      ) : (
+        <div className="absolute inset-0 bg-[#050505]" />
+      )}
+
+      {/* Aurora glow blobs — drift behind canvas */}
+      <div
+        className="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(195,230,51,0.08), transparent 70%)",
+          filter: "blur(80px)",
+          animation: "aurora-drift 8s ease-in-out infinite",
+        }}
+      />
+      <div
+        className="absolute bottom-[5%] right-[10%] w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(255,255,255,0.04), transparent 70%)",
+          filter: "blur(70px)",
+          animation: "aurora-drift-r 10s ease-in-out infinite",
+        }}
+      />
+
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_var(--background)_70%)] pointer-events-none" />
     </div>
   )
 }

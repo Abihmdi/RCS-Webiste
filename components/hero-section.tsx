@@ -1,144 +1,180 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { ArrowRight, ArrowDown, Mail } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 import { HeroBackground } from "@/components/hero-background"
-import { SplitFlapDisplay } from "@/components/split-flap"
+import { useLanguage } from "@/components/language-context"
+
+const commands = [
+  "rcs init --project-solutions",
+  "rcs deploy --domain ruangciptasolusi.com",
+  "rcs run data-analysis --model=ai",
+  "rcs optimize --performance",
+  "rcs status --check-systems",
+]
 
 export function HeroSection() {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+  const { t } = useLanguage()
+  const [commandIdx, setCommandIdx] = useState(0)
+  const [typedText, setTypedText] = useState("")
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  // Typewriter
+  useEffect(() => {
+    let timer: NodeJS.Timeout
+    const full = commands[commandIdx]
+
+    if (isDeleting) {
+      timer = setTimeout(() => setTypedText(full.substring(0, typedText.length - 1)), 40)
+    } else {
+      timer = setTimeout(() => setTypedText(full.substring(0, typedText.length + 1)), 80)
     }
+
+    if (!isDeleting && typedText === full) {
+      timer = setTimeout(() => setIsDeleting(true), 2200)
+    } else if (isDeleting && typedText === "") {
+      setIsDeleting(false)
+      setCommandIdx((prev) => (prev + 1) % commands.length)
+    }
+
+    return () => clearTimeout(timer)
+  }, [typedText, isDeleting, commandIdx])
+
+  // Stagger animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+    },
+  }
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" as const } },
   }
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* 3D Background */}
       <HeroBackground />
-      
-      {/* Subtle gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background z-[1]" />
-      
-      <div className="container relative z-10 px-4 md:px-6 pt-20">
-        <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-10"
-          >
-            <span className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-foreground/5 border border-foreground/10 text-sm text-foreground/70 font-mono tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-foreground animate-pulse" />
-              Digital Transformation Partner
-            </span>
-          </motion.div>
 
-          {/* Split Flap Display */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mb-8"
-          >
-            <SplitFlapDisplay text="RCS" />
-          </motion.div>
+      {/* Dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-25 z-[1] pointer-events-none" />
 
-          {/* Tagline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 text-balance"
-            style={{ fontFamily: "var(--font-bebas-neue)" }}
-          >
-            <span className="text-foreground">PROVIDING</span>
-            <br />
-            <span className="text-foreground/90">
-              VALUABLE RESULTS<span className="text-foreground">.</span>
-            </span>
-          </motion.h1>
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background z-[2] pointer-events-none" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 text-pretty leading-relaxed"
-          >
-            Ruang Cipta Solusi. We bring together strategy, 
-            technology implementation, and deep domain expertise to drive transformation.
-          </motion.p>
+      {/* ── Content ── */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="container relative z-10 px-5 md:px-6 pt-28 pb-20 max-w-5xl"
+      >
+        <div className="grid md:grid-cols-10 gap-8 items-center">
 
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4 mb-20"
-          >
-            <a
-              href="mailto:ruangciptasolusi@gmail.com"
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-foreground text-background rounded-full font-medium hover:bg-foreground/90 transition-all hover:scale-105 glow-white"
+          {/* Left — Text + CTA (span 6) */}
+          <div className="md:col-span-6 flex flex-col items-center md:items-start text-center md:text-left">
+
+            {/* Badge */}
+            <motion.div variants={fadeUp} className="mb-7">
+              <span className="inline-flex items-center gap-2.5 text-[13px] font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-1.5 backdrop-blur-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="beacon-ping absolute inline-flex h-full w-full rounded-full bg-[#C3E633] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C3E633]" />
+                </span>
+                {t("hero_pill")}
+              </span>
+            </motion.div>
+
+            {/* Heading — BIG */}
+            <motion.h1
+              variants={fadeUp}
+              className="text-[52px] sm:text-[68px] md:text-[80px] lg:text-[96px] xl:text-[110px] font-black tracking-tight leading-[0.92] mb-7"
+              style={{ fontFamily: "var(--font-bebas-neue)" }}
             >
-              <Mail className="w-5 h-5" />
-              Get in Touch
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <button
-              onClick={() => scrollToSection("portfolio")}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-transparent border border-foreground/20 rounded-full font-medium hover:bg-foreground/5 hover:border-foreground/40 transition-all"
-            >
-              View Our Work
-            </button>
-          </motion.div>
+              <span className="text-white">{t("hero_heading_1")}</span>
+              <br />
+              <span className="shimmer-text">{t("hero_heading_accent")}</span>
+              <br />
+              <span className="text-white">{t("hero_heading_2")}</span>
+              <span className="text-white/25">.</span>
+            </motion.h1>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.6 }}
-            className="grid grid-cols-3 gap-8 md:gap-20 w-full max-w-3xl"
-          >
-            {[
-              { value: "79.5%", label: "Internet Penetration in Indonesia" },
-              { value: "353M", label: "Active Mobile Connections" },
-              { value: "44.2%", label: "E-Money Growth YoY" },
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div 
-                  className="text-3xl md:text-5xl font-bold text-foreground mb-2" 
-                  style={{ fontFamily: "var(--font-bebas-neue)" }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground leading-tight">
-                  {stat.label}
-                </div>
+            {/* Sub-description — bumped to 16px */}
+            <motion.p
+              variants={fadeUp}
+              className="text-[15px] md:text-[17px] text-white/45 max-w-lg mb-10 leading-[1.7] font-normal"
+            >
+              {t("hero_description")}
+            </motion.p>
+
+            {/* Command bar */}
+            <motion.div
+              variants={fadeUp}
+              className="w-full max-w-lg bg-white/[0.03] border border-white/[0.07] rounded-xl px-4 py-3 flex items-center justify-between mb-9 group hover:border-white/[0.12] transition-colors cursor-default"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-white/25 font-mono text-sm shrink-0">$</span>
+                <span className="text-sm font-mono text-white/80 font-medium truncate">
+                  {typedText}
+                  <span className="animate-pulse text-[#C3E633] select-none ml-0.5">▎</span>
+                </span>
               </div>
-            ))}
-          </motion.div>
+              <span className="text-[10px] font-mono text-white/20 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded shrink-0">
+                ⌘K
+              </span>
+            </motion.div>
+
+            {/* CTA Buttons */}
+            <motion.div
+              variants={fadeUp}
+              className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto"
+            >
+              <a
+                href="mailto:ruangciptasolusi@gmail.com"
+                className="inline-flex items-center justify-center gap-2.5 text-[14px] font-semibold px-7 py-3 rounded-xl bg-[#C3E633] text-black hover:bg-[#d4f044] transition-all hover:shadow-[0_0_30px_rgba(195,230,51,0.25)] active:scale-[0.97]"
+              >
+                {t("hero_cta_primary")}
+                <ArrowRight className="w-4 h-4" />
+              </a>
+
+              <a
+                href="#portfolio"
+                className="inline-flex items-center justify-center gap-2.5 text-[14px] font-medium px-7 py-3 rounded-xl bg-white/[0.04] text-white/70 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white transition-all active:scale-[0.97]"
+              >
+                <Play className="w-3.5 h-3.5 text-[#C3E633]" />
+                {t("hero_cta_secondary")}
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right — 3D space (span 4) */}
+          <div className="hidden md:block md:col-span-4 h-64 pointer-events-none" />
         </div>
-      </div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
-        <motion.button
-          onClick={() => scrollToSection("about")}
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-          aria-label="Scroll to about section"
+        <motion.a
+          href="#about"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2.0, repeat: Infinity, ease: "easeInOut" }}
+          className="flex flex-col items-center gap-2 group cursor-pointer"
+          aria-label="Scroll down"
         >
-          <span className="w-6 h-12 rounded-full border border-foreground/20 flex items-start justify-center p-2">
-            <span className="w-1 h-2 rounded-full bg-foreground/60" />
+          <span className="w-5 h-9 rounded-full border border-white/15 flex items-start justify-center pt-1.5 group-hover:border-white/30 transition-colors">
+            <motion.span
+              className="w-1 h-2 rounded-full bg-[#C3E633]"
+            />
           </span>
-        </motion.button>
+        </motion.a>
       </motion.div>
     </section>
   )

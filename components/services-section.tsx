@@ -1,249 +1,314 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import { 
-  Zap, 
-  BarChart3, 
-  Lightbulb, 
-  Server,
-  ArrowRight,
-  Search,
-  MessageSquare,
-  Wrench,
-  Shield,
-  Mail
-} from "lucide-react"
+import { useState, useRef, useMemo } from "react"
+import { motion, AnimatePresence, useInView } from "framer-motion"
+import { Zap, BarChart3, Lightbulb, Server, Search, MessageSquare, Wrench, Shield, ArrowRight } from "lucide-react"
+import { useLanguage } from "@/components/language-context"
 
 const services = [
   {
+    id: 1,
     icon: Zap,
     title: "Technology Modernization",
-    description: "We work end-to-end with clients to ensure effective business transformation - utilizing management systems, automation, customer data management, and more.",
+    desc: "End-to-end business transformation — management systems, automation, customer data management, and more.",
+    color: "#C3E633",
+    hotkey: "⌘1",
+    actions: ["System Auditing", "Workflow Automation", "CRM/ERP Development", "API Integrations"]
   },
   {
+    id: 2,
     icon: BarChart3,
-    title: "Data Analysis and Processing",
-    description: "Identifying patterns, trends, and opportunities from collected data, as well as applying analysis techniques to gain valuable insights and assist clients in making better decisions using Artificial Intelligence.",
+    title: "Data Analysis & AI",
+    desc: "Identifying patterns, trends, and opportunities using AI to provide insights that drive better decisions.",
+    color: "#FFFFFF",
+    hotkey: "⌘2",
+    actions: ["Data Pipeline Engineering", "Predictive Analytics", "Custom ML Models", "BI Dashboarding"]
   },
   {
+    id: 3,
     icon: Lightbulb,
     title: "Product & Service Innovation",
-    description: "Conceiving, developing, and expanding emerging new ventures. We equip our client teams with the software, tools, and capabilities needed to achieve success independently, such as creating applications or websites.",
+    desc: "Conceiving, developing, and launching new digital products — from apps to full-stack web platforms.",
+    color: "#C3E633",
+    hotkey: "⌘3",
+    actions: ["MVP Rapid Prototyping", "Fullstack SaaS Platforms", "Mobile App Development", "UI/UX System Design"]
   },
   {
+    id: 4,
     icon: Server,
     title: "Technology Infrastructure",
-    description: "We provide services that encompass planning, implementation, and management of necessary infrastructure, including communication networks, servers, hardware, and software. For instance, local network and CCTV implementations.",
+    desc: "Planning, implementation, and management of networks, servers, hardware, CCTV, and software.",
+    color: "#FFFFFF",
+    hotkey: "⌘4",
+    actions: ["Cloud Infrastructure Setup", "Network Architecture Design", "Cybersecurity Audits", "Hardware Provisioning"]
   },
 ]
 
 const processSteps = [
-  {
-    icon: Search,
-    title: "Business Diagnosis",
-    description: "We begin each project by thoroughly diagnosing the client's business condition to identify existing opportunities and challenges.",
-  },
-  {
-    icon: MessageSquare,
-    title: "Discussion and Solutions",
-    description: "Based on the diagnosis results, we engage in discussions with the client to find the appropriate solutions to address the challenges they are facing.",
-  },
-  {
-    icon: Wrench,
-    title: "Technology Implementation",
-    description: "We not only provide solutions but also take responsibility for effective implementation, ensuring our clients can see tangible results from their digital investments.",
-  },
-  {
-    icon: Shield,
-    title: "Monitoring and Maintenance",
-    description: "We also provide monitoring and maintenance services to ensure the solutions we implement continue to run smoothly and provide long-term value for our clients.",
-  },
+  { icon: Search,        num: "01", title: "Business Diagnosis",       desc: "Thoroughly diagnosing your business to identify opportunities." },
+  { icon: MessageSquare, num: "02", title: "Discussion & Solutions",    desc: "Engaging in deep discussions to find the most effective solutions." },
+  { icon: Wrench,        num: "03", title: "Technology Implementation", desc: "Taking full responsibility for pixel-perfect implementation." },
+  { icon: Shield,        num: "04", title: "Monitoring & Maintenance",  desc: "Long-term monitoring to ensure our systems deliver value." },
 ]
 
-interface ServiceCardProps {
-  service: typeof services[0]
-  index: number
-  isExpanded: boolean
-  onToggle: () => void
-}
-
-function ServiceCard({ service, index, isExpanded, onToggle }: ServiceCardProps) {
-  const cardRef = useRef(null)
-  const isInView = useInView(cardRef, { once: true, margin: "-50px" })
-
-  return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group"
-    >
-      <div
-        className={`
-          glass rounded-2xl p-6 h-full cursor-pointer
-          transition-all duration-300 relative overflow-hidden
-          ${isExpanded ? "ring-1 ring-foreground/30" : "hover:border-foreground/20"}
-        `}
-        onClick={onToggle}
-      >
-        {/* Background gradient */}
-        <div 
-          className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        />
-
-        <div className="relative">
-          {/* Icon */}
-          <div className="w-14 h-14 rounded-xl bg-foreground/10 flex items-center justify-center mb-5 group-hover:bg-foreground/15 transition-colors">
-            <service.icon size={28} className="text-foreground" />
-          </div>
-
-          {/* Title */}
-          <h3 className="font-mono text-lg font-semibold text-foreground mb-3">
-            {service.title}
-          </h3>
-
-          {/* Description */}
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {service.description}
-          </p>
-
-          {/* Expand indicator */}
-          <div className="flex items-center gap-2 mt-4 text-foreground/70 text-sm font-mono">
-            <span>Learn more</span>
-            <ArrowRight 
-              size={14} 
-              className="transition-transform group-hover:translate-x-1" 
-            />
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  )
-}
-
 export function ServicesSection() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+  const { t } = useLanguage()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-
-  const handleToggle = (index: number) => {
-    setExpandedIndex(expandedIndex === index ? null : index)
-  }
+  const [activeIdx, setActiveIdx] = useState(0)
+  const activeSvc = services[activeIdx]
 
   return (
-    <section id="services" className="py-24 md:py-32 relative">
-      <div ref={ref} className="container mx-auto px-4">
-        {/* Section header */}
+    <section id="services" className="py-24 md:py-32 relative overflow-hidden bg-background">
+      {/* Background patterns */}
+      <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
+
+      {/* Ambient glowing orbs */}
+      <div className="orb w-[500px] h-[500px] bg-[#3B82F6]/2 top-1/3 right-10" />
+
+      <div ref={ref} className="container relative mx-auto px-4 max-w-5xl">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-16"
+          className="mb-12 text-center md:text-left"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full border border-foreground/10 bg-foreground/5 text-sm font-mono text-foreground/70 mb-4 tracking-wider">
-            02 — Our Activities
-          </span>
-          <h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
-            style={{ fontFamily: "var(--font-bebas-neue)" }}
-          >
-            WHAT WE DO
+          <div className="mb-4">
+            <span className="section-pill">
+              <span className="section-pill-dot" />
+              {t("services_pill")}
+            </span>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight" style={{ fontFamily: "var(--font-bebas-neue)" }}>
+            {t("services_heading_1")} <span className="gradient-text">{t("services_heading_accent")}</span>
           </h2>
-          <p className="text-muted-foreground max-w-3xl leading-relaxed text-balance">
-            Providing services to our clients in the field of technological innovation with a focus on cost efficiency and revenue enhancement.
+          
+          <p className="text-muted-foreground max-w-2xl leading-relaxed text-balance mx-auto md:mx-0">
+            {t("services_description")}
           </p>
         </motion.div>
 
-        {/* Services grid */}
-        <div className="grid sm:grid-cols-2 gap-6 mb-20">
-          {services.map((service, index) => (
-            <ServiceCard
-              key={service.title}
-              service={service}
-              index={index}
-              isExpanded={expandedIndex === index}
-              onToggle={() => handleToggle(index)}
-            />
-          ))}
-        </div>
-
-        {/* Process section */}
+        {/* Raycast Services Console Window */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-24"
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10"
+          style={{ height: "600px" }}
         >
-          <div className="text-center mb-12">
-            <h3 
-              className="text-2xl md:text-3xl font-bold mb-4"
-              style={{ fontFamily: "var(--font-bebas-neue)" }}
-            >
-              HOW WE WORK
-            </h3>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              How do these capabilities integrate and operate together?
-            </p>
+          {/* Header Row */}
+          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500/80" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+              <div className="w-3 h-3 rounded-full bg-green-500/80" />
+            </div>
+            
+            <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide">
+              rcs-services-palette -- Commands Directory
+            </div>
+            <div className="w-12" /> {/* Spacer */}
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                className="relative"
-              >
-                {/* Connector line */}
-                {index < processSteps.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-[60%] w-full h-[1px] bg-gradient-to-r from-foreground/30 to-transparent" />
-                )}
-                
-                <div className="glass rounded-xl p-6 relative z-10 h-full">
-                  {/* Step number */}
-                  <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full bg-foreground flex items-center justify-center text-sm font-mono font-bold text-background">
-                    {index + 1}
-                  </div>
-                  
-                  <div className="w-12 h-12 rounded-lg bg-foreground/10 flex items-center justify-center mb-4 mt-2">
-                    <step.icon size={24} className="text-foreground" />
-                  </div>
-                  
-                  <h4 className="font-mono font-semibold text-foreground mb-2">
-                    {step.title}
-                  </h4>
-                  
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
+          {/* Left Column: Services Commands List (Col span 5) */}
+          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 h-[calc(100%-48px)] overflow-hidden">
+            <div>
+              {/* Fake Search bar inside palette list */}
+              <div className="p-4 border-b border-border/60 flex items-center gap-2">
+                <span className="text-muted-foreground font-mono text-xs">🔍</span>
+                <input 
+                  type="text" 
+                  placeholder="Search capabilities..." 
+                  disabled
+                  className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/45 border-none outline-none w-full"
+                />
+                <span className="text-[9px] font-mono bg-secondary/80 border border-border px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+              </div>
+
+              {/* Commands list */}
+              <div className="p-3 space-y-1.5 overflow-y-auto no-scrollbar">
+                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold">
+                  Service Actions
                 </div>
-              </motion.div>
-            ))}
+                {services.map((svc, index) => {
+                  const isSelected = activeIdx === index
+                  const SvcIcon = svc.icon
+                  return (
+                    <button
+                      key={svc.title}
+                      onClick={() => setActiveIdx(index)}
+                      className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
+                        isSelected 
+                          ? "bg-secondary border-border/80 shadow-md" 
+                          : "bg-transparent border-transparent hover:bg-secondary/40"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div 
+                          className="w-8 h-8 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
+                          style={{ 
+                            background: `radial-gradient(circle, ${svc.color}15, transparent 80%)`
+                          }}
+                        >
+                          <SvcIcon size={14} style={{ color: svc.color }} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-xs font-mono font-bold text-foreground truncate">
+                            {svc.title}
+                          </div>
+                          <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
+                            {svc.desc}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <span className="text-[9px] font-mono bg-background border border-border px-1.5 py-0.5 rounded text-muted-foreground ml-2">
+                        ⌥ {index + 1}
+                      </span>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Quick Summary bottom */}
+            <div className="p-4 border-t border-border/50 bg-[#0a0a0a]/30 hidden md:block">
+              <div className="text-[9px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
+                Capability Framework
+              </div>
+              <p className="text-[10px] text-muted-foreground/80 leading-relaxed font-sans">
+                We diagnose, design, implement, and monitor. Every system is built to maximize cost efficiency and boost operational output.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Column: Execution Workspace & Timeline Flow (Col span 5) */}
+          <div className="col-span-5 flex flex-col justify-between h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+            
+            {/* Ambient glow matching selected service */}
+            <div 
+              className="absolute inset-0 pointer-events-none transition-all duration-700 opacity-20"
+              style={{
+                background: `radial-gradient(circle at 80% 25%, ${activeSvc.color}25, transparent 65%)`
+              }}
+            />
+
+            <div className="p-6 md:p-8 overflow-y-auto flex-grow relative z-10 space-y-6 no-scrollbar">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSvc.id}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="space-y-6"
+                >
+                  {/* Service Header */}
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center border border-border/80 shadow-md"
+                      style={{ 
+                        background: `radial-gradient(circle, ${activeSvc.color}25, transparent 80%)`
+                      }}
+                    >
+                      {(() => {
+                        const SvcIcon = activeSvc.icon
+                        return <SvcIcon size={20} style={{ color: activeSvc.color }} />
+                      })()}
+                    </div>
+                    <div>
+                      <div className="text-xl font-bold tracking-wide text-foreground font-display leading-tight">
+                        {activeSvc.title}
+                      </div>
+                      <div className="text-[9px] font-mono text-muted-foreground mt-0.5">
+                        Operation Code: active_service_0{activeSvc.id}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Desc */}
+                  <p className="text-xs text-muted-foreground leading-relaxed font-sans text-justify">
+                    {activeSvc.desc}
+                  </p>
+
+                  {/* Core Actions checklist */}
+                  <div className="space-y-2.5">
+                    <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                      Executed Modules
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {activeSvc.actions.map((act) => (
+                        <div key={act} className="flex items-center gap-2 p-2.5 bg-secondary/35 border border-border/50 rounded-lg text-[10px] font-mono text-foreground/80">
+                          <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: activeSvc.color }} />
+                          <span className="truncate">{act}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Process workflow steps */}
+                  <div className="space-y-3">
+                    <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                      Execution Lifecycle (4-Step Pipeline)
+                    </div>
+                    
+                    <div className="space-y-2">
+                      {processSteps.map((step, sIdx) => {
+                        const StepIcon = step.icon
+                        return (
+                          <div 
+                            key={step.title} 
+                            className="flex gap-3 p-3 bg-[#050505]/75 border border-border/80 rounded-xl hover:border-foreground/10 transition-colors group/step"
+                          >
+                            <div className="w-7 h-7 rounded-lg bg-secondary/80 border border-border/80 flex items-center justify-center text-muted-foreground group-hover/step:border-[#C3E633]/40 shrink-0">
+                              <StepIcon size={12} className="text-muted-foreground group-hover/step:text-[#C3E633] transition-colors" />
+                            </div>
+                            <div>
+                              <div className="text-[10px] font-mono font-bold text-foreground flex items-center gap-2 leading-none mb-1">
+                                <span>{step.num} / {step.title}</span>
+                              </div>
+                              <p className="text-[10px] text-muted-foreground leading-normal font-sans">{step.desc}</p>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+              <div className="flex items-center gap-4">
+                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">↵</span> Execute</span>
+                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">Tab</span> Switch Pane</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌥ 1-4</span> Select
+              </div>
+            </div>
+
           </div>
         </motion.div>
 
-        {/* CTA */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-16"
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="text-center mt-12"
         >
-          <p className="text-muted-foreground mb-4">
-            Need a custom solution? {"Let's"} discuss your project.
-          </p>
-          <a
-            href="mailto:ruangciptasolusi@gmail.com"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background rounded-full font-mono text-sm hover:bg-foreground/90 transition-all hover:scale-105"
-          >
-            <Mail size={16} />
-            Get in Touch
-            <ArrowRight size={16} />
+          <p className="text-muted-foreground mb-4 text-xs font-mono">Need a custom technical roadmap? Let&apos;s interface.</p>
+          <a href="mailto:ruangciptasolusi@gmail.com" className="btn-brand inline-flex text-xs font-mono">
+            {t("services_cta")} →
           </a>
         </motion.div>
+
       </div>
     </section>
   )

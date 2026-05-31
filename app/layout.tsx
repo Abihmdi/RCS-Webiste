@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono, Bebas_Neue } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { LanguageProvider } from '@/components/language-context'
 import './globals.css'
 
 const inter = Inter({ 
@@ -50,9 +51,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${bebasNeue.variable} bg-background`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('error', (event) => {
+                if (event.filename && event.filename.includes('chrome-extension://')) {
+                  event.stopImmediatePropagation();
+                }
+              });
+              window.addEventListener('unhandledrejection', (event) => {
+                const stack = event.reason && event.reason.stack;
+                if (stack && stack.includes('chrome-extension://')) {
+                  event.preventDefault();
+                  event.stopImmediatePropagation();
+                }
+              });
+            `
+          }}
+        />
+      </head>
       <body className="font-sans antialiased bg-background text-foreground">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <LanguageProvider>
+          {children}
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </LanguageProvider>
       </body>
     </html>
   )

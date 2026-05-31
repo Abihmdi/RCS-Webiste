@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Linkedin, Instagram, ArrowUp, Mail, MapPin } from "lucide-react"
+import { Linkedin, Instagram, ArrowUp, Mail, MapPin, Globe } from "lucide-react"
+import { useLanguage } from "@/components/language-context"
 
 const footerLinks = {
   services: [
@@ -15,10 +16,6 @@ const footerLinks = {
     { label: "Our Team", href: "#team" },
     { label: "Portfolio", href: "#portfolio" },
   ],
-  contact: [
-    { label: "ruangciptasolusi@gmail.com", href: "mailto:ruangciptasolusi@gmail.com", icon: Mail },
-    { label: "Jakarta Selatan", href: "#contact", icon: MapPin },
-  ],
 }
 
 const socials = [
@@ -27,63 +24,56 @@ const socials = [
 ]
 
 export function Footer() {
+  const { t } = useLanguage()
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
   return (
-    <footer className="relative pt-20 pb-8 border-t border-border">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-secondary/10 to-transparent pointer-events-none" />
+    <footer className="relative pt-20 border-t border-border/80 overflow-hidden bg-background">
+      {/* Dot grid background */}
+      <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
 
-      <div className="container relative mx-auto px-4">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      {/* Ambient glowing orbs */}
+      <div className="orb w-80 h-80 bg-[#FFFFFF]/4 -bottom-20 -left-20" />
+      <div className="orb w-80 h-80 bg-[#C3E633]/4 -top-20 -right-20" />
+
+      <div className="container relative mx-auto px-4 max-w-5xl">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16 items-start">
           {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-foreground flex items-center justify-center">
-                <span className="font-mono font-bold text-background text-lg">R</span>
-              </div>
-              <span className="font-mono text-lg font-medium">
-                RCS<span className="text-foreground/60">.</span>
+          <div className="sm:col-span-2 lg:col-span-2 space-y-4">
+            {/* Font-only logo */}
+            <div className="flex items-center">
+              <span
+                className="text-2xl font-black tracking-widest text-white leading-none"
+                style={{ fontFamily: "var(--font-bebas-neue)", letterSpacing: "0.12em" }}
+              >
+                RCS<span className="text-[#C3E633]">.</span>
               </span>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-              PT Ruang Cipta Solusi - Your trusted partner for digital transformation. 
-              We bring together strategy, technology implementation, and deep domain expertise.
+            
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-sm">
+              {t("footer_tagline")}
             </p>
-            <p className="text-xs text-muted-foreground mb-6">
+            
+            <p className="text-[10px] text-muted-foreground/60 leading-normal max-w-sm">
               Komplek Bank Niaga No 38, Pejaten Barat, Pasar Minggu, Jakarta Selatan
             </p>
-            {/* Social links */}
-            <div className="flex gap-3">
-              {socials.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon size={18} />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="font-mono font-medium text-foreground mb-4 tracking-wider">Services</h4>
-            <ul className="space-y-3">
+            <div className="text-[10px] font-mono text-foreground mb-4 uppercase tracking-widest font-bold">Services</div>
+            <ul className="space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
-                  <a 
+                  <motion.a 
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    whileHover={{ x: 2 }}
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-block font-sans"
                   >
                     {link.label}
-                  </a>
+                  </motion.a>
                 </li>
               ))}
             </ul>
@@ -91,77 +81,67 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-mono font-medium text-foreground mb-4 tracking-wider">Company</h4>
-            <ul className="space-y-3">
+            <div className="text-[10px] font-mono text-foreground mb-4 uppercase tracking-widest font-bold">Company</div>
+            <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
-                  <a 
+                  <motion.a 
                     href={link.href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    whileHover={{ x: 2 }}
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors inline-block font-sans"
                   >
                     {link.label}
-                  </a>
+                  </motion.a>
                 </li>
               ))}
             </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-mono font-medium text-foreground mb-4 tracking-wider">Contact</h4>
-            <ul className="space-y-3">
-              {footerLinks.contact.map((link) => (
-                <li key={link.label}>
-                  <a 
-                    href={link.href}
-                    target={link.href.startsWith('http') ? '_blank' : undefined}
-                    rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <link.icon size={14} className="shrink-0" />
-                    <span className="break-all">{link.label}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            
-            {/* Email CTA */}
-            <a
-              href="mailto:ruangciptasolusi@gmail.com"
-              className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-foreground/10 hover:bg-foreground/15 text-foreground rounded-lg text-sm font-mono transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              Email Us
-            </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-border">
-          <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} PT Ruang Cipta Solusi. All rights reserved.
-          </p>
-          
-          <div className="flex items-center gap-6">
+        {/* IDE Bottom Status Bar Mockup */}
+        <div className="h-12 border-t border-border/70 bg-[#0a0a0a]/60 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground -mx-4 sm:-mx-0 rounded-t-xl relative z-10">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              <span>Production: Ready</span>
+            </span>
+            <span className="hidden sm:inline-block text-muted-foreground/40">|</span>
             <a 
-              href="https://ruangciptasolusi.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              href="mailto:ruangciptasolusi@gmail.com" 
+              className="hover:text-foreground transition-colors flex items-center gap-1"
             >
-              www.ruangciptasolusi.com
+              <Mail size={10} />
+              ruangciptasolusi@gmail.com
             </a>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Socials inside status bar */}
+            <div className="flex items-center gap-2">
+              {socials.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground transition-colors"
+                  aria-label={social.label}
+                >
+                  <social.icon size={11} />
+                </a>
+              ))}
+            </div>
             
+            <span className="text-muted-foreground/40">|</span>
+
             {/* Back to top button */}
-            <motion.button
+            <button
               onClick={scrollToTop}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors font-mono"
+              className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
             >
-              <ArrowUp size={16} />
-              Top
-            </motion.button>
+              <ArrowUp size={11} className="text-[#C3E633]" />
+              <span>Top</span>
+            </button>
           </div>
         </div>
       </div>

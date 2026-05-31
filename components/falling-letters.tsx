@@ -12,6 +12,7 @@ interface Letter {
   opacity: number
   duration: number
   delay: number
+  colorClass: string
 }
 
 export function FallingLetters() {
@@ -38,10 +39,16 @@ export function FallingLetters() {
     if (dimensions.width === 0 || dimensions.height === 0) return
 
     const chars = ["R", "C", "S"]
+    const colors = [
+      "text-foreground/45", 
+      "text-[#C3E633]/25", 
+      "text-[#FFFFFF]/25", 
+      "text-muted-foreground/30"
+    ]
     const newLetters: Letter[] = []
     let id = 0
 
-    // Create diagonal streams of letters like Polar.sh
+    // Create streams of letters
     const numStreams = 30
     const lettersPerStream = 15
 
@@ -56,7 +63,7 @@ export function FallingLetters() {
         const y = progress * dimensions.height * 1.2 - dimensions.height * 0.1 + (Math.random() - 0.5) * 60
 
         if (x > -100 && x < dimensions.width + 100 && y > -100 && y < dimensions.height + 100) {
-          // Calculate opacity based on position - brighter towards center
+          // Calculate opacity based on position
           const centerX = dimensions.width / 2
           const centerY = dimensions.height / 2
           const distFromCenter = Math.sqrt(
@@ -74,6 +81,7 @@ export function FallingLetters() {
             opacity: Math.max(0.1, Math.min(0.8, baseOpacity + Math.random() * 0.15)),
             duration: 3 + Math.random() * 4,
             delay: Math.random() * 2,
+            colorClass: colors[Math.floor(Math.random() * colors.length)],
           })
         }
       }
@@ -84,11 +92,12 @@ export function FallingLetters() {
 
   return (
     <section className="relative w-full h-[80vh] min-h-[600px] overflow-hidden bg-background">
+      <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <div ref={containerRef} className="absolute inset-0">
         {letters.map((letter) => (
           <motion.span
             key={letter.id}
-            className="absolute font-mono font-semibold text-foreground select-none pointer-events-none"
+            className={`absolute font-mono font-semibold select-none pointer-events-none ${letter.colorClass}`}
             style={{
               fontSize: letter.size,
               left: letter.x,
