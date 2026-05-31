@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Play } from "lucide-react"
-import { HeroBackground } from "@/components/hero-background"
 import { useLanguage } from "@/components/language-context"
 
 const commands = [
@@ -55,9 +54,7 @@ export function HeroSection() {
   }
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      {/* 3D Background */}
-      <HeroBackground />
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent">
 
       {/* Dot grid */}
       <div className="absolute inset-0 dot-grid opacity-25 z-[1] pointer-events-none" />

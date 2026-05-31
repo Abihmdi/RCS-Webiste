@@ -3,6 +3,8 @@ import { Inter, JetBrains_Mono, Bebas_Neue } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/components/language-context'
 import { AIAssistant } from '@/components/ai-assistant'
+import { HeroBackground } from '@/components/hero-background'
+import { SmoothScroll } from '@/components/smooth-scroll'
 import './globals.css'
 
 const inter = Inter({ 
@@ -79,9 +81,12 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-background text-foreground">
         <LanguageProvider>
-          {children}
-          <AIAssistant />
-          {process.env.NODE_ENV === 'production' && <Analytics />}
+          <SmoothScroll>
+            <HeroBackground />
+            {children}
+            <AIAssistant />
+            {process.env.NODE_ENV === 'production' && <Analytics />}
+          </SmoothScroll>
         </LanguageProvider>
       </body>
     </html>

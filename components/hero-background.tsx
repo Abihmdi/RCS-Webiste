@@ -1,9 +1,10 @@
 "use client"
 
-import { useRef, useMemo, useState, useEffect } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
+import React, { useRef, useMemo, useState, useEffect } from "react"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Points, PointMaterial } from "@react-three/drei"
 import * as THREE from "three"
+import { usePathname } from "next/navigation"
 
 /* ─── Flowing particle galaxy with sine-wave depth ──── */
 function GalaxyField() {
@@ -225,10 +226,50 @@ function FloatingCore() {
   )
 }
 
+/* ─── WebGL Render Error Boundary ───────────────────── */
+class WebGLErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props)
+    this.state = { hasError: false }
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: any, errorInfo: any) {
+    console.error("WebGL Render Error captured:", error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div className="absolute inset-0 bg-[#050505]" />
+    }
+    return this.props.children
+  }
+}
+
+/* ─── WebGL Context Loss Cleanup ────────────────────── */
+function WebGLCleanUp() {
+  const { gl } = useThree()
+  useEffect(() => {
+    return () => {
+      const context = gl.getContext()
+      const extension = context?.getExtension("WEBGL_lose_context")
+      if (extension) {
+        extension.loseContext()
+      }
+    }
+  }, [gl])
+  return null
+}
+
 /* ─── Main hero background component ───────────────── */
 export function HeroBackground() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasWebGL, setHasWebGL] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === "/"
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100)
@@ -237,25 +278,29 @@ export function HeroBackground() {
       const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
       if (gl) setHasWebGL(true)
     } catch { /* no WebGL */ }
+
     return () => clearTimeout(timer)
   }, [])
 
   return (
-    <div className={`absolute inset-0 z-0 transition-opacity duration-1000 ${isLoaded ? "opacity-100" : "opacity-0"} bg-background`}>
+    <div className={`fixed inset-0 z-0 transition-opacity duration-700 ${isLoaded && isHome ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-background`}>
       {hasWebGL ? (
-        <Canvas
-          camera={{ position: [0, 0, 7], fov: 52 }}
-          dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true }}
-        >
-          <color attach="background" args={["#050505"]} />
-          <fog attach="fog" args={["#050505", 6, 22]} />
-          <ambientLight intensity={0.3} />
+        <WebGLErrorBoundary>
+          <Canvas
+            camera={{ position: [0, 0, 7], fov: 52 }}
+            dpr={[1, 1.5]}
+            gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+          >
+            <WebGLCleanUp />
+            <color attach="background" args={["#050505"]} />
+            <fog attach="fog" args={["#050505", 6, 22]} />
+            <ambientLight intensity={0.3} />
 
-          <GalaxyField />
-          <MicroDust />
-          <FloatingCore />
-        </Canvas>
+            <GalaxyField />
+            <MicroDust />
+            <FloatingCore />
+          </Canvas>
+        </WebGLErrorBoundary>
       ) : (
         <div className="absolute inset-0 bg-[#050505]" />
       )}

@@ -19,6 +19,9 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
 
   useEffect(() => {
     setMounted(true)
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("last_page", "portfolio")
+    }
   }, [])
 
   const project = projects.find((p) => p.slug === slug)

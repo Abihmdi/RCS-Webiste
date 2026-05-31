@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useMemo } from "react"
+import Link from "next/link"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { Smartphone, Globe, Database, Building2, Search, Download, Star, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
@@ -276,46 +277,127 @@ export function PortfolioSection() {
                     const isSelected = activeProject?.id === project.id
                     const ProjectIcon = project.icon
                     return (
-                      <button
-                        key={project.id}
-                        onClick={() => setSelectedId(project.id)}
-                        className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
-                          isSelected 
-                            ? "bg-secondary border-border/80 shadow-md" 
-                            : "bg-transparent border-transparent hover:bg-secondary/40"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div 
-                            className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
-                            style={{ 
-                              background: `radial-gradient(circle, ${project.color}15, transparent 80%)`
-                            }}
-                          >
-                            <ProjectIcon size={16} style={{ color: project.color }} />
-                          </div>
-                          <div className="min-w-0">
-                            <div className="text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
-                              {project.title}
-                              <span className="text-[8px] font-mono text-muted-foreground/60">@rcs</span>
+                      <div key={project.id} className="w-full flex flex-col">
+                        <button
+                          onClick={() => setSelectedId(project.id)}
+                          className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
+                            isSelected 
+                              ? "bg-secondary border-border/80 shadow-md" 
+                              : "bg-transparent border-transparent hover:bg-secondary/40"
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div 
+                              className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
+                              style={{ 
+                                background: `radial-gradient(circle, ${project.color}15, transparent 80%)`
+                              }}
+                            >
+                              <ProjectIcon size={16} style={{ color: project.color }} />
                             </div>
-                            <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
-                              {project.subtitle}
+                            <div className="min-w-0">
+                              <div className="text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
+                                {project.title}
+                                <span className="text-[8px] font-mono text-muted-foreground/60">@rcs</span>
+                              </div>
+                              <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
+                                {project.subtitle}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
-                          <div className="flex items-center gap-0.5 text-[10px] font-mono text-muted-foreground/70">
-                            <Download size={10} />
-                            <span>{project.installs}</span>
+                          <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
+                            <div className="flex items-center gap-0.5 text-[10px] font-mono text-muted-foreground/70">
+                              <Download size={10} />
+                              <span>{project.installs}</span>
+                            </div>
+                            <div className="flex items-center gap-0.5 text-[10px] font-mono text-amber-500/80">
+                              <Star size={10} className="fill-current" />
+                              <span>{project.rating}</span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-0.5 text-[10px] font-mono text-amber-500/80">
-                            <Star size={10} className="fill-current" />
-                            <span>{project.rating}</span>
-                          </div>
-                        </div>
-                      </button>
+                        </button>
+
+                        {/* Inline Detail View for Mobile (only if selected) */}
+                        <AnimatePresence>
+                          {isSelected && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="md:hidden overflow-hidden"
+                            >
+                              <div className="p-4 mt-2 bg-[#0c0c0d]/90 border border-border/80 rounded-xl space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+                                
+                                {/* Action Links */}
+                                <div className="flex items-center gap-2">
+                                  {project.url && (
+                                    <a
+                                      href={project.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-1 text-[10px] font-mono text-[#C3E633] bg-[#C3E633]/8 hover:bg-[#C3E633]/15 border border-[#C3E633]/30 px-2.5 py-1 rounded transition-colors"
+                                    >
+                                      <span>View Web</span>
+                                      <ArrowRight size={10} className="-rotate-45" />
+                                    </a>
+                                  )}
+                                  <Link
+                                    href={`/portfolio/${project.slug}`}
+                                    className="inline-flex items-center gap-1 text-[10px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2.5 py-1 rounded transition-colors"
+                                  >
+                                    <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
+                                    <ArrowRight size={10} />
+                                  </Link>
+                                </div>
+
+                                {/* Problem Statement */}
+                                <div className="space-y-1">
+                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1">
+                                    <BookOpen size={10} style={{ color: project.color }} />
+                                    Problem Statement
+                                  </div>
+                                  <p className="text-xs text-muted-foreground leading-relaxed text-justify">
+                                    {project.caseStudy}
+                                  </p>
+                                </div>
+
+                                {/* Solution */}
+                                <div className="space-y-1">
+                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                                    Solution
+                                  </div>
+                                  <p className="text-xs text-muted-foreground leading-relaxed text-justify">
+                                    {project.solution}
+                                  </p>
+                                </div>
+
+                                {/* Key Features */}
+                                <div className="space-y-1">
+                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                                    Key Features
+                                  </div>
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {project.features.map((feat) => (
+                                      <span key={feat} className="px-2 py-0.5 text-[9px] font-mono bg-secondary border border-border/40 rounded text-foreground/80">
+                                        {feat}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Command */}
+                                <div className="bg-[#050506] border border-border/80 rounded-lg p-3 font-mono text-[10px] text-foreground/80 flex items-center justify-between">
+                                  <span>npx rcs install {project.slug}</span>
+                                  <span className="text-[8px] text-muted-foreground">bash</span>
+                                </div>
+
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     )
                   })
                 ) : (
@@ -333,8 +415,8 @@ export function PortfolioSection() {
             </div>
           </div>
 
-          {/* Right Column: Extension Detailed View (Col span 5) */}
-          <div className="col-span-5 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          {/* Right Column: Extension Detailed View (Col span 5) - hidden on mobile, flex on desktop */}
+          <div className="hidden md:flex col-span-5 flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
             {activeProject ? (
               <>
                 {/* Ambient glow */}
@@ -398,13 +480,13 @@ export function PortfolioSection() {
                               <ArrowRight size={10} className="-rotate-45" />
                             </a>
                           )}
-                          <a
+                          <Link
                             href={`/portfolio/${activeProject.slug}`}
                             className="inline-flex items-center gap-1 text-[9px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2 py-0.5 rounded transition-colors"
                           >
                             <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
                             <ArrowRight size={10} />
-                          </a>
+                          </Link>
                         </div>
                       </div>
 
