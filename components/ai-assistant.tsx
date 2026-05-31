@@ -13,6 +13,7 @@ interface Message {
 
 export function AIAssistant() {
   const { lang, t } = useLanguage()
+  const [mounted, setMounted] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
@@ -20,8 +21,14 @@ export function AIAssistant() {
   const [hasNewMessage, setHasNewMessage] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
 
+  // Hydration safety check
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Initialize welcome message when language changes
   useEffect(() => {
+    if (!mounted) return
     const welcomeText = lang === "en" 
       ? "Hello! I am RCS Copilot, your AI assistant. How can I help you build your next digital solution today? Ask me about our services, portfolio, or office locations!"
       : "Halo! Saya RCS Copilot, asisten AI Anda. Ada yang bisa saya bantu untuk membangun solusi digital Anda hari ini? Tanyakan kepada saya tentang layanan, portofolio, atau lokasi kantor kami!"
@@ -33,7 +40,7 @@ export function AIAssistant() {
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ])
-  }, [lang])
+  }, [lang, mounted])
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -50,9 +57,12 @@ export function AIAssistant() {
   }, [messages, isOpen])
 
   const handleOpenToggle = () => {
+    console.log("[AI-CHAT] Toggle state clicked. New state:", !isOpen)
     setIsOpen(!isOpen)
     setHasNewMessage(false)
   }
+
+  if (!mounted) return null
 
   // Local rule-based AI responder
   const getAIResponse = (query: string): string => {
