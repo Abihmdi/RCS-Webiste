@@ -12,14 +12,82 @@ const deliverables = [
 ]
 
 const techStack = [
-  { name: "React", status: "Installed", color: "#3B82F6" },
-  { name: "Next.js", status: "Active", color: "#FFFFFF" },
-  { name: "Node.js", status: "Running", color: "#10B981" },
-  { name: "Python", status: "Ready", color: "#3B82F6" },
-  { name: "Google Cloud", status: "Online", color: "#3B82F6" },
-  { name: "PostgreSQL", status: "Synced", color: "#06B6D4" },
-  { name: "MongoDB", status: "Connected", color: "#10B981" },
-  { name: "Firebase", status: "Configured", color: "#7C3AED" },
+  { 
+    name: "React", 
+    status: "Installed", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="-11.5 -10.23 23 20.46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="0" cy="0" r="2.05" fill="#61DAFB"/>
+        <g stroke="#61DAFB" strokeWidth="1">
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    )
+  },
+  { 
+    name: "Next.js", 
+    status: "Active", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0 rounded-full bg-white p-0.5" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="90" cy="90" r="90" fill="black"/>
+        <path d="M149.508 157.52L69.142 54H54v72h14.858V72.072l65.49 84.228c5.06-5.836 9.38-12.33 12.89-19.348zM126 54h15v72h-15V54z" fill="white"/>
+      </svg>
+    )
+  },
+  { 
+    name: "Python", 
+    status: "Ready", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M55 0C25.4 0 27.5 12.7 27.5 12.7L27.6 25.1H55.4V29.1H27.5C27.5 29.1 11 27.4 11 50C11 72.6 25.1 71.9 25.1 71.9H32.4V62.4C32.4 47.9 44.6 37.1 59.1 37.1H72C72 37.1 82.5 35.8 82.5 20.1C82.5 4.4 69.1 0 55 0ZM41.2 8C44 8 46.2 10.2 46.2 13C46.2 15.8 44 18 41.2 18C38.4 18 36.2 15.8 36.2 13C36.2 10.2 38.4 8 41.2 8Z" fill="#3776AB"/>
+        <path d="M55 110C84.6 110 82.5 97.3 82.5 97.3L82.4 84.9H54.6V80.9H82.5C82.5 80.9 99 82.6 99 60C99 37.4 84.9 38.1 84.9 38.1H77.6V47.6C77.6 62.1 65.4 72.9 50.9 72.9H38C38 72.9 27.5 74.2 27.5 89.9C27.5 105.6 40.9 110 55 110ZM68.8 102C66 102 63.8 99.8 63.8 97C63.8 94.2 66 92 68.8 92C71.6 92 73.8 94.2 73.8 97C73.8 99.8 71.6 102 68.8 102Z" fill="#FFE873"/>
+      </svg>
+    )
+  },
+  { 
+    name: "Cloudflare", 
+    status: "Online", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M102.3 53.6c-1.3-11.4-11-20.2-22.7-20.2-3.1 0-6.1.7-8.8 2-4.5-9.6-14.3-15.9-25.3-15.9-13.8 0-25.3 10-27.7 23.2-9.6 1.7-16.8 10-16.8 20.1 0 11.3 9.2 20.5 20.5 20.5h80.7c11.3 0 20.5-9.2 20.5-20.5.1-4.2-1.1-8.1-3.4-11.2z" fill="#F38020"/>
+      </svg>
+    )
+  },
+  { 
+    name: "Claude", 
+    status: "Active", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM9.5 16.5C8.67 16.5 8 15.83 8 15C8 14.17 8.67 13.5 9.5 13.5C10.33 13.5 11 14.17 11 15C11 15.83 10.33 16.5 9.5 16.5ZM14.5 16.5C13.67 16.5 13 15.83 13 15C13 14.17 13.67 13.5 14.5 13.5C15.33 13.5 16 14.17 16 15C16 15.83 15.33 16.5 14.5 16.5ZM12 11C10.34 11 9 9.66 9 8C9 6.34 10.34 5 12 5C13.66 5 15 6.34 15 8C15 9.66 13.66 11 12 11Z" fill="#D97706"/>
+      </svg>
+    )
+  },
+  { 
+    name: "Antigravity", 
+    status: "Synced", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 5C10.5 5 9 6 8 7.5C7 9 7 11.5 8 13.5C9 15.5 10.5 17 12 17C13.5 17 15 15.5 16 13.5C17 11.5 17 9 16 7.5C15 6 13.5 5 12 5Z" fill="#C3E633"/>
+        <path d="M12 5C12 3 13 2 14 2C14.5 3 14 4.5 13 5H12Z" fill="#C3E633"/>
+        <path d="M6 20C8 19 10 19 12 20C14 21 16 21 18 20" stroke="#C3E633" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M8 23C10 22 12 22 14 23" stroke="#C3E633" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    )
+  },
+  { 
+    name: "Codex", 
+    status: "Running", 
+    icon: (
+      <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="4" stroke="#10B981" strokeWidth="2"/>
+        <path d="M8 9L5 12L8 15" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M16 9L19 12L16 15" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M13 8L11 16" stroke="#10B981" strokeWidth="2" strokeLinecap="round"/>
+      </svg>
+    )
+  },
 ]
 
 const stats = [
@@ -194,7 +262,7 @@ export function AboutSection() {
                       key={tech.name}
                       className="px-2.5 py-1 rounded-lg text-[10px] font-mono text-foreground/80 bg-secondary/80 border border-border/60 flex items-center gap-1.5 hover:border-foreground/20 transition-all cursor-default"
                     >
-                      <span className="w-1 h-1 rounded-full" style={{ backgroundColor: tech.color }} />
+                      {tech.icon}
                       <span>{tech.name}</span>
                     </div>
                   ))}
