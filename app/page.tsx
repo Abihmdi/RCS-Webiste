@@ -8,6 +8,7 @@ import { ContactSection } from "@/components/contact-section"
 import { FallingLetters } from "@/components/falling-letters"
 import { Footer } from "@/components/footer"
 import { CommandPalette } from "@/components/command-palette"
+import { AIAssistant } from "@/components/ai-assistant"
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
       <ContactSection />
       <Footer />
       <CommandPalette />
+      <AIAssistant />
     </main>
   )
 }
