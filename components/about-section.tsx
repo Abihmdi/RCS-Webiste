@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useEffect } from "react"
 import { motion, useInView } from "framer-motion"
 import { CheckCircle2, Info, Activity, Package } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
@@ -158,6 +158,26 @@ export function AboutSection() {
   const { t } = useLanguage()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  // Listen for Alt+D to open documentation (scroll to contact console)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey && e.key.toLowerCase() === "d") {
+        e.preventDefault()
+        const el = document.getElementById("contact")
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" })
+        }
+        window.dispatchEvent(
+          new CustomEvent("console-log", {
+            detail: "[DOCS] Redirected to system configuration and contact panel via ⌥D.",
+          })
+        )
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [])
 
   const stats = [
     { label: t("about_stat_exp_label"), value: t("about_stat_exp_value"), badge: t("about_stat_exp_badge") },

@@ -58,6 +58,36 @@ export function ContactSection() {
     }
   }, [])
 
+  // Keyboard shortcuts (Alt+M to copy email, Alt+L to open map, Cmd/Ctrl+Enter to send message)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Alt + M (Copy Email)
+      if (e.altKey && e.key.toLowerCase() === "m") {
+        e.preventDefault()
+        handleCopyEmail()
+      }
+      
+      // Alt + L (Office Map)
+      if (e.altKey && e.key.toLowerCase() === "l") {
+        e.preventDefault()
+        addLog("[LOCATION] Launching Google Maps for Pejaten office.")
+        window.open("https://maps.google.com/?q=Pejaten+Barat+Pasar+Minggu+Jakarta+Selatan", "_blank")
+      }
+
+      // Cmd/Ctrl + Enter (Send Message)
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+        const isFormFocused = document.activeElement && 
+          (document.activeElement.tagName === "INPUT" || document.activeElement.tagName === "TEXTAREA")
+        if (isFormFocused) {
+          e.preventDefault()
+          handleSubmit(new Event("submit") as any)
+        }
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [formData])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

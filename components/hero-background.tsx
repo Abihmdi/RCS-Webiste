@@ -33,20 +33,10 @@ function GalaxyField() {
   useFrame((state) => {
     if (!ref.current) return
     const t = state.clock.elapsedTime
-    const geo = ref.current.geometry
-    const posAttr = geo.getAttribute("position") as THREE.BufferAttribute
-
-    for (let i = 0; i < count; i++) {
-      const bx = basePositions[i * 3]
-      const by = basePositions[i * 3 + 1]
-      const bz = basePositions[i * 3 + 2]
-      // Each particle drifts in a unique sine path
-      posAttr.array[i * 3]     = bx + Math.sin(t * 0.15 + i * 0.003) * 0.6
-      posAttr.array[i * 3 + 1] = by + Math.cos(t * 0.12 + i * 0.005) * 0.5
-      posAttr.array[i * 3 + 2] = bz + Math.sin(t * 0.1 + i * 0.007) * 0.4
-    }
-    posAttr.needsUpdate = true
+    // Smooth, hardware-accelerated rotation and wave drift on the GPU
     ref.current.rotation.y = t * 0.008
+    ref.current.rotation.x = Math.sin(t * 0.08) * 0.03
+    ref.current.rotation.z = Math.cos(t * 0.05) * 0.02
   })
 
   return (
