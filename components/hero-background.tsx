@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation"
 /* ─── Flowing particle galaxy with sine-wave depth ──── */
 function GalaxyField() {
   const ref = useRef<THREE.Points>(null)
-  const count = 5000
+  const count = 1500 // Optimized from 5000 to 1500 to save vertex shaders workload
 
   const [positions, basePositions] = useMemo(() => {
     const pos = new Float32Array(count * 3)
@@ -58,7 +58,7 @@ function GalaxyField() {
 /* ─── Inner micro-dust for depth ────────────────────── */
 function MicroDust() {
   const ref = useRef<THREE.Points>(null)
-  const count = 2500
+  const count = 400 // Optimized from 2500 to 400
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3)
@@ -100,6 +100,7 @@ function FloatingCore() {
   const ring2Ref = useRef<THREE.Mesh>(null)
   const ring3Ref = useRef<THREE.Mesh>(null)
   const innerRef = useRef<THREE.Mesh>(null)
+  const instancedMeshRef = useRef<THREE.InstancedMesh>(null)
 
   // Generate unique vertices of the icosahedron for network nodes
   const vertices = useMemo(() => {
@@ -121,6 +122,19 @@ function FloatingCore() {
     geom.dispose()
     return verts
   }, [])
+
+  const tempObject = useMemo(() => new THREE.Object3D(), [])
+
+  // Position nodes inside the instanced mesh. This keeps it in a single draw call!
+  useEffect(() => {
+    if (!instancedMeshRef.current) return
+    vertices.forEach((pos, idx) => {
+      tempObject.position.set(pos[0], pos[1], pos[2])
+      tempObject.updateMatrix()
+      instancedMeshRef.current!.setMatrixAt(idx, tempObject.matrix)
+    })
+    instancedMeshRef.current.instanceMatrix.needsUpdate = true
+  }, [vertices, tempObject])
 
   useFrame((state) => {
     const { width } = state.viewport
@@ -178,13 +192,11 @@ function FloatingCore() {
         <icosahedronGeometry args={[1.6, 1]} />
         <meshBasicMaterial color="#C3E633" wireframe transparent opacity={0.22} />
         
-        {/* Glowing Network Nodes at Vertices */}
-        {vertices.map((pos, idx) => (
-          <mesh key={idx} position={pos}>
-            <sphereGeometry args={[0.04, 8, 8]} />
-            <meshBasicMaterial color="#C3E633" transparent opacity={0.8} />
-          </mesh>
-        ))}
+        {/* Glowing Network Nodes at Vertices - Instanced sphere geometry for maximum efficiency */}
+        <instancedMesh ref={instancedMeshRef} args={[undefined, undefined, vertices.length]}>
+          <sphereGeometry args={[0.04, 4, 4]} />
+          <meshBasicMaterial color="#C3E633" transparent opacity={0.8} />
+        </instancedMesh>
       </mesh>
 
       {/* Inner solid glow core */}
@@ -195,31 +207,31 @@ function FloatingCore() {
 
       {/* Central bright point */}
       <mesh>
-        <sphereGeometry args={[0.08, 16, 16]} />
+        <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color="#C3E633" transparent opacity={0.9} />
       </mesh>
 
-      {/* Orbit ring 1 */}
+      {/* Orbit ring 1 (torus radial segments optimized from 128 to 32) */}
       <mesh ref={ring1Ref}>
-        <torusGeometry args={[2.4, 0.012, 8, 128]} />
+        <torusGeometry args={[2.4, 0.012, 8, 32]} />
         <meshBasicMaterial color="#C3E633" transparent opacity={0.18} />
       </mesh>
 
-      {/* Orbit ring 2 */}
+      {/* Orbit ring 2 (torus radial segments optimized from 128 to 32) */}
       <mesh ref={ring2Ref}>
-        <torusGeometry args={[2.8, 0.008, 8, 128]} />
+        <torusGeometry args={[2.8, 0.008, 8, 32]} />
         <meshBasicMaterial color="#FFFFFF" transparent opacity={0.10} />
       </mesh>
 
-      {/* Orbit ring 3 (widest, faintest) */}
+      {/* Orbit ring 3 (widest, faintest, segments optimized from 128 to 32) */}
       <mesh ref={ring3Ref}>
-        <torusGeometry args={[3.2, 0.006, 8, 128]} />
+        <torusGeometry args={[3.2, 0.006, 8, 32]} />
         <meshBasicMaterial color="#C3E633" transparent opacity={0.06} />
       </mesh>
 
       {/* Outer wireframe sphere shell */}
       <mesh>
-        <sphereGeometry args={[3.5, 24, 24]} />
+        <sphereGeometry args={[3.5, 12, 12]} />
         <meshBasicMaterial color="#FFFFFF" wireframe transparent opacity={0.025} />
       </mesh>
     </group>
@@ -288,7 +300,7 @@ export function HeroBackground() {
         <WebGLErrorBoundary>
           <Canvas
             camera={{ position: [0, 0, 7], fov: 52 }}
-            dpr={[1, 1.5]}
+            dpr={1} // Capped at 1 to prevent high rendering loads on Retina screens
             gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
           >
             <WebGLCleanUp />
@@ -305,21 +317,19 @@ export function HeroBackground() {
         <div className="absolute inset-0 bg-[#050505]" />
       )}
 
-      {/* Aurora glow blobs — drift behind canvas */}
+      {/* Aurora glow blobs — optimized by using radial-gradients without CSS blur filters */}
       <div
         className="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(195,230,51,0.08), transparent 70%)",
-          filter: "blur(80px)",
-          animation: "aurora-drift 8s ease-in-out infinite",
+          background: "radial-gradient(circle, rgba(195,230,51,0.04) 0%, rgba(195,230,51,0.01) 30%, transparent 70%)",
+          animation: "aurora-drift 12s ease-in-out infinite",
         }}
       />
       <div
         className="absolute bottom-[5%] right-[10%] w-[400px] h-[400px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(255,255,255,0.04), transparent 70%)",
-          filter: "blur(70px)",
-          animation: "aurora-drift-r 10s ease-in-out infinite",
+          background: "radial-gradient(circle, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 30%, transparent 70%)",
+          animation: "aurora-drift-r 15s ease-in-out infinite",
         }}
       />
 

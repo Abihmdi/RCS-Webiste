@@ -48,9 +48,9 @@ export function FallingLetters() {
     const newLetters: Letter[] = []
     let id = 0
 
-    // Create streams of letters
-    const numStreams = 30
-    const lettersPerStream = 15
+    // Create streams of letters - optimized from 30x15 down to 8x4 to save performance
+    const numStreams = 8
+    const lettersPerStream = 4
 
     for (let s = 0; s < numStreams; s++) {
       const streamX = (s / numStreams) * dimensions.width * 1.5 - dimensions.width * 0.25
@@ -79,8 +79,8 @@ export function FallingLetters() {
             y,
             size: 16 + Math.random() * 24,
             opacity: Math.max(0.1, Math.min(0.8, baseOpacity + Math.random() * 0.15)),
-            duration: 3 + Math.random() * 4,
-            delay: Math.random() * 2,
+            duration: 4 + Math.random() * 5,
+            delay: Math.random() * 5,
             colorClass: colors[Math.floor(Math.random() * colors.length)],
           })
         }
@@ -92,32 +92,49 @@ export function FallingLetters() {
 
   return (
     <section className="relative w-full h-[80vh] min-h-[600px] overflow-hidden bg-background">
+      {/* Self-contained CSS for hardware-accelerated animations */}
+      <style>{`
+        @keyframes customFall {
+          0% {
+            opacity: 0;
+            transform: translate3d(0, -50px, 0);
+          }
+          10% {
+            opacity: var(--letter-opacity);
+          }
+          75% {
+            opacity: var(--letter-opacity);
+            transform: translate3d(0, 50px, 0);
+          }
+          85%, 100% {
+            opacity: 0;
+            transform: translate3d(0, 100px, 0);
+          }
+        }
+        .falling-letter-node {
+          animation: customFall var(--fall-duration) linear infinite;
+          animation-delay: var(--fall-delay);
+          will-change: transform, opacity;
+        }
+      `}</style>
+
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
       <div ref={containerRef} className="absolute inset-0">
         {letters.map((letter) => (
-          <motion.span
+          <span
             key={letter.id}
-            className={`absolute font-mono font-semibold select-none pointer-events-none ${letter.colorClass}`}
+            className={`absolute font-mono font-semibold select-none pointer-events-none falling-letter-node ${letter.colorClass}`}
             style={{
               fontSize: letter.size,
               left: letter.x,
               top: letter.y,
-            }}
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ 
-              opacity: [0, letter.opacity, letter.opacity, 0],
-              y: [letter.y - 50, letter.y, letter.y + 50, letter.y + 100],
-            }}
-            transition={{
-              duration: letter.duration,
-              delay: letter.delay,
-              repeat: Infinity,
-              repeatDelay: Math.random() * 2,
-              ease: "linear",
-            }}
+              "--letter-opacity": letter.opacity,
+              "--fall-duration": `${letter.duration}s`,
+              "--fall-delay": `${letter.delay}s`,
+            } as React.CSSProperties}
           >
             {letter.char}
-          </motion.span>
+          </span>
         ))}
       </div>
       
@@ -147,3 +164,4 @@ export function FallingLetters() {
     </section>
   )
 }
+
