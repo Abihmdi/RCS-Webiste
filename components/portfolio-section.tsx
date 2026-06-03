@@ -325,7 +325,8 @@ export function PortfolioSection() {
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.3 }}
+                              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                              style={{ willChange: "height, opacity" }}
                               className="md:hidden overflow-hidden"
                             >
                               <div className="p-4 mt-2 bg-[#0c0c0d]/90 border border-border/80 rounded-xl space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">

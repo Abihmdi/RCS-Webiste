@@ -10,6 +10,12 @@ export function Navbar() {
   const [isOpen, setIsOpen]               = useState(false)
   const [scrolled, setScrolled]           = useState(false)
   const [activeSection, setActiveSection] = useState("home")
+  const [perfMode, setPerfMode]           = useState<"high" | "eco">("high")
+
+  useEffect(() => {
+    const saved = localStorage.getItem("rcs_perf_mode") as "high" | "eco" | null
+    if (saved) setPerfMode(saved)
+  }, [])
 
   const navLinks = [
     { href: "#home",      label: t("nav_home") },
@@ -105,8 +111,25 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Right: Lang toggle + CTA */}
+            {/* Right: Lang toggle + Perf toggle + CTA */}
             <div className="hidden md:flex items-center gap-2.5 shrink-0">
+              {/* Performance toggle */}
+              <button
+                type="button"
+                onClick={() => {
+                  const next = perfMode === "high" ? "eco" : "high"
+                  setPerfMode(next)
+                  localStorage.setItem("rcs_perf_mode", next)
+                  window.dispatchEvent(new CustomEvent("rcs-perf-change", { detail: next }))
+                }}
+                className="flex items-center text-[11px] font-mono font-bold tracking-wide rounded-lg overflow-hidden border border-white/[0.08] hover:border-white/[0.15] transition-colors"
+                title="Toggle 3D Background (High/Eco)"
+                aria-label="Toggle 3D Performance"
+              >
+                <span className={`px-2 py-1 transition-all duration-200 ${perfMode === "high" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>3D</span>
+                <span className={`px-2 py-1 transition-all duration-200 ${perfMode === "eco" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ECO</span>
+              </button>
+
               {/* Language toggle */}
               <button
                 type="button"
@@ -167,15 +190,33 @@ export function Navbar() {
               </a>
             ))}
 
-            {/* Mobile lang toggle */}
-            <button
-              type="button"
-              onClick={() => setLang(lang === "en" ? "id" : "en")}
-              className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10 mt-3"
-            >
-              <span className={`px-5 py-2.5 transition-colors ${lang === "en" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>EN</span>
-              <span className={`px-5 py-2.5 transition-colors ${lang === "id" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ID</span>
-            </button>
+            {/* Mobile lang + perf toggle container */}
+            <div className="flex items-center gap-3 mt-3">
+              {/* Mobile performance toggle */}
+              <button
+                type="button"
+                onClick={() => {
+                  const next = perfMode === "high" ? "eco" : "high"
+                  setPerfMode(next)
+                  localStorage.setItem("rcs_perf_mode", next)
+                  window.dispatchEvent(new CustomEvent("rcs-perf-change", { detail: next }))
+                }}
+                className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10"
+              >
+                <span className={`px-4 py-2 transition-colors ${perfMode === "high" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>3D</span>
+                <span className={`px-4 py-2 transition-colors ${perfMode === "eco" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ECO</span>
+              </button>
+
+              {/* Mobile lang toggle */}
+              <button
+                type="button"
+                onClick={() => setLang(lang === "en" ? "id" : "en")}
+                className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10"
+              >
+                <span className={`px-4 py-2 transition-colors ${lang === "en" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>EN</span>
+                <span className={`px-4 py-2 transition-colors ${lang === "id" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ID</span>
+              </button>
+            </div>
 
             <a
               href="#contact"

@@ -280,6 +280,8 @@ function WebGLCleanUp() {
 export function HeroBackground() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasWebGL, setHasWebGL] = useState(false)
+  const [isHeroVisible, setIsHeroVisible] = useState(true)
+  const [perfMode, setPerfMode] = useState<"high" | "eco">("high")
   const pathname = usePathname()
   const isHome = pathname === "/"
 
@@ -291,11 +293,41 @@ export function HeroBackground() {
       if (gl) setHasWebGL(true)
     } catch { /* no WebGL */ }
 
-    return () => clearTimeout(timer)
+    // Scroll listener to detect if Hero is visible
+    const handleScroll = () => {
+      if (window.scrollY > window.innerHeight * 1.1) {
+        setIsHeroVisible(false)
+      } else {
+        setIsHeroVisible(true)
+      }
+    }
+    
+    // Performance Mode listener
+    const saved = localStorage.getItem("rcs_perf_mode") as "high" | "eco" | null
+    if (saved) setPerfMode(saved)
+
+    const handlePerfChange = (e: Event) => {
+      const detail = (e as CustomEvent).detail
+      if (detail === "high" || detail === "eco") {
+        setPerfMode(detail)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("rcs-perf-change", handlePerfChange)
+
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("rcs-perf-change", handlePerfChange)
+    }
   }, [])
 
   return (
-    <div className={`fixed inset-0 z-0 transition-opacity duration-700 ${isLoaded && isHome ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-background`}>
+    <div 
+      className={`fixed inset-0 z-0 transition-opacity duration-700 ${isLoaded && isHome ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-background`}
+      style={{ display: isHeroVisible && perfMode === "high" ? "block" : "none" }}
+    >
       {hasWebGL ? (
         <WebGLErrorBoundary>
           <Canvas
