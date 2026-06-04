@@ -11,7 +11,7 @@ const services = [
     icon: Zap,
     title: "Technology Modernization",
     desc: "End-to-end business transformation — management systems, automation, customer data management, and more.",
-    color: "#C3E633",
+    color: "#ECFF8A",
     hotkey: "⌘1",
     actions: ["System Auditing", "Workflow Automation", "CRM/ERP Development", "API Integrations"]
   },
@@ -29,7 +29,7 @@ const services = [
     icon: Lightbulb,
     title: "Product & Service Innovation",
     desc: "Conceiving, developing, and launching new digital products — from apps to full-stack web platforms.",
-    color: "#C3E633",
+    color: "#ECFF8A",
     hotkey: "⌘3",
     actions: ["MVP Rapid Prototyping", "Fullstack SaaS Platforms", "Mobile App Development", "UI/UX System Design"]
   },
@@ -202,7 +202,7 @@ export function ServicesSection() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
                   className="space-y-6"
                 >
                   {/* Service Header */}
@@ -262,8 +262,8 @@ export function ServicesSection() {
                             key={step.title} 
                             className="flex gap-3 p-3 bg-[#050505]/75 border border-border/80 rounded-xl hover:border-foreground/10 transition-colors group/step"
                           >
-                            <div className="w-7 h-7 rounded-lg bg-secondary/80 border border-border/80 flex items-center justify-center text-muted-foreground group-hover/step:border-[#C3E633]/40 shrink-0">
-                              <StepIcon size={12} className="text-muted-foreground group-hover/step:text-[#C3E633] transition-colors" />
+                            <div className="w-7 h-7 rounded-lg bg-secondary/80 border border-border/80 flex items-center justify-center text-muted-foreground group-hover/step:border-[#ECFF8A]/40 shrink-0">
+                              <StepIcon size={12} className="text-muted-foreground group-hover/step:text-[#ECFF8A] transition-colors" />
                             </div>
                             <div>
                               <div className="text-[10px] font-mono font-bold text-foreground flex items-center gap-2 leading-none mb-1">

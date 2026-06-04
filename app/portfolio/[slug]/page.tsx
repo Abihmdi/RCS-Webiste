@@ -50,7 +50,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
           <Terminal className="mx-auto text-red-500 w-8 h-8 animate-pulse" />
           <p className="text-white font-bold">[ERROR 404] PROJECT_NOT_FOUND</p>
           <p>The requested project slug `{slug}` does not exist in the RCS registry.</p>
-          <Link href="/#portfolio" className="inline-flex items-center gap-2 text-[#C3E633] bg-[#C3E633]/10 hover:bg-[#C3E633]/20 border border-[#C3E633]/30 px-3 py-1.5 rounded transition-all mt-2">
+          <Link href="/#portfolio" className="inline-flex items-center gap-2 text-[#ECFF8A] bg-[#ECFF8A]/10 hover:bg-[#ECFF8A]/20 border border-[#ECFF8A]/30 px-3 py-1.5 rounded transition-all mt-2">
             <ArrowLeft size={12} />
             <span>Return to Console</span>
           </Link>
@@ -125,7 +125,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
 
           <div className="flex items-center gap-5 font-mono text-[10px] text-muted-foreground border-t md:border-t-0 border-border/50 pt-4 md:pt-0 w-full md:w-auto shrink-0 select-none">
             <div className="flex items-center gap-1.5">
-              <Download size={12} className="text-[#C3E633]" />
+              <Download size={12} className="text-[#ECFF8A]" />
               <div>
                 <div className="text-white font-bold leading-none">{project.installs}</div>
                 <div className="text-[8px] mt-0.5">{lang === "en" ? "Downloads" : "Unduhan"}</div>
@@ -182,7 +182,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
               <div className="grid sm:grid-cols-2 gap-4">
                 {project.features.map((feat, idx) => (
                   <div key={idx} className="glass noise rounded-xl border border-border/60 p-4 flex gap-3 items-start hover:border-white/10 transition-colors">
-                    <span className="font-mono text-xs text-[#C3E633] mt-0.5 select-none">0{idx + 1}.</span>
+                    <span className="font-mono text-xs text-[#ECFF8A] mt-0.5 select-none">0{idx + 1}.</span>
                     <div>
                       <h4 className="text-xs font-mono font-bold text-white">{feat}</h4>
                       <p className="text-[10px] text-muted-foreground mt-1 leading-normal">
@@ -227,7 +227,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2.5 text-xs font-semibold px-6 py-3.5 rounded-xl bg-[#C3E633] text-black hover:bg-[#d4f044] transition-all hover:shadow-[0_0_20px_rgba(195,230,51,0.2)] active:scale-[0.98] select-none cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2.5 text-xs font-semibold px-6 py-3.5 rounded-xl bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-all hover:shadow-[0_0_20px_rgba(236,255,138,0.2)] active:scale-[0.98] select-none cursor-pointer"
               >
                 <span>{lang === "en" ? "Launch Extension" : "Luncurkan Ekstensi"}</span>
                 <ArrowRight size={13} />
@@ -238,7 +238,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
                 className="w-full inline-flex items-center justify-center gap-2.5 text-xs font-semibold px-6 py-3.5 rounded-xl bg-white/[0.04] text-white/70 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white transition-all active:scale-[0.98] select-none cursor-pointer"
               >
                 <span>{lang === "en" ? "Request Diagnostics" : "Ajukan Diagnostik"}</span>
-                <ArrowRight size={13} className="text-[#C3E633]" />
+                <ArrowRight size={13} className="text-[#ECFF8A]" />
               </Link>
             )}
 

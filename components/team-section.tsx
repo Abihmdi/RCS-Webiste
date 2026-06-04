@@ -13,8 +13,8 @@ const founders = [
     initials: "AH",
     skills: ["Website Development", "Application Development", "Network Management", "Cyber Security", "Infrastructure"],
     experience: "7+ Years",
-    glowColor: "rgba(195, 230, 51, 0.15)",
-    accent: "#C3E633"
+    glowColor: "rgba(236, 255, 138, 0.15)",
+    accent: "#ECFF8A"
   },
   {
     name: "Ayip Farouk",
@@ -47,7 +47,7 @@ export function TeamSection() {
       
       {/* Ambient glowing orbs */}
       <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/3 top-1/3 left-1/4 -translate-x-1/2" />
-      <div className="orb w-[500px] h-[500px] bg-[#C3E633]/3 bottom-1/3 right-1/4 translate-x-1/2" />
+      <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/3 bottom-1/3 right-1/4 translate-x-1/2" />
 
       <div ref={ref} className="container relative mx-auto px-4 max-w-5xl">
         {/* Section Header */}
@@ -129,8 +129,8 @@ export function TeamSection() {
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg bg-background flex items-center justify-center font-mono font-bold text-xs border ${isActive ? "border-[#C3E633]/40" : "border-border/60"}`}>
-                          <span className={`${isActive ? "text-[#C3E633]" : "text-muted-foreground"}`}>{founder.initials}</span>
+                        <div className={`w-8 h-8 rounded-lg bg-background flex items-center justify-center font-mono font-bold text-xs border ${isActive ? "border-[#ECFF8A]/40" : "border-border/60"}`}>
+                          <span className={`${isActive ? "text-[#ECFF8A]" : "text-muted-foreground"}`}>{founder.initials}</span>
                         </div>
                         <div>
                           <div className={`text-xs font-mono font-semibold ${isActive ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"}`}>
@@ -186,7 +186,7 @@ export function TeamSection() {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  transition={{ duration: 0.18, ease: "easeOut" }}
                   className="space-y-6"
                 >
                   {/* Top Profile Header */}
@@ -255,7 +255,7 @@ export function TeamSection() {
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                       Tech Workspace Properties
                     </div>
-                    <div className="bg-[#050505] border border-border/80 rounded-xl p-4 font-mono text-[11px] text-[#C3E633]/80 space-y-1 overflow-x-auto shadow-inner relative">
+                    <div className="bg-[#050505] border border-border/80 rounded-xl p-4 font-mono text-[11px] text-[#ECFF8A]/80 space-y-1 overflow-x-auto shadow-inner relative">
                       <div className="absolute top-3 right-3 text-[9px] text-muted-foreground/35 uppercase">ts</div>
                       <div>
                         <span className="text-purple-400">const</span> <span className="text-blue-400">founder</span> = &#123;

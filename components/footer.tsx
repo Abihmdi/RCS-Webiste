@@ -36,7 +36,7 @@ export function Footer() {
 
       {/* Ambient glowing orbs */}
       <div className="orb w-80 h-80 bg-[#FFFFFF]/4 -bottom-20 -left-20" />
-      <div className="orb w-80 h-80 bg-[#C3E633]/4 -top-20 -right-20" />
+      <div className="orb w-80 h-80 bg-[#ECFF8A]/4 -top-20 -right-20" />
 
       <div className="container relative mx-auto px-4 max-w-5xl">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-10 mb-16 items-start">
@@ -48,7 +48,7 @@ export function Footer() {
                 className="text-2xl font-black tracking-widest text-white leading-none"
                 style={{ fontFamily: "var(--font-bebas-neue)", letterSpacing: "0.12em" }}
               >
-                RCS<span className="text-[#C3E633]">.</span>
+                RCS<span className="text-[#ECFF8A]">.</span>
               </span>
             </div>
             
@@ -138,7 +138,7 @@ export function Footer() {
               onClick={scrollToTop}
               className="flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
             >
-              <ArrowUp size={11} className="text-[#C3E633]" />
+              <ArrowUp size={11} className="text-[#ECFF8A]" />
               <span>Top</span>
             </button>
           </div>

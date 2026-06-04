@@ -10,12 +10,7 @@ export function Navbar() {
   const [isOpen, setIsOpen]               = useState(false)
   const [scrolled, setScrolled]           = useState(false)
   const [activeSection, setActiveSection] = useState("home")
-  const [perfMode, setPerfMode]           = useState<"high" | "eco">("high")
-
-  useEffect(() => {
-    const saved = localStorage.getItem("rcs_perf_mode") as "high" | "eco" | null
-    if (saved) setPerfMode(saved)
-  }, [])
+  // perfMode removed as requested. Optimizations run automatically by default.
 
   const navLinks = [
     { href: "#home",      label: t("nav_home") },
@@ -79,7 +74,7 @@ export function Navbar() {
                 className="text-[22px] font-black text-white leading-none tracking-[0.08em]"
                 style={{ fontFamily: "var(--font-bebas-neue)" }}
               >
-                RCS<span className="text-[#C3E633]">.</span>
+                RCS<span className="text-[#ECFF8A]">.</span>
               </span>
             </a>
 
@@ -111,24 +106,8 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Right: Lang toggle + Perf toggle + CTA */}
+            {/* Right: Lang toggle + CTA */}
             <div className="hidden md:flex items-center gap-2.5 shrink-0">
-              {/* Performance toggle */}
-              <button
-                type="button"
-                onClick={() => {
-                  const next = perfMode === "high" ? "eco" : "high"
-                  setPerfMode(next)
-                  localStorage.setItem("rcs_perf_mode", next)
-                  window.dispatchEvent(new CustomEvent("rcs-perf-change", { detail: next }))
-                }}
-                className="flex items-center text-[11px] font-mono font-bold tracking-wide rounded-lg overflow-hidden border border-white/[0.08] hover:border-white/[0.15] transition-colors"
-                title="Toggle 3D Background (High/Eco)"
-                aria-label="Toggle 3D Performance"
-              >
-                <span className={`px-2 py-1 transition-all duration-200 ${perfMode === "high" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>3D</span>
-                <span className={`px-2 py-1 transition-all duration-200 ${perfMode === "eco" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ECO</span>
-              </button>
 
               {/* Language toggle */}
               <button
@@ -137,15 +116,15 @@ export function Navbar() {
                 className="flex items-center text-[11px] font-mono font-bold tracking-wide rounded-lg overflow-hidden border border-white/[0.08] hover:border-white/[0.15] transition-colors"
                 aria-label="Toggle language"
               >
-                <span className={`px-2 py-1 transition-all duration-200 ${lang === "en" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>EN</span>
-                <span className={`px-2 py-1 transition-all duration-200 ${lang === "id" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ID</span>
+                <span className={`px-2 py-1 transition-all duration-200 ${lang === "en" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>EN</span>
+                <span className={`px-2 py-1 transition-all duration-200 ${lang === "id" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>ID</span>
               </button>
 
               {/* CTA */}
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, "#contact")}
-                className="text-[13px] font-medium px-4 py-1.5 rounded-lg bg-[#C3E633] text-black hover:bg-[#d4f044] transition-colors"
+                className="text-[13px] font-medium px-4 py-1.5 rounded-lg bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-colors"
               >
                 {t("nav_get_started")}
               </a>
@@ -172,7 +151,7 @@ export function Navbar() {
         >
           <div
             className="absolute top-1/3 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(195,230,51,0.06), transparent)", filter: "blur(60px)" }}
+            style={{ background: "radial-gradient(circle, rgba(236,255,138,0.06), transparent)", filter: "blur(60px)" }}
           />
 
           <nav className="flex flex-col items-center gap-5 z-10">
@@ -190,38 +169,20 @@ export function Navbar() {
               </a>
             ))}
 
-            {/* Mobile lang + perf toggle container */}
-            <div className="flex items-center gap-3 mt-3">
-              {/* Mobile performance toggle */}
-              <button
-                type="button"
-                onClick={() => {
-                  const next = perfMode === "high" ? "eco" : "high"
-                  setPerfMode(next)
-                  localStorage.setItem("rcs_perf_mode", next)
-                  window.dispatchEvent(new CustomEvent("rcs-perf-change", { detail: next }))
-                }}
-                className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10"
-              >
-                <span className={`px-4 py-2 transition-colors ${perfMode === "high" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>3D</span>
-                <span className={`px-4 py-2 transition-colors ${perfMode === "eco" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ECO</span>
-              </button>
-
-              {/* Mobile lang toggle */}
-              <button
-                type="button"
-                onClick={() => setLang(lang === "en" ? "id" : "en")}
-                className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10"
-              >
-                <span className={`px-4 py-2 transition-colors ${lang === "en" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>EN</span>
-                <span className={`px-4 py-2 transition-colors ${lang === "id" ? "bg-[#C3E633] text-black" : "text-white/35"}`}>ID</span>
-              </button>
-            </div>
+            {/* Mobile lang toggle */}
+            <button
+              type="button"
+              onClick={() => setLang(lang === "en" ? "id" : "en")}
+              className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10 mt-3"
+            >
+              <span className={`px-5 py-2.5 transition-colors ${lang === "en" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>EN</span>
+              <span className={`px-5 py-2.5 transition-colors ${lang === "id" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>ID</span>
+            </button>
 
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "#contact")}
-              className="mt-3 text-[15px] font-medium px-8 py-2.5 rounded-xl bg-[#C3E633] text-black hover:bg-[#d4f044] transition-colors"
+              className="mt-3 text-[15px] font-medium px-8 py-2.5 rounded-xl bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-colors"
             >
               {t("nav_get_started")} →
             </a>

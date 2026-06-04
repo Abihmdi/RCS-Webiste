@@ -78,8 +78,8 @@ export function HeroSection() {
             <motion.div variants={fadeUp} className="mb-7">
               <span className="inline-flex items-center gap-2.5 text-[13px] font-medium text-white/60 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-1.5 backdrop-blur-sm">
                 <span className="relative flex h-2 w-2">
-                  <span className="beacon-ping absolute inline-flex h-full w-full rounded-full bg-[#C3E633] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#C3E633]" />
+                  <span className="beacon-ping absolute inline-flex h-full w-full rounded-full bg-[#ECFF8A] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ECFF8A]" />
                 </span>
                 {t("hero_pill")}
               </span>
@@ -117,7 +117,7 @@ export function HeroSection() {
                 <span className="text-white/25 font-mono text-sm shrink-0">$</span>
                 <span className="text-sm font-mono text-white/80 font-medium truncate">
                   {typedText}
-                  <span className="animate-pulse text-[#C3E633] select-none ml-0.5">▎</span>
+                  <span className="animate-pulse text-[#ECFF8A] select-none ml-0.5">▎</span>
                 </span>
               </div>
               <span className="text-[10px] font-mono text-white/20 bg-white/[0.04] border border-white/[0.06] px-2 py-0.5 rounded shrink-0">
@@ -132,7 +132,7 @@ export function HeroSection() {
             >
               <a
                 href="mailto:ruangciptasolusi@gmail.com"
-                className="inline-flex items-center justify-center gap-2.5 text-[14px] font-semibold px-7 py-3 rounded-xl bg-[#C3E633] text-black hover:bg-[#d4f044] transition-all hover:shadow-[0_0_30px_rgba(195,230,51,0.25)] active:scale-[0.97]"
+                className="inline-flex items-center justify-center gap-2.5 text-[14px] font-semibold px-7 py-3 rounded-xl bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-all hover:shadow-[0_0_30px_rgba(236,255,138,0.25)] active:scale-[0.97]"
               >
                 {t("hero_cta_primary")}
                 <ArrowRight className="w-4 h-4" />
@@ -142,7 +142,7 @@ export function HeroSection() {
                 href="#portfolio"
                 className="inline-flex items-center justify-center gap-2.5 text-[14px] font-medium px-7 py-3 rounded-xl bg-white/[0.04] text-white/70 border border-white/[0.08] hover:bg-white/[0.08] hover:text-white transition-all active:scale-[0.97]"
               >
-                <Play className="w-3.5 h-3.5 text-[#C3E633]" />
+                <Play className="w-3.5 h-3.5 text-[#ECFF8A]" />
                 {t("hero_cta_secondary")}
               </a>
             </motion.div>
@@ -169,7 +169,7 @@ export function HeroSection() {
         >
           <span className="w-5 h-9 rounded-full border border-white/15 flex items-start justify-center pt-1.5 group-hover:border-white/30 transition-colors">
             <motion.span
-              className="w-1 h-2 rounded-full bg-[#C3E633]"
+              className="w-1 h-2 rounded-full bg-[#ECFF8A]"
             />
           </span>
         </motion.a>

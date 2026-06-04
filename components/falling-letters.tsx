@@ -41,7 +41,7 @@ export function FallingLetters() {
     const chars = ["R", "C", "S"]
     const colors = [
       "text-foreground/45", 
-      "text-[#C3E633]/25", 
+      "text-[#ECFF8A]/25", 
       "text-[#FFFFFF]/25", 
       "text-muted-foreground/30"
     ]

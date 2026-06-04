@@ -146,7 +146,7 @@ export function ContactSection() {
 
       {/* Ambient glowing orbs */}
       <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/3 top-1/4 -left-20" />
-      <div className="orb w-[500px] h-[500px] bg-[#C3E633]/3 bottom-1/4 -right-20" />
+      <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/3 bottom-1/4 -right-20" />
 
       <div ref={ref} className="container relative mx-auto px-4 max-w-5xl">
         {/* Section header */}
@@ -216,7 +216,7 @@ export function ContactSection() {
                     placeholder={t("contact_name_placeholder")}
                     value={formData.name}
                     onChange={handleChange}
-                    className="bg-secondary/40 border-border/80 focus:border-[#C3E633]/65 focus:ring-2 focus:ring-[#C3E633]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                    className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
                   />
                 </div>
                 <div>
@@ -234,7 +234,7 @@ export function ContactSection() {
                     placeholder={t("contact_email_placeholder")}
                     value={formData.email}
                     onChange={handleChange}
-                    className="bg-secondary/40 border-border/80 focus:border-[#C3E633]/65 focus:ring-2 focus:ring-[#C3E633]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                    className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ export function ContactSection() {
                   placeholder={t("contact_company_placeholder")}
                   value={formData.company}
                   onChange={handleChange}
-                  className="bg-secondary/40 border-border/80 focus:border-[#C3E633]/65 focus:ring-2 focus:ring-[#C3E633]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                  className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
                 />
               </div>
 
@@ -272,7 +272,7 @@ export function ContactSection() {
                   placeholder={t("contact_message_placeholder")}
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full rounded-xl bg-secondary/40 border border-border/80 px-3.5 py-3 text-xs placeholder:text-muted-foreground/35 focus:outline-none focus:ring-2 focus:ring-[#C3E633]/15 focus:border-[#C3E633]/65 text-foreground font-sans transition-all duration-300 resize-none h-28"
+                  className="w-full rounded-xl bg-secondary/40 border border-border/80 px-3.5 py-3 text-xs placeholder:text-muted-foreground/35 focus:outline-none focus:ring-2 focus:ring-[#ECFF8A]/15 focus:border-[#ECFF8A]/65 text-foreground font-sans transition-all duration-300 resize-none h-28"
                 />
               </div>
 
@@ -341,7 +341,7 @@ export function ContactSection() {
             {/* Simulated Live Console Output */}
             <div className="p-4 border-t border-border/50 bg-[#050505] flex-grow md:flex-grow-0">
               <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold mb-2.5 flex items-center gap-1.5">
-                <TermIcon size={12} className="text-[#C3E633]" />
+                <TermIcon size={12} className="text-[#ECFF8A]" />
                 CONSOLE LOGGER
               </div>
               <div className="font-mono text-[10px] text-green-400 space-y-1 overflow-y-auto max-h-[110px] pr-2 no-scrollbar leading-relaxed">

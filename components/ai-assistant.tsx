@@ -170,13 +170,13 @@ export function AIAssistant() {
         <button
           onClick={handleOpenToggle}
           aria-label="Open AI Assistant"
-          className="relative w-14 h-14 rounded-full bg-secondary border border-border/80 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-[#C3E633]/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-[#C3E633]"
+          className="relative w-14 h-14 rounded-full bg-secondary border border-border/80 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-[#ECFF8A]/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-[#ECFF8A]"
         >
           {/* Notification Ping Alert */}
           {hasNewMessage && (
             <span className="absolute top-0 right-0 flex h-3.5 w-3.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C3E633] opacity-75" />
-              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#C3E633] border-2 border-background" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ECFF8A] opacity-75" />
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#ECFF8A] border-2 border-background" />
             </span>
           )}
           
@@ -208,7 +208,7 @@ export function AIAssistant() {
             <div className="h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
               <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="w-6 h-6 rounded-lg border border-border bg-[#C3E633]/5 flex items-center justify-center text-[#C3E633]">
+                  <div className="w-6 h-6 rounded-lg border border-border bg-[#ECFF8A]/5 flex items-center justify-center text-[#ECFF8A]">
                     <Bot size={13} />
                   </div>
                   <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-green-500 border border-background animate-pulse" />
@@ -216,7 +216,7 @@ export function AIAssistant() {
                 <div>
                   <div className="text-xs font-mono font-bold text-foreground leading-none flex items-center gap-1">
                     RCS Copilot
-                    <Sparkles size={10} className="text-[#C3E633] fill-current animate-pulse" />
+                    <Sparkles size={10} className="text-[#ECFF8A] fill-current animate-pulse" />
                   </div>
                   <div className="text-[9px] font-mono text-muted-foreground mt-0.5">rcs-ai-assistant.sh</div>
                 </div>
@@ -256,7 +256,7 @@ export function AIAssistant() {
                         className={`p-3 rounded-xl leading-relaxed whitespace-pre-wrap ${
                           isBot 
                             ? "bg-secondary/40 border border-border/60 text-foreground" 
-                            : "bg-[#C3E633] text-black font-medium"
+                            : "bg-[#ECFF8A] text-black font-medium"
                         }`}
                       >
                         {msg.text}
@@ -291,7 +291,7 @@ export function AIAssistant() {
               onSubmit={handleSend}
               className="p-3 border-t border-border/70 bg-[#0d0d0e]/60 flex items-center gap-2 relative z-20"
             >
-              <div className="flex-grow flex items-center gap-2 bg-background/50 border border-border/60 rounded-xl px-3 py-2 focus-within:border-[#C3E633]/65 transition-colors">
+              <div className="flex-grow flex items-center gap-2 bg-background/50 border border-border/60 rounded-xl px-3 py-2 focus-within:border-[#ECFF8A]/65 transition-colors">
                 <span className="text-white/20 font-mono text-xs select-none">$</span>
                 <input
                   type="text"
@@ -304,7 +304,7 @@ export function AIAssistant() {
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="w-8 h-8 rounded-xl bg-[#C3E633] hover:bg-[#d4f044] text-black flex items-center justify-center cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:hover:bg-[#C3E633] active:scale-90"
+                className="w-8 h-8 rounded-xl bg-[#ECFF8A] hover:bg-[#f2ffa2] text-black flex items-center justify-center cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:hover:bg-[#ECFF8A] active:scale-90"
               >
                 <Send size={12} />
               </button>

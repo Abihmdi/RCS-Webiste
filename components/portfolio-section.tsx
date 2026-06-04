@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef, useMemo, useCallback, memo } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { Smartphone, Globe, Database, Building2, Search, Download, Star, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
@@ -20,7 +20,7 @@ export const projects = [
     solution: "We engineered Aksara AI, a Chrome extension that serves as a context-aware second brain. It allows users to summarize articles, draft email/social replies with custom tones, translate line-by-line, and save searchable highlights locally.",
     features: ["Instant Summarizer", "AI Reply Generator", "Local Vector Memory", "Inline Translator", "No-Setup Groq Integration"],
     icon: Chrome,
-    color: "#C3E633",
+    color: "#ECFF8A",
     installs: "3.2k",
     rating: "5.0",
     type: "Extension",
@@ -66,7 +66,7 @@ export const projects = [
     solution: "We have developed Heystetik, an innovative application designed for beauty clinics. Heystetik allows users to consult with doctors, book treatments, purchase skincare products, and engage in discussions with other users through streaming features.",
     features: ["Doctor Consultation", "Treatment Booking", "Commerce", "Stream", "Progress Tracker"],
     icon: Smartphone,
-    color: "#C3E633",
+    color: "#ECFF8A",
     installs: "14.8k",
     rating: "4.9",
     type: "Extension",
@@ -81,7 +81,7 @@ export const projects = [
     solution: "Our Hospital Management System provides an integrated platform to handle all hospital operations efficiently. This system also includes ERP-based medical record management.",
     features: ["Patient Registration", "Doctor & Clinic Management", "Inventory and Pharmacy", "Billing System", "Medical Record"],
     icon: Building2,
-    color: "#C3E633",
+    color: "#ECFF8A",
     installs: "24.1k",
     rating: "4.9",
     type: "Extension",
@@ -111,7 +111,7 @@ export const projects = [
     solution: "Travelator is an ERP software specifically designed to simplify travel business operations. It streamlines various aspects of travel management, including bookings, quotations, billing, task management, and financial tracking.",
     features: ["Order Management", "Offers and Billing", "Task Management", "Revenue & Expenditure Management"],
     icon: Globe,
-    color: "#C3E633",
+    color: "#ECFF8A",
     installs: "15.9k",
     rating: "4.9",
     type: "Extension",
@@ -126,12 +126,152 @@ export const projects = [
     solution: "Vistral is a patrol management application that simplifies attendance tracking, patrol management, and emergency responses. This application utilizes QR codes for attendance verification and ERP-based patrols.",
     features: ["Attendance Tracking", "Patrol Management", "SOS Button", "Anti Fake GPS"],
     icon: Smartphone,
-    color: "#C3E633",
+    color: "#ECFF8A",
     installs: "18.5k",
     rating: "5.0",
     type: "Extension",
   },
 ]
+
+const ProjectCard = memo(({ 
+  id,
+  project, 
+  isSelected, 
+  onClick, 
+  lang 
+}: { 
+  id: number
+  project: typeof projects[number]
+  isSelected: boolean
+  onClick: (id: number) => void
+  lang: string
+}) => {
+  const ProjectIcon = project.icon
+  return (
+    <div className="w-full flex flex-col">
+      <button
+        onClick={() => onClick(id)}
+        className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
+          isSelected 
+            ? "bg-secondary border-border/80 shadow-md" 
+            : "bg-transparent border-transparent hover:bg-secondary/40"
+        }`}
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div 
+            className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
+            style={{ 
+              background: `radial-gradient(circle, ${project.color}15, transparent 80%)`
+            }}
+          >
+            <ProjectIcon size={16} style={{ color: project.color }} />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
+              {project.title}
+              <span className="text-[8px] font-mono text-muted-foreground/60">@rcs</span>
+            </div>
+            <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
+              {project.subtitle}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
+          <div className="flex items-center gap-0.5 text-[10px] font-mono text-muted-foreground/70">
+            <Download size={10} />
+            <span>{project.installs}</span>
+          </div>
+          <div className="flex items-center gap-0.5 text-[10px] font-mono text-amber-500/80">
+            <Star size={10} className="fill-current" />
+            <span>{project.rating}</span>
+          </div>
+        </div>
+      </button>
+
+      {/* Inline Detail View for Mobile (only if selected, animated using CSS grid transition) */}
+      <div
+        className="grid md:hidden transition-[grid-template-rows,opacity] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{
+          gridTemplateRows: isSelected ? "1fr" : "0fr",
+          opacity: isSelected ? 1 : 0,
+          willChange: "grid-template-rows, opacity"
+        }}
+      >
+        <div className="overflow-hidden">
+          <div className="p-4 mt-2 bg-[#0c0c0d]/90 border border-border/80 rounded-xl space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+            
+            {/* Action Links */}
+            <div className="flex items-center gap-2">
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2.5 py-1 rounded transition-colors"
+                >
+                  <span>View Web</span>
+                  <ArrowRight size={10} className="-rotate-45" />
+                </a>
+              )}
+              <Link
+                href={`/portfolio/${project.slug}`}
+                className="inline-flex items-center gap-1 text-[10px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2.5 py-1 rounded transition-colors"
+              >
+                <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
+                <ArrowRight size={10} />
+              </Link>
+            </div>
+
+            {/* Problem Statement */}
+            <div className="space-y-1">
+              <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1">
+                <BookOpen size={10} style={{ color: project.color }} />
+                Problem Statement
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed text-justify">
+                {project.caseStudy}
+              </p>
+            </div>
+
+            {/* Solution */}
+            <div className="space-y-1">
+              <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                Solution
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed text-justify">
+                {project.solution}
+              </p>
+            </div>
+
+            {/* Key Features */}
+            <div className="space-y-1">
+              <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                Key Features
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {project.features.map((feat) => (
+                  <span key={feat} className="px-2 py-0.5 text-[9px] font-mono bg-secondary border border-border/40 rounded text-foreground/80">
+                    {feat}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Command */}
+            <div className="bg-[#050506] border border-border/80 rounded-lg p-3 font-mono text-[10px] text-foreground/80 flex items-center justify-between">
+              <span>npx rcs install {project.slug}</span>
+              <span className="text-[8px] text-muted-foreground">bash</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
+ProjectCard.displayName = "ProjectCard"
 
 export function PortfolioSection() {
   const { lang, t } = useLanguage()
@@ -141,6 +281,10 @@ export function PortfolioSection() {
   const [activeCategory, setActiveCategory] = useState<Category>("All")
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedId, setSelectedId] = useState(1)
+
+  const handleCardClick = useCallback((id: number) => {
+    setSelectedId(id)
+  }, [])
 
   // Filter projects by category and query
   const filteredProjects = useMemo(() => {
@@ -173,7 +317,7 @@ export function PortfolioSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
       
       {/* Ambient glowing orbs */}
-      <div className="orb w-[500px] h-[500px] bg-[#C3E633]/2 -top-20 -left-20" />
+      <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/2 -top-20 -left-20" />
       <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/2 -bottom-20 -right-20" />
 
       <div className="container relative mx-auto px-4 max-w-5xl">
@@ -273,140 +417,22 @@ export function PortfolioSection() {
                 </div>
                 
                 {filteredProjects.length > 0 ? (
-                  filteredProjects.map((project) => {
-                    const isSelected = activeProject?.id === project.id
-                    const ProjectIcon = project.icon
-                    return (
-                      <div key={project.id} className="w-full flex flex-col">
-                        <button
-                          onClick={() => setSelectedId(project.id)}
-                          className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
-                            isSelected 
-                              ? "bg-secondary border-border/80 shadow-md" 
-                              : "bg-transparent border-transparent hover:bg-secondary/40"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <div 
-                              className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
-                              style={{ 
-                                background: `radial-gradient(circle, ${project.color}15, transparent 80%)`
-                              }}
-                            >
-                              <ProjectIcon size={16} style={{ color: project.color }} />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
-                                {project.title}
-                                <span className="text-[8px] font-mono text-muted-foreground/60">@rcs</span>
-                              </div>
-                              <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
-                                {project.subtitle}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
-                            <div className="flex items-center gap-0.5 text-[10px] font-mono text-muted-foreground/70">
-                              <Download size={10} />
-                              <span>{project.installs}</span>
-                            </div>
-                            <div className="flex items-center gap-0.5 text-[10px] font-mono text-amber-500/80">
-                              <Star size={10} className="fill-current" />
-                              <span>{project.rating}</span>
-                            </div>
-                          </div>
-                        </button>
-
-                        {/* Inline Detail View for Mobile (only if selected) */}
-                        <AnimatePresence>
-                          {isSelected && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-                              style={{ willChange: "height, opacity" }}
-                              className="md:hidden overflow-hidden"
-                            >
-                              <div className="p-4 mt-2 bg-[#0c0c0d]/90 border border-border/80 rounded-xl space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
-                                
-                                {/* Action Links */}
-                                <div className="flex items-center gap-2">
-                                  {project.url && (
-                                    <a
-                                      href={project.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-1 text-[10px] font-mono text-[#C3E633] bg-[#C3E633]/8 hover:bg-[#C3E633]/15 border border-[#C3E633]/30 px-2.5 py-1 rounded transition-colors"
-                                    >
-                                      <span>View Web</span>
-                                      <ArrowRight size={10} className="-rotate-45" />
-                                    </a>
-                                  )}
-                                  <Link
-                                    href={`/portfolio/${project.slug}`}
-                                    className="inline-flex items-center gap-1 text-[10px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2.5 py-1 rounded transition-colors"
-                                  >
-                                    <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
-                                    <ArrowRight size={10} />
-                                  </Link>
-                                </div>
-
-                                {/* Problem Statement */}
-                                <div className="space-y-1">
-                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1">
-                                    <BookOpen size={10} style={{ color: project.color }} />
-                                    Problem Statement
-                                  </div>
-                                  <p className="text-xs text-muted-foreground leading-relaxed text-justify">
-                                    {project.caseStudy}
-                                  </p>
-                                </div>
-
-                                {/* Solution */}
-                                <div className="space-y-1">
-                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                                    Solution
-                                  </div>
-                                  <p className="text-xs text-muted-foreground leading-relaxed text-justify">
-                                    {project.solution}
-                                  </p>
-                                </div>
-
-                                {/* Key Features */}
-                                <div className="space-y-1">
-                                  <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                                    Key Features
-                                  </div>
-                                  <div className="flex flex-wrap gap-1.5">
-                                    {project.features.map((feat) => (
-                                      <span key={feat} className="px-2 py-0.5 text-[9px] font-mono bg-secondary border border-border/40 rounded text-foreground/80">
-                                        {feat}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                {/* Command */}
-                                <div className="bg-[#050506] border border-border/80 rounded-lg p-3 font-mono text-[10px] text-foreground/80 flex items-center justify-between">
-                                  <span>npx rcs install {project.slug}</span>
-                                  <span className="text-[8px] text-muted-foreground">bash</span>
-                                </div>
-
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )
-                  })
+                  filteredProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      id={project.id}
+                      project={project}
+                      isSelected={activeProject?.id === project.id}
+                      onClick={handleCardClick}
+                      lang={lang}
+                    />
+                  ))
                 ) : (
                   <div className="text-center py-12">
                     <div className="text-xs font-mono text-muted-foreground">No extensions found.</div>
                     <button 
                       onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-                      className="mt-3 text-[10px] font-mono text-[#C3E633] underline cursor-pointer"
+                      className="mt-3 text-[10px] font-mono text-[#ECFF8A] underline cursor-pointer"
                     >
                       Clear search filters
                     </button>
@@ -436,7 +462,7 @@ export function PortfolioSection() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
                       className="space-y-6"
                     >
                       {/* Header with Title & Install Command */}
@@ -475,7 +501,7 @@ export function PortfolioSection() {
                               href={activeProject.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[9px] font-mono text-[#C3E633] bg-[#C3E633]/8 hover:bg-[#C3E633]/15 border border-[#C3E633]/30 px-2 py-0.5 rounded transition-colors"
+                              className="inline-flex items-center gap-1 text-[9px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2 py-0.5 rounded transition-colors"
                             >
                               <span>View Web</span>
                               <ArrowRight size={10} className="-rotate-45" />

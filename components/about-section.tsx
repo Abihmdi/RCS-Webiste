@@ -117,7 +117,7 @@ const techStack = [
       <svg className="w-3.5 h-3.5 shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="antiGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#C3E633" />
+            <stop offset="0%" stopColor="#ECFF8A" />
             <stop offset="50%" stopColor="#00E5FF" />
             <stop offset="100%" stopColor="#9D4EDD" />
           </linearGradient>
@@ -197,7 +197,7 @@ export function AboutSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
 
       {/* Background glow orbs */}
-      <div className="orb w-[500px] h-[500px] bg-[#C3E633]/3 top-1/4 left-1/2 -translate-x-1/2" />
+      <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/3 top-1/4 left-1/2 -translate-x-1/2" />
 
       <div ref={ref} className="container relative mx-auto px-4 max-w-5xl">
         
@@ -243,7 +243,7 @@ export function AboutSection() {
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
             <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide flex items-center gap-1.5">
-              <Info size={11} className="text-[#C3E633]" />
+              <Info size={11} className="text-[#ECFF8A]" />
               rcs-system-about.conf -- Settings
             </div>
             <div className="w-12" /> {/* Spacer */}
@@ -255,7 +255,7 @@ export function AboutSection() {
               
               <div className="space-y-2">
                 <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                  <Activity size={12} className="text-[#C3E633]" />
+                  <Activity size={12} className="text-[#ECFF8A]" />
                   {t("about_mission_label")}
                 </div>
                 <p className="text-xs text-muted-foreground leading-relaxed text-justify font-sans">
@@ -275,7 +275,7 @@ export function AboutSection() {
                   </div>
                   <div className="grid grid-cols-2 p-3 border-b border-border/40 hover:bg-secondary/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_specialization")}</span>
-                    <span className="text-[#C3E633] font-semibold">Digital Transformation</span>
+                    <span className="text-[#ECFF8A] font-semibold">Digital Transformation</span>
                   </div>
                   <div className="grid grid-cols-2 p-3 border-b border-border/40 hover:bg-secondary/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_role")}</span>
@@ -293,12 +293,12 @@ export function AboutSection() {
             {/* Diagnostics Stats row */}
             <div className="grid grid-cols-3 gap-2.5 mt-6">
               {stats.map((s) => (
-                <div key={s.label} className="bg-background border border-border/60 rounded-xl p-3.5 text-center group hover:border-[#C3E633]/40 transition-colors duration-300">
+                <div key={s.label} className="bg-background border border-border/60 rounded-xl p-3.5 text-center group hover:border-[#ECFF8A]/40 transition-colors duration-300">
                   <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider mb-1 truncate">{s.label}</div>
                   <div className="text-xs font-bold text-foreground font-mono" style={{ fontFamily: "var(--font-bebas-neue)" }}>
                     {s.value}
                   </div>
-                  <span className="inline-block mt-1 text-[8px] font-mono text-[#C3E633] bg-[#C3E633]/8 px-1.5 py-0.5 rounded">
+                  <span className="inline-block mt-1 text-[8px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 px-1.5 py-0.5 rounded">
                     {s.badge}
                   </span>
                 </div>
@@ -314,13 +314,13 @@ export function AboutSection() {
               {/* Deliverables Section */}
               <div className="space-y-3">
                 <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                  <CheckCircle2 size={12} className="text-[#C3E633]" />
+                  <CheckCircle2 size={12} className="text-[#ECFF8A]" />
                   {t("about_deliverables_label")}
                 </div>
                 <div className="space-y-2.5">
                   {deliverables.map((item) => (
                     <div key={item} className="flex items-start gap-3 p-3 bg-secondary/30 border border-border/50 rounded-xl hover:border-foreground/10 transition-colors">
-                      <CheckCircle2 size={13} className="text-[#C3E633] shrink-0 mt-0.5" />
+                      <CheckCircle2 size={13} className="text-[#ECFF8A] shrink-0 mt-0.5" />
                       <span className="text-xs text-muted-foreground leading-normal font-sans">{item}</span>
                     </div>
                   ))}
@@ -344,7 +344,7 @@ export function AboutSection() {
                       <span>{tech.name}</span>
                     </div>
                   ))}
-                  <div className="px-2 py-1 rounded-lg text-[10px] font-mono text-[#C3E633] bg-[#C3E633]/8 border border-[#C3E633]/30">
+                  <div className="px-2 py-1 rounded-lg text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 border border-[#ECFF8A]/30">
                     + more
                   </div>
                 </div>
@@ -355,7 +355,7 @@ export function AboutSection() {
             {/* Bottom Signature Card */}
             <div className="flex items-center gap-3 pt-6 border-t border-border/50 mt-6">
               <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border border-border"
-                style={{ background: "linear-gradient(135deg, #C3E633, #FFFFFF)" }}
+                style={{ background: "linear-gradient(135deg, #ECFF8A, #FFFFFF)" }}
               >
                 <span className="font-mono font-black text-black text-xs">R</span>
               </div>

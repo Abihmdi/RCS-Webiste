@@ -44,7 +44,7 @@ function GalaxyField() {
     <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#C3E633"
+        color="#ECFF8A"
         size={0.022}
         sizeAttenuation
         depthWrite={false}
@@ -190,31 +190,31 @@ function FloatingCore() {
       {/* Main wireframe icosahedron */}
       <mesh ref={icoRef}>
         <icosahedronGeometry args={[1.6, 1]} />
-        <meshBasicMaterial color="#C3E633" wireframe transparent opacity={0.22} />
+        <meshBasicMaterial color="#ECFF8A" wireframe transparent opacity={0.22} />
         
         {/* Glowing Network Nodes at Vertices - Instanced sphere geometry for maximum efficiency */}
         <instancedMesh ref={instancedMeshRef} args={[undefined, undefined, vertices.length]}>
           <sphereGeometry args={[0.04, 4, 4]} />
-          <meshBasicMaterial color="#C3E633" transparent opacity={0.8} />
+          <meshBasicMaterial color="#ECFF8A" transparent opacity={0.8} />
         </instancedMesh>
       </mesh>
 
       {/* Inner solid glow core */}
       <mesh ref={innerRef}>
         <icosahedronGeometry args={[0.65, 2]} />
-        <meshBasicMaterial color="#C3E633" transparent opacity={0.06} />
+        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.06} />
       </mesh>
 
       {/* Central bright point */}
       <mesh>
         <sphereGeometry args={[0.08, 8, 8]} />
-        <meshBasicMaterial color="#C3E633" transparent opacity={0.9} />
+        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.9} />
       </mesh>
 
       {/* Orbit ring 1 (torus radial segments optimized from 128 to 32) */}
       <mesh ref={ring1Ref}>
         <torusGeometry args={[2.4, 0.012, 8, 32]} />
-        <meshBasicMaterial color="#C3E633" transparent opacity={0.18} />
+        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.18} />
       </mesh>
 
       {/* Orbit ring 2 (torus radial segments optimized from 128 to 32) */}
@@ -226,7 +226,7 @@ function FloatingCore() {
       {/* Orbit ring 3 (widest, faintest, segments optimized from 128 to 32) */}
       <mesh ref={ring3Ref}>
         <torusGeometry args={[3.2, 0.006, 8, 32]} />
-        <meshBasicMaterial color="#C3E633" transparent opacity={0.06} />
+        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.06} />
       </mesh>
 
       {/* Outer wireframe sphere shell */}
@@ -281,7 +281,6 @@ export function HeroBackground() {
   const [isLoaded, setIsLoaded] = useState(false)
   const [hasWebGL, setHasWebGL] = useState(false)
   const [isHeroVisible, setIsHeroVisible] = useState(true)
-  const [perfMode, setPerfMode] = useState<"high" | "eco">("high")
   const pathname = usePathname()
   const isHome = pathname === "/"
 
@@ -301,32 +300,19 @@ export function HeroBackground() {
         setIsHeroVisible(true)
       }
     }
-    
-    // Performance Mode listener
-    const saved = localStorage.getItem("rcs_perf_mode") as "high" | "eco" | null
-    if (saved) setPerfMode(saved)
-
-    const handlePerfChange = (e: Event) => {
-      const detail = (e as CustomEvent).detail
-      if (detail === "high" || detail === "eco") {
-        setPerfMode(detail)
-      }
-    }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    window.addEventListener("rcs-perf-change", handlePerfChange)
 
     return () => {
       clearTimeout(timer)
       window.removeEventListener("scroll", handleScroll)
-      window.removeEventListener("rcs-perf-change", handlePerfChange)
     }
   }, [])
 
   return (
     <div 
       className={`fixed inset-0 z-0 transition-opacity duration-700 ${isLoaded && isHome ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} bg-background`}
-      style={{ display: isHeroVisible && perfMode === "high" ? "block" : "none" }}
+      style={{ display: isHeroVisible ? "block" : "none" }}
     >
       {hasWebGL ? (
         <WebGLErrorBoundary>
@@ -334,6 +320,7 @@ export function HeroBackground() {
             camera={{ position: [0, 0, 7], fov: 52 }}
             dpr={1} // Capped at 1 to prevent high rendering loads on Retina screens
             gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+            frameloop={isHeroVisible ? "always" : "never"}
           >
             <WebGLCleanUp />
             <color attach="background" args={["#050505"]} />
@@ -353,7 +340,7 @@ export function HeroBackground() {
       <div
         className="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(195,230,51,0.04) 0%, rgba(195,230,51,0.01) 30%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(236,255,138,0.04) 0%, rgba(236,255,138,0.01) 30%, transparent 70%)",
           animation: "aurora-drift 12s ease-in-out infinite",
         }}
       />

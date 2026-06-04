@@ -146,7 +146,7 @@ export function CommandPalette() {
             })} 
             className="cursor-pointer"
           >
-            <Cpu className="mr-2 h-4 w-4 text-[#C3E633]" />
+            <Cpu className="mr-2 h-4 w-4 text-[#ECFF8A]" />
             <span>{lang === "en" ? "Run Diagnostics Healthcheck" : "Jalankan Pemeriksaan Diagnostik"}</span>
           </CommandItem>
           <CommandItem 
