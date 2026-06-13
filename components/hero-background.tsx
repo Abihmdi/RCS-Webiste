@@ -6,10 +6,17 @@ import { Points, PointMaterial } from "@react-three/drei"
 import * as THREE from "three"
 import { usePathname } from "next/navigation"
 
+/* ─── Custom elapsed time hook (avoids deprecated THREE.Clock) ─── */
+function useElapsedTime() {
+  const start = useRef(performance.now() / 1000)
+  return () => performance.now() / 1000 - start.current
+}
+
 /* ─── Flowing particle galaxy with sine-wave depth ──── */
 function GalaxyField() {
   const ref = useRef<THREE.Points>(null)
-  const count = 1500 // Optimized from 5000 to 1500 to save vertex shaders workload
+  const count = 1500
+  const getElapsed = useElapsedTime()
 
   const [positions, basePositions] = useMemo(() => {
     const pos = new Float32Array(count * 3)
@@ -31,10 +38,9 @@ function GalaxyField() {
     return [pos, base]
   }, [])
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!ref.current) return
-    const t = state.clock.elapsedTime
-    // Smooth, hardware-accelerated rotation and wave drift on the GPU
+    const t = getElapsed()
     ref.current.rotation.y = t * 0.008
     ref.current.rotation.x = Math.sin(t * 0.08) * 0.03
     ref.current.rotation.z = Math.cos(t * 0.05) * 0.02
@@ -44,7 +50,7 @@ function GalaxyField() {
     <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#ECFF8A"
+        color="#ffffff"
         size={0.022}
         sizeAttenuation
         depthWrite={false}
@@ -58,7 +64,8 @@ function GalaxyField() {
 /* ─── Inner micro-dust for depth ────────────────────── */
 function MicroDust() {
   const ref = useRef<THREE.Points>(null)
-  const count = 400 // Optimized from 2500 to 400
+  const count = 400
+  const getElapsed = useElapsedTime()
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3)
@@ -70,10 +77,11 @@ function MicroDust() {
     return pos
   }, [])
 
-  useFrame((state) => {
+  useFrame(() => {
     if (ref.current) {
-      ref.current.rotation.x = -state.clock.elapsedTime * 0.005
-      ref.current.rotation.y =  state.clock.elapsedTime * 0.007
+      const t = getElapsed()
+      ref.current.rotation.x = -t * 0.005
+      ref.current.rotation.y =  t * 0.007
     }
   })
 
@@ -101,6 +109,7 @@ function FloatingCore() {
   const ring3Ref = useRef<THREE.Mesh>(null)
   const innerRef = useRef<THREE.Mesh>(null)
   const instancedMeshRef = useRef<THREE.InstancedMesh>(null)
+  const getElapsed = useElapsedTime()
 
   // Generate unique vertices of the icosahedron for network nodes
   const vertices = useMemo(() => {
@@ -142,7 +151,7 @@ function FloatingCore() {
     const targetX = isDesktop ? width / 5.5 : 0
     const targetY = isDesktop ? 0.15 : -1.0
     const targetScale = isDesktop ? 1 : 0.65
-    const t = state.clock.elapsedTime
+    const t = getElapsed()
 
     if (groupRef.current) {
       // Mouse tilt follow
@@ -190,7 +199,7 @@ function FloatingCore() {
       {/* Main wireframe icosahedron */}
       <mesh ref={icoRef}>
         <icosahedronGeometry args={[1.6, 1]} />
-        <meshBasicMaterial color="#ECFF8A" wireframe transparent opacity={0.22} />
+        <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.22} />
         
         {/* Glowing Network Nodes at Vertices - Instanced sphere geometry for maximum efficiency */}
         <instancedMesh ref={instancedMeshRef} args={[undefined, undefined, vertices.length]}>
@@ -202,19 +211,19 @@ function FloatingCore() {
       {/* Inner solid glow core */}
       <mesh ref={innerRef}>
         <icosahedronGeometry args={[0.65, 2]} />
-        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.06} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.06} />
       </mesh>
 
       {/* Central bright point */}
       <mesh>
         <sphereGeometry args={[0.08, 8, 8]} />
-        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.9} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.9} />
       </mesh>
 
       {/* Orbit ring 1 (torus radial segments optimized from 128 to 32) */}
       <mesh ref={ring1Ref}>
         <torusGeometry args={[2.4, 0.012, 8, 32]} />
-        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.18} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.18} />
       </mesh>
 
       {/* Orbit ring 2 (torus radial segments optimized from 128 to 32) */}
@@ -226,7 +235,7 @@ function FloatingCore() {
       {/* Orbit ring 3 (widest, faintest, segments optimized from 128 to 32) */}
       <mesh ref={ring3Ref}>
         <torusGeometry args={[3.2, 0.006, 8, 32]} />
-        <meshBasicMaterial color="#ECFF8A" transparent opacity={0.06} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.06} />
       </mesh>
 
       {/* Outer wireframe sphere shell */}
@@ -255,7 +264,7 @@ class WebGLErrorBoundary extends React.Component<{ children: React.ReactNode }, 
 
   render() {
     if (this.state.hasError) {
-      return <div className="absolute inset-0 bg-[#050505]" />
+      return <div className="absolute inset-0 bg-background" />
     }
     return this.props.children
   }
@@ -323,8 +332,8 @@ export function HeroBackground() {
             frameloop={isHeroVisible ? "always" : "never"}
           >
             <WebGLCleanUp />
-            <color attach="background" args={["#050505"]} />
-            <fog attach="fog" args={["#050505", 6, 22]} />
+            <color attach="background" args={["#000000"]} />
+            <fog attach="fog" args={["#000000", 6, 22]} />
             <ambientLight intensity={0.3} />
 
             <GalaxyField />
@@ -333,14 +342,14 @@ export function HeroBackground() {
           </Canvas>
         </WebGLErrorBoundary>
       ) : (
-        <div className="absolute inset-0 bg-[#050505]" />
+        <div className="absolute inset-0 bg-[#000000]" />
       )}
 
       {/* Aurora glow blobs — optimized by using radial-gradients without CSS blur filters */}
       <div
         className="absolute top-[-10%] left-[15%] w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(circle, rgba(236,255,138,0.04) 0%, rgba(236,255,138,0.01) 30%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(236,255,138,0.03) 0%, rgba(236,255,138,0.005) 30%, transparent 70%)",
           animation: "aurora-drift 12s ease-in-out infinite",
         }}
       />

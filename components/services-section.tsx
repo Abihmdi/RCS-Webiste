@@ -65,7 +65,7 @@ export function ServicesSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
 
       {/* Ambient glowing orbs */}
-      <div className="orb w-[500px] h-[500px] bg-[#3B82F6]/2 top-1/3 right-10" />
+      <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/2 top-1/3 right-10" />
 
       <div ref={ref} className="container relative mx-auto px-4 max-w-5xl">
         {/* Section Header */}
@@ -82,7 +82,10 @@ export function ServicesSection() {
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight" style={{ fontFamily: "var(--font-bebas-neue)" }}>
+          <h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight"
+            style={{ fontFamily: "var(--font-bebas-neue)" }}
+          >
             {t("services_heading_1")} <span className="gradient-text">{t("services_heading_accent")}</span>
           </h2>
           
@@ -96,40 +99,41 @@ export function ServicesSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[600px]"
+          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[600px]"
         >
           {/* Header Row */}
-          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20 shrink-0">
+          <div className="col-span-10 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30 relative z-20 shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
             
-            <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide">
-              rcs-services-palette -- Commands Directory
+            <div className="text-[10px] xs:text-[11px] font-mono text-muted-foreground font-medium tracking-wide truncate max-w-[200px] xs:max-w-none">
+              <span className="inline sm:hidden">rcs-services</span>
+              <span className="hidden sm:inline">rcs-services-palette -- Commands Directory</span>
             </div>
             <div className="w-12" /> {/* Spacer */}
           </div>
 
           {/* Left Column: Services Commands List (Col span 5) */}
-          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-hidden">
+          <div className="col-span-5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between bg-[#080808]/40 md:h-[calc(100%-48px)] overflow-hidden">
             <div>
               {/* Fake Search bar inside palette list */}
-              <div className="p-4 border-b border-border/60 flex items-center gap-2">
+              <div className="p-4 border-b border-white/10 flex items-center gap-2">
                 <span className="text-muted-foreground font-mono text-xs">🔍</span>
                 <input 
-                  type="text" 
+                   type="text" 
                   placeholder="Search capabilities..." 
                   disabled
-                  className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/45 border-none outline-none w-full"
+                  className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
                 />
-                <span className="text-[9px] font-mono bg-secondary/80 border border-border px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+                <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
               </div>
 
               {/* Commands list */}
               <div className="p-3 space-y-1.5 overflow-y-auto no-scrollbar">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold">
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold">
                   Service Actions
                 </div>
                 {services.map((svc, index) => {
@@ -139,15 +143,15 @@ export function ServicesSection() {
                     <button
                       key={svc.title}
                       onClick={() => setActiveIdx(index)}
-                      className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
+                      className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 border text-left cursor-pointer ${
                         isSelected 
-                          ? "bg-secondary border-border/80 shadow-md" 
-                          : "bg-transparent border-transparent hover:bg-secondary/40"
+                          ? "bg-[#242424] border-white/10" 
+                          : "bg-transparent border-transparent hover:bg-[#242424]/30"
                       }`}
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <div 
-                          className="w-8 h-8 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
+                          className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/10 flex-shrink-0"
                           style={{ 
                             background: `radial-gradient(circle, ${svc.color}15, transparent 80%)`
                           }}
@@ -155,16 +159,16 @@ export function ServicesSection() {
                           <SvcIcon size={14} style={{ color: svc.color }} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-xs font-mono font-bold text-foreground truncate">
+                          <div className="text-sm md:text-xs font-mono font-bold text-foreground truncate">
                             {svc.title}
                           </div>
-                          <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
+                          <div className="text-xs md:text-[10px] text-muted-foreground font-mono truncate leading-normal">
                             {svc.desc}
                           </div>
                         </div>
                       </div>
                       
-                      <span className="text-[9px] font-mono bg-background border border-border px-1.5 py-0.5 rounded text-muted-foreground ml-2">
+                      <span className="text-[10px] font-mono bg-background border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground ml-2">
                         ⌥ {index + 1}
                       </span>
                     </button>
@@ -174,18 +178,18 @@ export function ServicesSection() {
             </div>
 
             {/* Quick Summary bottom */}
-            <div className="p-4 border-t border-border/50 bg-[#0a0a0a]/30 hidden md:block">
-              <div className="text-[9px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
+            <div className="p-4 border-t border-white/10 bg-[#0a0a0a]/30 hidden md:block">
+              <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
                 Capability Framework
               </div>
-              <p className="text-[10px] text-muted-foreground/80 leading-relaxed font-sans">
+              <p className="text-xs md:text-[10px] text-muted-foreground/80 leading-relaxed font-sans">
                 We diagnose, design, implement, and monitor. Every system is built to maximize cost efficiency and boost operational output.
               </p>
             </div>
           </div>
 
           {/* Right Column: Execution Workspace & Timeline Flow (Col span 5) */}
-          <div className="col-span-5 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          <div className="col-span-5 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/40 overflow-hidden relative">
             
             {/* Ambient glow matching selected service */}
             <div 
@@ -208,7 +212,7 @@ export function ServicesSection() {
                   {/* Service Header */}
                   <div className="flex items-center gap-4">
                     <div 
-                      className="w-12 h-12 rounded-xl flex items-center justify-center border border-border/80 shadow-md"
+                      className="w-12 h-12 rounded-lg flex items-center justify-center border border-white/10"
                       style={{ 
                         background: `radial-gradient(circle, ${activeSvc.color}25, transparent 80%)`
                       }}
@@ -222,26 +226,26 @@ export function ServicesSection() {
                       <div className="text-xl font-bold tracking-wide text-foreground font-display leading-tight">
                         {activeSvc.title}
                       </div>
-                      <div className="text-[9px] font-mono text-muted-foreground mt-0.5">
+                      <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
                         Operation Code: active_service_0{activeSvc.id}
                       </div>
                     </div>
                   </div>
 
                   {/* Desc */}
-                  <p className="text-xs text-muted-foreground leading-relaxed font-sans text-justify">
+                  <p className="text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify">
                     {activeSvc.desc}
                   </p>
 
                   {/* Core Actions checklist */}
                   <div className="space-y-2.5">
-                    <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                    <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                       Executed Modules
                     </div>
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                       {activeSvc.actions.map((act) => (
-                        <div key={act} className="flex items-center gap-2 p-2.5 bg-secondary/35 border border-border/50 rounded-lg text-[10px] font-mono text-foreground/80">
-                          <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: activeSvc.color }} />
+                        <div key={act} className="flex items-center gap-2 p-2.5 bg-[#242424]/30 border border-white/5 rounded-lg text-xs md:text-[10px] font-mono text-foreground/80">
+                          <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: activeSvc.color }} />
                           <span className="truncate">{act}</span>
                         </div>
                       ))}
@@ -250,7 +254,7 @@ export function ServicesSection() {
 
                   {/* Process workflow steps */}
                   <div className="space-y-3">
-                    <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                    <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                       Execution Lifecycle (4-Step Pipeline)
                     </div>
                     
@@ -260,16 +264,16 @@ export function ServicesSection() {
                         return (
                           <div 
                             key={step.title} 
-                            className="flex gap-3 p-3 bg-[#050505]/75 border border-border/80 rounded-xl hover:border-foreground/10 transition-colors group/step"
+                            className="flex gap-3 p-3 bg-[#050505]/75 border border-white/5 rounded-lg hover:border-foreground/10 transition-colors group/step"
                           >
-                            <div className="w-7 h-7 rounded-lg bg-secondary/80 border border-border/80 flex items-center justify-center text-muted-foreground group-hover/step:border-[#ECFF8A]/40 shrink-0">
+                            <div className="w-7 h-7 rounded-lg bg-[#242424]/80 border border-white/5 flex items-center justify-center text-muted-foreground group-hover/step:border-[#ECFF8A]/40 shrink-0">
                               <StepIcon size={12} className="text-muted-foreground group-hover/step:text-[#ECFF8A] transition-colors" />
                             </div>
                             <div>
-                              <div className="text-[10px] font-mono font-bold text-foreground flex items-center gap-2 leading-none mb-1">
+                              <div className="text-xs md:text-[10px] font-mono font-bold text-foreground flex items-center gap-2 leading-none mb-1">
                                 <span>{step.num} / {step.title}</span>
                               </div>
-                              <p className="text-[10px] text-muted-foreground leading-normal font-sans">{step.desc}</p>
+                              <p className="text-xs md:text-[10px] text-muted-foreground leading-normal font-sans">{step.desc}</p>
                             </div>
                           </div>
                         )
@@ -282,13 +286,13 @@ export function ServicesSection() {
             </div>
 
             {/* Bottom bar */}
-            <div className="h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+            <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">↵</span> Execute</span>
-                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">Tab</span> Switch Pane</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Execute</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Switch Pane</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌥ 1-4</span> Select
+                <span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌥ 1-4</span> Select
               </div>
             </div>
 

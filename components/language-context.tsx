@@ -35,9 +35,13 @@ type Translations = {
   about_mission_text: string
   about_specs_label: string
   about_spec_entity: string
+  about_spec_entity_value: string
   about_spec_specialization: string
+  about_spec_specialization_value: string
   about_spec_role: string
+  about_spec_role_value: string
   about_spec_address: string
+  about_spec_address_value: string
   about_deliverables_label: string
   about_deliverable_1: string
   about_deliverable_2: string
@@ -140,9 +144,13 @@ const en: Translations = {
     "We optimize business outcomes through digitalisation. Value is only realized when business condition diagnosis meets precise, lasting solutions. We take responsibility for your entire technology layer.",
   about_specs_label: "SYSTEM_SPECIFICATIONS",
   about_spec_entity: "Entity:",
+  about_spec_entity_value: "PT Ruang Cipta Solusi",
   about_spec_specialization: "Specialization:",
+  about_spec_specialization_value: "Digital Transformation",
   about_spec_role: "Role Scope:",
+  about_spec_role_value: "Full-Stack Partner",
   about_spec_address: "Main Address:",
+  about_spec_address_value: "Jakarta Selatan, ID",
   about_deliverables_label: "DELIVERABLES_MANIFEST",
   about_deliverable_1: "Improve management efficiency",
   about_deliverable_2: "Effective customer management",
@@ -249,9 +257,13 @@ const id: Translations = {
     "Kami mengoptimalkan hasil bisnis melalui digitalisasi. Nilai hanya terwujud ketika diagnosis kondisi bisnis bertemu solusi yang tepat dan berkelanjutan. Kami bertanggung jawab atas seluruh lapisan teknologi Anda.",
   about_specs_label: "SPESIFIKASI_SISTEM",
   about_spec_entity: "Entitas:",
+  about_spec_entity_value: "PT Ruang Cipta Solusi",
   about_spec_specialization: "Spesialisasi:",
+  about_spec_specialization_value: "Transformasi Digital",
   about_spec_role: "Cakupan Peran:",
+  about_spec_role_value: "Mitra Full-Stack",
   about_spec_address: "Alamat Utama:",
+  about_spec_address_value: "Jakarta Selatan, ID",
   about_deliverables_label: "DAFTAR_DELIVERABLE",
   about_deliverable_1: "Meningkatkan efisiensi manajemen",
   about_deliverable_2: "Manajemen pelanggan yang efektif",

@@ -3,7 +3,7 @@
 import { use, useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowLeft, Terminal, Bot, Sparkles, ShieldCheck, Cpu, Star, Download, Globe, ArrowRight } from "lucide-react"
+import { ArrowLeft, Terminal, Bot, Sparkles, ShieldCheck, Cpu, Building2, Calendar, Globe, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
 import { projects } from "@/components/portfolio-section"
 
@@ -33,7 +33,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
     const logs = [
       `[SYS] Initializing Diagnostics for extension: ${project.slug}.rcs`,
       `[NET] Fetching repository metrics... OK`,
-      `[SYS] Installs detected: ${project.installs} | Rating: ${project.rating}/5.0`,
+      `[SYS] Client: ${project.client} | Year: ${project.year}`,
       `[SYS] Loading feature registry modules...`,
       ...project.features.map(f => `[MOD] Loaded: ${f.toLowerCase().replace(/\s+/g, "_")}_core.bin`),
       `[SYS] Stacking context loaded. Status: SYNCED`
@@ -125,18 +125,18 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
 
           <div className="flex items-center gap-5 font-mono text-[10px] text-muted-foreground border-t md:border-t-0 border-border/50 pt-4 md:pt-0 w-full md:w-auto shrink-0 select-none">
             <div className="flex items-center gap-1.5">
-              <Download size={12} className="text-[#ECFF8A]" />
+              <Building2 size={12} className="text-[#ECFF8A]" />
               <div>
-                <div className="text-white font-bold leading-none">{project.installs}</div>
-                <div className="text-[8px] mt-0.5">{lang === "en" ? "Downloads" : "Unduhan"}</div>
+                <div className="text-white font-bold leading-none">{project.client}</div>
+                <div className="text-[8px] mt-0.5">{lang === "en" ? "Client" : "Klien"}</div>
               </div>
             </div>
             <div className="w-px h-6 bg-border/50" />
             <div className="flex items-center gap-1.5">
-              <Star size={12} className="text-yellow-400 fill-current" />
+              <Calendar size={12} className="text-yellow-400" />
               <div>
-                <div className="text-white font-bold leading-none">{project.rating}</div>
-                <div className="text-[8px] mt-0.5">{lang === "en" ? "Rating" : "Penilaian"}</div>
+                <div className="text-white font-bold leading-none">{project.year}</div>
+                <div className="text-[8px] mt-0.5">{lang === "en" ? "Year" : "Tahun"}</div>
               </div>
             </div>
           </div>

@@ -10,7 +10,10 @@ export function Navbar() {
   const [isOpen, setIsOpen]               = useState(false)
   const [scrolled, setScrolled]           = useState(false)
   const [activeSection, setActiveSection] = useState("home")
-  // perfMode removed as requested. Optimizations run automatically by default.
+  // Dark mode is default, light mode completely disabled.
+  useEffect(() => {
+    document.documentElement.classList.remove("light")
+  }, [])
 
   const navLinks = [
     { href: "#home",      label: t("nav_home") },
@@ -56,10 +59,10 @@ export function Navbar() {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className={`pointer-events-auto mt-4 mx-4 w-full max-w-[900px] rounded-2xl transition-all duration-500 ${
+          className={`pointer-events-auto mt-4 mx-4 w-full max-w-[900px] rounded-lg transition-all duration-500 ${
             scrolled
-              ? "bg-[#141415]/80 backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_40px_rgba(0,0,0,0.5)]"
-              : "bg-white/[0.03] backdrop-blur-md border border-white/[0.04]"
+              ? "bg-black border border-white/10 md:glass-strong"
+              : "bg-transparent border border-transparent"
           }`}
         >
           <nav className="flex items-center justify-between h-[52px] px-4 md:px-5">
@@ -74,12 +77,12 @@ export function Navbar() {
                 className="text-[22px] font-black text-white leading-none tracking-[0.08em]"
                 style={{ fontFamily: "var(--font-bebas-neue)" }}
               >
-                RCS<span className="text-[#ECFF8A]">.</span>
+                RCS<span className="text-accent">.</span>
               </span>
             </a>
 
             {/* Desktop nav links — centered */}
-            <div className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+            <div className="hidden md:flex items-center gap-0 lg:gap-0.5 justify-center flex-grow mx-2 lg:mx-6">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.slice(1)
                 return (
@@ -87,16 +90,16 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
-                    className={`relative px-3 py-1.5 text-[14px] rounded-lg transition-all duration-200 ${
+                    className={`relative px-2 lg:px-3 py-1.5 text-[11px] lg:text-[13px] font-medium tracking-[-0.011em] rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "text-white font-medium"
-                        : "text-white/45 hover:text-white/80 font-normal"
+                        ? "text-[#f3f3f3]"
+                        : "text-[#949494] hover:text-[#f3f3f3]"
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="activeNav"
-                        className="absolute inset-0 rounded-lg bg-white/[0.07]"
+                        className="absolute inset-0 rounded-lg bg-[#242424]"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
@@ -107,25 +110,26 @@ export function Navbar() {
             </div>
 
             {/* Right: Lang toggle + CTA */}
-            <div className="hidden md:flex items-center gap-2.5 shrink-0">
+            <div className="hidden md:flex items-center gap-1.5 lg:gap-2.5 shrink-0">
 
               {/* Language toggle */}
               <button
                 type="button"
                 onClick={() => setLang(lang === "en" ? "id" : "en")}
-                className="flex items-center text-[11px] font-mono font-bold tracking-wide rounded-lg overflow-hidden border border-white/[0.08] hover:border-white/[0.15] transition-colors"
+                className="flex items-center h-8 text-[11px] font-mono font-bold tracking-wide rounded-lg overflow-hidden border border-border hover:border-muted-foreground/40 transition-colors"
                 aria-label="Toggle language"
               >
-                <span className={`px-2 py-1 transition-all duration-200 ${lang === "en" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>EN</span>
-                <span className={`px-2 py-1 transition-all duration-200 ${lang === "id" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>ID</span>
+                <span className={`px-2.5 h-full flex items-center transition-all duration-200 ${lang === "en" ? "bg-accent text-accent-foreground" : "text-muted-foreground"}`}>EN</span>
+                <span className={`px-2.5 h-full flex items-center transition-all duration-200 ${lang === "id" ? "bg-accent text-accent-foreground" : "text-muted-foreground"}`}>ID</span>
               </button>
 
               {/* CTA */}
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, "#contact")}
-                className="text-[13px] font-medium px-4 py-1.5 rounded-lg bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-colors"
+                className="text-[11px] lg:text-[13px] font-bold tracking-[-0.011em] px-2.5 lg:px-4 rounded-lg bg-accent text-accent-foreground hover:bg-[#f2ffa2] hover:text-accent-foreground transition-colors flex items-center gap-1 lg:gap-1.5 h-8"
               >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ECFF8A]" />
                 {t("nav_get_started")}
               </a>
             </div>
@@ -133,11 +137,11 @@ export function Navbar() {
             {/* Hamburger — mobile */}
             <button
               type="button"
-              className="md:hidden p-1.5 text-white/60 hover:text-white transition-colors active:scale-95"
+              className="md:hidden p-2 text-[#f3f3f3]/80 hover:text-[#f3f3f3] transition-colors active:scale-95 bg-black border border-white/10 rounded-lg flex items-center justify-center"
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? "Close menu" : "Open menu"}
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {isOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
           </nav>
         </motion.header>
@@ -147,11 +151,11 @@ export function Navbar() {
       {isOpen && (
         <div
           className="fixed inset-0 z-40 md:hidden flex flex-col items-center justify-center"
-          style={{ background: "rgba(8,8,9,0.97)", backdropFilter: "blur(20px)" }}
+          style={{ background: "rgba(16,16,16,0.98)", backdropFilter: "blur(20px)" }}
         >
           <div
             className="absolute top-1/3 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(236,255,138,0.06), transparent)", filter: "blur(60px)" }}
+            style={{ background: "radial-gradient(circle, rgba(231,197,154,0.04), transparent)", filter: "blur(60px)" }}
           />
 
           <nav className="flex flex-col items-center gap-5 z-10">
@@ -161,7 +165,7 @@ export function Navbar() {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
                 className={`text-[28px] font-black tracking-widest transition-colors cursor-pointer ${
-                  activeSection === link.href.slice(1) ? "text-white" : "text-white/40 hover:text-white/80"
+                  activeSection === link.href.slice(1) ? "text-[#f3f3f3]" : "text-[#949494] hover:text-[#f3f3f3]"
                 }`}
                 style={{ fontFamily: "var(--font-bebas-neue)" }}
               >
@@ -169,22 +173,26 @@ export function Navbar() {
               </a>
             ))}
 
-            {/* Mobile lang toggle */}
-            <button
-              type="button"
-              onClick={() => setLang(lang === "en" ? "id" : "en")}
-              className="flex items-center text-sm font-mono font-bold tracking-wider rounded-xl overflow-hidden border border-white/10 mt-3"
-            >
-              <span className={`px-5 py-2.5 transition-colors ${lang === "en" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>EN</span>
-              <span className={`px-5 py-2.5 transition-colors ${lang === "id" ? "bg-[#ECFF8A] text-black" : "text-white/35"}`}>ID</span>
-            </button>
+            {/* Mobile toggles container */}
+            <div className="flex items-center gap-3 mt-3">
+              {/* Mobile lang toggle */}
+              <button
+                type="button"
+                onClick={() => setLang(lang === "en" ? "id" : "en")}
+                className="flex items-center text-sm font-mono font-bold tracking-wider rounded-lg overflow-hidden border border-border"
+              >
+                <span className={`px-5 py-2 transition-colors ${lang === "en" ? "bg-accent text-accent-foreground" : "text-muted-foreground"}`}>EN</span>
+                <span className={`px-5 py-2 transition-colors ${lang === "id" ? "bg-accent text-accent-foreground" : "text-muted-foreground"}`}>ID</span>
+              </button>
+            </div>
 
             <a
               href="#contact"
               onClick={(e) => handleNavClick(e, "#contact")}
-              className="mt-3 text-[15px] font-medium px-8 py-2.5 rounded-xl bg-[#ECFF8A] text-black hover:bg-[#f2ffa2] transition-colors"
+              className="mt-3 text-[13px] font-bold tracking-[-0.011em] px-8 py-2 rounded-lg bg-accent text-accent-foreground hover:bg-[#f2ffa2] hover:text-accent-foreground transition-colors flex items-center gap-1.5"
             >
-              {t("nav_get_started")} →
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ECFF8A]" />
+              {t("nav_get_started")}
             </a>
           </nav>
         </div>

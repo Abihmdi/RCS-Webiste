@@ -31,6 +31,8 @@ export function ContactSection() {
   ])
   
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({})
 
   const addLog = (message: string) => {
     const timestamp = new Date().toLocaleTimeString()
@@ -115,26 +117,51 @@ export function ContactSection() {
     }
   }
 
+  const validateForm = (): boolean => {
+    const errors: Partial<Record<keyof FormData, string>> = {}
+    if (!formData.name.trim()) errors.name = "Name is required"
+    if (!formData.email.trim()) {
+      errors.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Invalid email format"
+    }
+    if (!formData.message.trim()) errors.message = "Message is required"
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!validateForm()) {
+      addLog("[VALIDATION] Form validation failed. Check required fields.")
+      return
+    }
     setIsSubmitting(true)
+    setSubmitStatus('idle')
     addLog("[INQUIRY] Initializing form submission process...")
     
     setTimeout(() => {
       addLog("[VALIDATION] Checking fields: Name, Email, Details... Passed.")
       addLog("[COMPILE] Packaging inquiry schema to payload...")
       
-      // Create mailto link with form data
       const subject = encodeURIComponent(`Project Inquiry from ${formData.name}`)
       const body = encodeURIComponent(
         `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\n\nMessage:\n${formData.message}`
       )
       
       addLog("[LAUNCH] Launching client mail application...")
-      window.location.href = `mailto:ruangciptasolusi@gmail.com?subject=${subject}&body=${body}`
+      
+      try {
+        window.location.href = `mailto:ruangciptasolusi@gmail.com?subject=${subject}&body=${body}`
+        setSubmitStatus('success')
+        addLog("[SUCCESS] Form submission redirected successfully.")
+        setFormData({ name: "", email: "", company: "", message: "" })
+      } catch {
+        setSubmitStatus('error')
+        addLog("[ERROR] Failed to open mail client. Please email us directly.")
+      }
       
       setIsSubmitting(false)
-      addLog("[SUCCESS] Form submission redirected successfully.")
     }, 1000)
   }
 
@@ -144,7 +171,6 @@ export function ContactSection() {
       <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
 
-      {/* Ambient glowing orbs */}
       <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/3 top-1/4 -left-20" />
       <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/3 bottom-1/4 -right-20" />
 
@@ -180,31 +206,32 @@ export function ContactSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10"
+          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10"
         >
           {/* Header Row - Col span 10 */}
-          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
+          <div className="col-span-10 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30 relative z-20">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
             
-            <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide">
-              rcs-contact-palette -- Create Inquiry
+            <div className="text-[10px] xs:text-[11px] font-mono text-muted-foreground font-medium tracking-wide truncate max-w-[200px] xs:max-w-none">
+              <span className="inline sm:hidden">rcs-contact</span>
+              <span className="hidden sm:inline">rcs-contact-palette -- Create Inquiry</span>
             </div>
             <div className="w-12" /> {/* Spacer */}
           </div>
 
           {/* Form Area Left Column (Col span 7) */}
-          <div className="col-span-7 p-6 border-b md:border-b-0 md:border-r border-border/70 bg-[#0d0d0e]/60">
+          <div className="col-span-7 p-6 border-b md:border-b-0 md:border-r border-white/10 bg-[#080808]/40">
             <form onSubmit={handleSubmit} className="space-y-5">
               
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label 
                     htmlFor="name" 
-                    className="block text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
+                    className="block text-xs md:text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
                   >
                     {t("contact_name_label")} *
                   </label>
@@ -213,16 +240,19 @@ export function ContactSection() {
                     name="name"
                     type="text"
                     required
+                    aria-invalid={!!formErrors.name}
+                    aria-describedby={formErrors.name ? "name-error" : undefined}
                     placeholder={t("contact_name_placeholder")}
                     value={formData.name}
-                    onChange={handleChange}
-                    className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                    onChange={(e) => { handleChange(e); if (formErrors.name) setFormErrors(prev => ({ ...prev, name: undefined })) }}
+                    className={`bg-[#242424]/30 border border-white/10 focus:border-accent focus:ring-2 focus:ring-accent/15 text-foreground font-sans rounded-lg h-10 placeholder:text-muted-foreground/55 transition-all duration-300 ${formErrors.name ? 'border-red-500/60' : ''}`}
                   />
+                  {formErrors.name && <p id="name-error" className="text-[10px] text-red-400 mt-1 font-mono">{formErrors.name}</p>}
                 </div>
                 <div>
                   <label 
                     htmlFor="email" 
-                    className="block text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
+                    className="block text-xs md:text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
                   >
                     {t("contact_email_label")} *
                   </label>
@@ -231,18 +261,21 @@ export function ContactSection() {
                     name="email"
                     type="email"
                     required
+                    aria-invalid={!!formErrors.email}
+                    aria-describedby={formErrors.email ? "email-error" : undefined}
                     placeholder={t("contact_email_placeholder")}
                     value={formData.email}
-                    onChange={handleChange}
-                    className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                    onChange={(e) => { handleChange(e); if (formErrors.email) setFormErrors(prev => ({ ...prev, email: undefined })) }}
+                    className={`bg-[#242424]/30 border border-white/10 focus:border-accent focus:ring-2 focus:ring-accent/15 text-foreground font-sans rounded-lg h-10 placeholder:text-muted-foreground/55 transition-all duration-300 ${formErrors.email ? 'border-red-500/60' : ''}`}
                   />
+                  {formErrors.email && <p id="email-error" className="text-[10px] text-red-400 mt-1 font-mono">{formErrors.email}</p>}
                 </div>
               </div>
 
               <div>
                 <label 
                   htmlFor="company" 
-                  className="block text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
+                  className="block text-xs md:text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
                 >
                   {t("contact_company_label")}
                 </label>
@@ -253,14 +286,14 @@ export function ContactSection() {
                   placeholder={t("contact_company_placeholder")}
                   value={formData.company}
                   onChange={handleChange}
-                  className="bg-secondary/40 border-border/80 focus:border-[#ECFF8A]/65 focus:ring-2 focus:ring-[#ECFF8A]/15 text-foreground font-sans rounded-xl h-10 placeholder:text-muted-foreground/35 transition-all duration-300"
+                  className="bg-[#242424]/30 border border-white/10 focus:border-accent focus:ring-2 focus:ring-accent/15 text-foreground font-sans rounded-lg h-10 placeholder:text-muted-foreground/55 transition-all duration-300"
                 />
               </div>
 
               <div>
                 <label 
                   htmlFor="message" 
-                  className="block text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
+                  className="block text-xs md:text-[10px] font-mono text-muted-foreground mb-2 tracking-wider uppercase font-semibold"
                 >
                   {t("contact_message_label")} *
                 </label>
@@ -268,29 +301,46 @@ export function ContactSection() {
                   id="message"
                   name="message"
                   required
+                  aria-invalid={!!formErrors.message}
+                  aria-describedby={formErrors.message ? "message-error" : undefined}
                   rows={4}
                   placeholder={t("contact_message_placeholder")}
                   value={formData.message}
-                  onChange={handleChange}
-                  className="w-full rounded-xl bg-secondary/40 border border-border/80 px-3.5 py-3 text-xs placeholder:text-muted-foreground/35 focus:outline-none focus:ring-2 focus:ring-[#ECFF8A]/15 focus:border-[#ECFF8A]/65 text-foreground font-sans transition-all duration-300 resize-none h-28"
+                  onChange={(e) => { handleChange(e); if (formErrors.message) setFormErrors(prev => ({ ...prev, message: undefined })) }}
+                  className={`w-full rounded-lg bg-[#242424]/30 border border-white/10 px-3.5 py-3 text-sm md:text-xs placeholder:text-muted-foreground/55 focus:outline-none focus:ring-2 focus:ring-accent/15 focus:border-accent text-foreground font-sans transition-all duration-300 resize-none h-28 ${formErrors.message ? 'border-red-500/60' : ''}`}
                 />
+                {formErrors.message && <p id="message-error" className="text-[10px] text-red-400 mt-1 font-mono">{formErrors.message}</p>}
               </div>
 
               {/* Submit CTA button */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full btn-brand py-3 flex items-center justify-center font-mono font-semibold tracking-wider text-xs cursor-pointer disabled:opacity-50 shadow-md transition-all duration-300"
+                className="w-full btn-brand py-3 flex items-center justify-center font-mono font-semibold tracking-wider text-xs cursor-pointer disabled:opacity-50 transition-all duration-300"
               >
                 <Send size={14} className="mr-2" />
                 {isSubmitting ? t("contact_submitting") : t("contact_submit")}
               </button>
 
+              {/* Status feedback */}
+              {submitStatus === 'success' && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-mono">
+                  <span>✓</span>
+                  <span>{t("contact_success")}</span>
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+                  <span>✗</span>
+                  <span>{t("contact_error")} — ruangciptasolusi@gmail.com</span>
+                </div>
+              )}
+
             </form>
           </div>
 
           {/* Quick Action Side Panel Right Column (Col span 3) */}
-          <div className="col-span-3 flex flex-col justify-between bg-[#0a0a0a]/50 h-full">
+          <div className="col-span-3 flex flex-col justify-between bg-[#080808]/40 h-full">
             
             {/* Quick Actions List */}
             <div className="p-4 space-y-4">
@@ -302,18 +352,18 @@ export function ContactSection() {
                 {/* Action 1: Copy Email */}
                 <button
                   onClick={handleCopyEmail}
-                  className="w-full flex items-center justify-between p-3 rounded-xl bg-secondary/40 hover:bg-secondary border border-border/50 hover:border-border transition-all duration-300 text-left group cursor-pointer"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-[#242424]/30 hover:bg-[#242424]/60 border border-white/5 hover:border-[#5a5a5a] transition-all duration-300 text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-background flex items-center justify-center border border-border text-muted-foreground group-hover:text-foreground">
+                    <div className="w-7 h-7 rounded-lg bg-[#101010] flex items-center justify-center border border-white/5 text-muted-foreground group-hover:text-foreground">
                       <Copy size={13} />
                     </div>
                     <div>
-                      <div className="text-[11px] font-mono font-bold text-foreground">Copy Email</div>
-                      <div className="text-[9px] text-muted-foreground font-mono">ruangciptasolusi@gmail.com</div>
+                      <div className="text-xs md:text-[11px] font-mono font-bold text-foreground">Copy Email</div>
+                      <div className="text-[11px] md:text-[9px] text-muted-foreground font-mono">ruangciptasolusi@gmail.com</div>
                     </div>
                   </div>
-                  <span className="text-[9px] font-mono bg-background border border-border px-1.5 py-0.5 rounded text-muted-foreground">⌥ M</span>
+                  <span className="text-[10px] font-mono bg-[#101010] border border-white/5 px-1.5 py-0.5 rounded text-muted-foreground font-semibold">⌥ M</span>
                 </button>
 
                 {/* Action 2: View Office Location */}
@@ -322,32 +372,32 @@ export function ContactSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => addLog("[LOCATION] Launching Google Maps for Pejaten office.")}
-                  className="w-full flex items-center justify-between p-3 rounded-xl bg-secondary/40 hover:bg-secondary border border-border/50 hover:border-border transition-all duration-300 text-left group cursor-pointer"
+                  className="w-full flex items-center justify-between p-3 rounded-lg bg-[#242424]/30 hover:bg-[#242424]/60 border border-white/5 hover:border-[#5a5a5a] transition-all duration-300 text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-lg bg-background flex items-center justify-center border border-border text-muted-foreground group-hover:text-foreground">
+                    <div className="w-7 h-7 rounded-lg bg-[#101010] flex items-center justify-center border border-white/5 text-muted-foreground group-hover:text-foreground">
                       <Compass size={13} />
                     </div>
                     <div>
-                      <div className="text-[11px] font-mono font-bold text-foreground">Office Map</div>
-                      <div className="text-[9px] text-muted-foreground font-mono">Pasar Minggu, Jakarta</div>
+                      <div className="text-xs md:text-[11px] font-mono font-bold text-foreground">Office Map</div>
+                      <div className="text-[11px] md:text-[9px] text-muted-foreground font-mono">Pasar Minggu, Jakarta</div>
                     </div>
                   </div>
-                  <span className="text-[9px] font-mono bg-background border border-border px-1.5 py-0.5 rounded text-muted-foreground">⌥ L</span>
+                  <span className="text-[10px] font-mono bg-[#101010] border border-white/5 px-1.5 py-0.5 rounded text-muted-foreground font-semibold">⌥ L</span>
                 </a>
               </div>
             </div>
 
             {/* Simulated Live Console Output */}
-            <div className="p-4 border-t border-border/50 bg-[#050505] flex-grow md:flex-grow-0">
-              <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold mb-2.5 flex items-center gap-1.5">
+            <div className="p-4 border-t border-white/10 bg-[#080808] flex-grow md:flex-grow-0">
+              <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold mb-2.5 flex items-center gap-1.5">
                 <TermIcon size={12} className="text-[#ECFF8A]" />
                 CONSOLE LOGGER
               </div>
-              <div className="font-mono text-[10px] text-green-400 space-y-1 overflow-y-auto max-h-[110px] pr-2 no-scrollbar leading-relaxed">
+              <div className="font-mono text-xs md:text-[10px] text-green-400 space-y-1 overflow-y-auto max-h-[110px] pr-2 no-scrollbar leading-relaxed">
                 {logs.map((log, index) => (
                   <div key={index} className="truncate select-none">
-                    <span className="text-muted-foreground/40 font-mono select-none">&gt;</span> {log}
+                    <span className="text-muted-foreground/70 font-mono select-none">&gt;</span> {log}
                   </div>
                 ))}
               </div>
@@ -356,14 +406,14 @@ export function ContactSection() {
           </div>
 
           {/* Keyboard Shortcuts status bar - Col span 10 */}
-          <div className="col-span-10 h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground">
+          <div className="col-span-10 h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground">
             <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">Tab</span> Navigate</span>
-              <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌘↵</span> Send Message</span>
+              <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Navigate</span>
+              <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌘↵</span> Send Message</span>
             </div>
             <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌥ M</span> Copy Email</span>
-              <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌥ L</span> Map</span>
+              <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌥ M</span> Copy Email</span>
+              <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌥ L</span> Map</span>
             </div>
           </div>
 

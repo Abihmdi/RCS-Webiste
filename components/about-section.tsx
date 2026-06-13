@@ -232,58 +232,59 @@ export function AboutSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-5"
+          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-5"
           style={{ minHeight: "520px" }}
         >
           {/* Header Row */}
-          <div className="col-span-5 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30">
+          <div className="col-span-5 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-            <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide flex items-center gap-1.5">
-              <Info size={11} className="text-[#ECFF8A]" />
-              rcs-system-about.conf -- Settings
+            <div className="text-[10px] xs:text-[11px] font-mono text-muted-foreground font-medium tracking-wide flex items-center gap-1.5 truncate max-w-[200px] xs:max-w-none">
+              <Info size={11} className="text-accent shrink-0" />
+              <span className="inline sm:hidden">rcs-about.conf</span>
+              <span className="hidden sm:inline">rcs-system-about.conf -- Settings</span>
             </div>
             <div className="w-12" /> {/* Spacer */}
           </div>
 
           {/* Left Column: Diagnostics & Specs (Col span 3) */}
-          <div className="col-span-3 p-6 border-b md:border-b-0 md:border-r border-border/70 bg-[#0d0d0e]/60 flex flex-col justify-between">
+          <div className="col-span-3 p-6 border-b md:border-b-0 md:border-r border-white/10 bg-[#080808]/40 flex flex-col justify-between">
             <div className="space-y-6">
               
               <div className="space-y-2">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                  <Activity size={12} className="text-[#ECFF8A]" />
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                  <Activity size={12} className="text-accent" />
                   {t("about_mission_label")}
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed text-justify font-sans">
+                <p className="text-sm md:text-xs text-muted-foreground leading-relaxed text-justify font-sans">
                   {t("about_mission_text")}
                 </p>
               </div>
 
               {/* Specs Table */}
               <div className="space-y-2.5">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold">
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold">
                   {t("about_specs_label")}
                 </div>
-                <div className="border border-border/50 rounded-xl overflow-hidden font-mono text-[11px] bg-secondary/20">
-                  <div className="grid grid-cols-2 p-3 border-b border-border/40 hover:bg-secondary/40 transition-colors">
+                <div className="border border-white/10 rounded-lg overflow-hidden font-mono text-xs xs:text-[13px] md:text-[11px] bg-[#242424]/20">
+                  <div className="grid grid-cols-2 p-3 border-b border-white/10 hover:bg-[#242424]/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_entity")}</span>
-                    <span className="text-foreground font-semibold">PT Ruang Cipta Solusi</span>
+                    <span className="text-foreground font-semibold">{t("about_spec_entity_value")}</span>
                   </div>
-                  <div className="grid grid-cols-2 p-3 border-b border-border/40 hover:bg-secondary/40 transition-colors">
+                  <div className="grid grid-cols-2 p-3 border-b border-white/10 hover:bg-[#242424]/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_specialization")}</span>
-                    <span className="text-[#ECFF8A] font-semibold">Digital Transformation</span>
+                    <span className="text-accent font-semibold">{t("about_spec_specialization_value")}</span>
                   </div>
-                  <div className="grid grid-cols-2 p-3 border-b border-border/40 hover:bg-secondary/40 transition-colors">
+                  <div className="grid grid-cols-2 p-3 border-b border-white/10 hover:bg-[#242424]/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_role")}</span>
-                    <span className="text-foreground">Full-Stack Partner</span>
+                    <span className="text-foreground">{t("about_spec_role_value")}</span>
                   </div>
-                  <div className="grid grid-cols-2 p-3 hover:bg-secondary/40 transition-colors">
+                  <div className="grid grid-cols-2 p-3 hover:bg-[#242424]/40 transition-colors">
                     <span className="text-muted-foreground">{t("about_spec_address")}</span>
-                    <span className="text-foreground truncate" title="Komplek Bank Niaga, Jakarta Selatan">Jakarta Selatan, ID</span>
+                    <span className="text-foreground truncate" title="Komplek Bank Niaga, Jakarta Selatan">{t("about_spec_address_value")}</span>
                   </div>
                 </div>
               </div>
@@ -291,14 +292,19 @@ export function AboutSection() {
             </div>
 
             {/* Diagnostics Stats row */}
-            <div className="grid grid-cols-3 gap-2.5 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-6">
               {stats.map((s) => (
-                <div key={s.label} className="bg-background border border-border/60 rounded-xl p-3.5 text-center group hover:border-[#ECFF8A]/40 transition-colors duration-300">
-                  <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider mb-1 truncate">{s.label}</div>
-                  <div className="text-xs font-bold text-foreground font-mono" style={{ fontFamily: "var(--font-bebas-neue)" }}>
-                    {s.value}
+                <div key={s.label} className="bg-background/40 backdrop-blur-sm border border-white/5 rounded-lg p-3 flex sm:flex-col items-center sm:items-start justify-between gap-3 group hover:border-accent/40 transition-colors duration-300">
+                  <div className="flex flex-col items-start">
+                    <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-1">{s.label}</div>
+                    <div 
+                      className="text-[20px] sm:text-[18px] font-black text-foreground leading-none"
+                      style={{ fontFamily: "var(--font-bebas-neue)" }}
+                    >
+                      {s.value}
+                    </div>
                   </div>
-                  <span className="inline-block mt-1 text-[8px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-mono text-accent bg-accent/8 border border-accent/20 px-1.5 py-0.5 rounded shrink-0">
                     {s.badge}
                   </span>
                 </div>
@@ -313,15 +319,15 @@ export function AboutSection() {
               
               {/* Deliverables Section */}
               <div className="space-y-3">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
-                  <CheckCircle2 size={12} className="text-[#ECFF8A]" />
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                  <CheckCircle2 size={12} className="text-accent" />
                   {t("about_deliverables_label")}
                 </div>
                 <div className="space-y-2.5">
                   {deliverables.map((item) => (
-                    <div key={item} className="flex items-start gap-3 p-3 bg-secondary/30 border border-border/50 rounded-xl hover:border-foreground/10 transition-colors">
-                      <CheckCircle2 size={13} className="text-[#ECFF8A] shrink-0 mt-0.5" />
-                      <span className="text-xs text-muted-foreground leading-normal font-sans">{item}</span>
+                    <div key={item} className="flex items-start gap-3 p-3 bg-[#242424]/30 border border-white/10 rounded-lg hover:border-foreground/10 transition-colors">
+                      <CheckCircle2 size={13} className="text-accent shrink-0 mt-0.5" />
+                      <span className="text-sm md:text-xs text-muted-foreground leading-normal font-sans">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -329,7 +335,7 @@ export function AboutSection() {
 
               {/* Stacks Registry Section */}
               <div className="space-y-3">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold flex items-center gap-1.5">
                   <Package size={12} className="text-[#FFFFFF]" />
                   {t("about_stacks_label")}
                 </div>
@@ -338,13 +344,13 @@ export function AboutSection() {
                   {techStack.map((tech) => (
                     <div 
                       key={tech.name}
-                      className="px-2.5 py-1 rounded-lg text-[10px] font-mono text-foreground/80 bg-secondary/80 border border-border/60 flex items-center gap-1.5 hover:border-foreground/20 transition-all cursor-default"
+                      className="px-2.5 py-1 rounded-lg text-xs md:text-[10px] font-mono text-foreground/80 bg-[#242424]/80 border border-white/10 flex items-center gap-1.5 hover:border-foreground/20 transition-all cursor-default"
                     >
                       {tech.icon}
                       <span>{tech.name}</span>
                     </div>
                   ))}
-                  <div className="px-2 py-1 rounded-lg text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 border border-[#ECFF8A]/30">
+                  <div className="px-2 py-1 rounded-lg text-xs md:text-[10px] font-mono text-accent bg-accent/8 border border-accent/20">
                     + more
                   </div>
                 </div>
@@ -353,28 +359,28 @@ export function AboutSection() {
             </div>
 
             {/* Bottom Signature Card */}
-            <div className="flex items-center gap-3 pt-6 border-t border-border/50 mt-6">
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border border-border"
-                style={{ background: "linear-gradient(135deg, #ECFF8A, #FFFFFF)" }}
+            <div className="flex items-center gap-3 pt-6 border-t border-white/10 mt-6">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 border border-border"
+                style={{ background: "linear-gradient(135deg, var(--accent), #FFFFFF)" }}
               >
                 <span className="font-mono font-black text-black text-xs">R</span>
               </div>
               <div>
-                <div className="font-semibold text-xs text-foreground font-mono leading-none">PT Ruang Cipta Solusi</div>
-                <div className="text-[9px] text-muted-foreground font-mono mt-1">{t("about_verified")}</div>
+                <div className="font-semibold text-sm md:text-xs text-foreground font-mono leading-none">PT Ruang Cipta Solusi</div>
+                <div className="text-[10px] text-muted-foreground font-mono mt-1">{t("about_verified")}</div>
               </div>
             </div>
 
           </div>
 
           {/* Bottom hotkeys status bar */}
-          <div className="col-span-5 h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground">
+          <div className="col-span-5 h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-xs md:text-[10px] font-mono text-muted-foreground">
             <div className="flex items-center gap-4">
               <span>Status: <span className="text-green-400">{t("about_status_synced")}</span></span>
               <span>Modules: <span className="text-foreground">{t("about_status_modules")}</span></span>
             </div>
             <div>
-              <span>Press <span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground font-semibold">⌥ D</span> to open docs</span>
+              <span>Press <span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold font-mono">⌥ D</span> to open docs</span>
             </div>
           </div>
 

@@ -3,7 +3,7 @@
 import { useState, useRef, useMemo, useCallback, memo } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence, useInView } from "framer-motion"
-import { Smartphone, Globe, Database, Building2, Search, Download, Star, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
+import { Smartphone, Globe, Database, Building2, Search, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
 
 const categories = ["All", "Mobile", "Web", "Enterprise"] as const
@@ -21,8 +21,8 @@ export const projects = [
     features: ["Instant Summarizer", "AI Reply Generator", "Local Vector Memory", "Inline Translator", "No-Setup Groq Integration"],
     icon: Chrome,
     color: "#ECFF8A",
-    installs: "3.2k",
-    rating: "5.0",
+    client: "Public Release",
+    year: "2024",
     type: "Extension",
     url: "https://aksara.qzz.io/",
   },
@@ -37,9 +37,9 @@ export const projects = [
     features: ["Customer Management", "Marketing Automation", "Operational Efficiency"],
     icon: Database,
     color: "#FFFFFF",
-    installs: "6.4k",
-    rating: "4.7",
-    type: "Extension",
+    client: "Bill Muhdor",
+    year: "2024",
+    type: "CRM",
   },
   {
     id: 3,
@@ -52,9 +52,9 @@ export const projects = [
     features: ["Cognitive Assessment (MOCA INA)", "AI Integration", "Training Games"],
     icon: Globe,
     color: "#FFFFFF",
-    installs: "9.2k",
-    rating: "4.8",
-    type: "Extension",
+    client: "Braincoach ID",
+    year: "2023",
+    type: "Web App",
   },
   {
     id: 4,
@@ -67,9 +67,9 @@ export const projects = [
     features: ["Doctor Consultation", "Treatment Booking", "Commerce", "Stream", "Progress Tracker"],
     icon: Smartphone,
     color: "#ECFF8A",
-    installs: "14.8k",
-    rating: "4.9",
-    type: "Extension",
+    client: "Heystetik",
+    year: "2023",
+    type: "Mobile App",
   },
   {
     id: 5,
@@ -82,9 +82,9 @@ export const projects = [
     features: ["Patient Registration", "Doctor & Clinic Management", "Inventory and Pharmacy", "Billing System", "Medical Record"],
     icon: Building2,
     color: "#ECFF8A",
-    installs: "24.1k",
-    rating: "4.9",
-    type: "Extension",
+    client: "Hospital Client",
+    year: "2023",
+    type: "ERP",
   },
   {
     id: 6,
@@ -97,9 +97,9 @@ export const projects = [
     features: ["Automated Testing", "Interview Scheduling", "Operational Automation"],
     icon: Database,
     color: "#FFFFFF",
-    installs: "11.3k",
-    rating: "4.8",
-    type: "Extension",
+    client: "Enterprise Client",
+    year: "2024",
+    type: "SaaS",
   },
   {
     id: 7,
@@ -112,9 +112,9 @@ export const projects = [
     features: ["Order Management", "Offers and Billing", "Task Management", "Revenue & Expenditure Management"],
     icon: Globe,
     color: "#ECFF8A",
-    installs: "15.9k",
-    rating: "4.9",
-    type: "Extension",
+    client: "Travel Agency",
+    year: "2023",
+    type: "ERP",
   },
   {
     id: 8,
@@ -127,9 +127,9 @@ export const projects = [
     features: ["Attendance Tracking", "Patrol Management", "SOS Button", "Anti Fake GPS"],
     icon: Smartphone,
     color: "#ECFF8A",
-    installs: "18.5k",
-    rating: "5.0",
-    type: "Extension",
+    client: "Security Firm",
+    year: "2024",
+    type: "Mobile App",
   },
 ]
 
@@ -151,15 +151,15 @@ const ProjectCard = memo(({
     <div className="w-full flex flex-col">
       <button
         onClick={() => onClick(id)}
-        className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 border text-left cursor-pointer ${
+        className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 border text-left cursor-pointer ${
           isSelected 
-            ? "bg-secondary border-border/80 shadow-md" 
-            : "bg-transparent border-transparent hover:bg-secondary/40"
+            ? "bg-[#242424] border-white/10" 
+            : "bg-transparent border-transparent hover:bg-[#242424]/30"
         }`}
       >
         <div className="flex items-center gap-3 min-w-0">
           <div 
-            className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/60 flex-shrink-0"
+            className="w-9 h-9 rounded-lg flex items-center justify-center border border-white/10 flex-shrink-0"
             style={{ 
               background: `radial-gradient(circle, ${project.color}15, transparent 80%)`
             }}
@@ -167,24 +167,23 @@ const ProjectCard = memo(({
             <ProjectIcon size={16} style={{ color: project.color }} />
           </div>
           <div className="min-w-0">
-            <div className="text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
+            <div className="text-sm md:text-xs font-mono font-bold text-foreground truncate flex items-center gap-1.5">
               {project.title}
-              <span className="text-[8px] font-mono text-muted-foreground/60">@rcs</span>
+              <span className="text-[10px] font-mono text-muted-foreground/85">@rcs</span>
             </div>
-            <div className="text-[10px] text-muted-foreground font-mono truncate leading-normal">
+            <div className="text-xs md:text-[10px] text-muted-foreground font-mono truncate leading-normal">
               {project.subtitle}
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
-          <div className="flex items-center gap-0.5 text-[10px] font-mono text-muted-foreground/70">
-            <Download size={10} />
-            <span>{project.installs}</span>
+          <div className="flex items-center gap-0.5 text-xs md:text-[10px] font-mono text-muted-foreground/70">
+            <Building2 size={10} />
+            <span>{project.client}</span>
           </div>
-          <div className="flex items-center gap-0.5 text-[10px] font-mono text-amber-500/80">
-            <Star size={10} className="fill-current" />
-            <span>{project.rating}</span>
+          <div className="flex items-center gap-0.5 text-xs md:text-[10px] font-mono text-muted-foreground/70">
+            <span>{project.year}</span>
           </div>
         </div>
       </button>
@@ -199,7 +198,7 @@ const ProjectCard = memo(({
         }}
       >
         <div className="overflow-hidden">
-          <div className="p-4 mt-2 bg-[#0c0c0d]/90 border border-border/80 rounded-xl space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+          <div className="p-3.5 mt-2 bg-[#141414]/50 backdrop-blur-md border border-white/5 rounded-lg space-y-3.5">
             
             {/* Action Links */}
             <div className="flex items-center gap-2">
@@ -208,7 +207,7 @@ const ProjectCard = memo(({
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2.5 py-1 rounded transition-colors"
+                  className="inline-flex items-center gap-1 text-[10px] font-mono text-[#e7c59a] bg-[#e7c59a]/8 hover:bg-[#e7c59a]/15 border border-[#e7c59a]/30 px-2.5 py-1 rounded transition-colors"
                 >
                   <span>View Web</span>
                   <ArrowRight size={10} className="-rotate-45" />
@@ -225,7 +224,7 @@ const ProjectCard = memo(({
 
             {/* Problem Statement */}
             <div className="space-y-1">
-              <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1">
+              <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5">
                 <BookOpen size={10} style={{ color: project.color }} />
                 Problem Statement
               </div>
@@ -249,19 +248,13 @@ const ProjectCard = memo(({
               <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                 Key Features
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-1">
                 {project.features.map((feat) => (
-                  <span key={feat} className="px-2 py-0.5 text-[9px] font-mono bg-secondary border border-border/40 rounded text-foreground/80">
+                  <span key={feat} className="px-2 py-0.5 text-[9px] font-mono bg-[#242424]/30 border border-white/5 rounded text-foreground/80">
                     {feat}
                   </span>
                 ))}
               </div>
-            </div>
-
-            {/* Command */}
-            <div className="bg-[#050506] border border-border/80 rounded-lg p-3 font-mono text-[10px] text-foreground/80 flex items-center justify-between">
-              <span>npx rcs install {project.slug}</span>
-              <span className="text-[8px] text-muted-foreground">bash</span>
             </div>
 
           </div>
@@ -280,10 +273,10 @@ export function PortfolioSection() {
   
   const [activeCategory, setActiveCategory] = useState<Category>("All")
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedId, setSelectedId] = useState(1)
+  const [selectedId, setSelectedId] = useState<number | null>(1)
 
   const handleCardClick = useCallback((id: number) => {
-    setSelectedId(id)
+    setSelectedId((prev) => (prev === id ? null : id))
   }, [])
 
   // Filter projects by category and query
@@ -300,6 +293,7 @@ export function PortfolioSection() {
 
   // Select first match if current selectedId is not in filtered list
   const activeProject = useMemo(() => {
+    if (selectedId === null) return null
     const current = projects.find((p) => p.id === selectedId)
     if (current && filteredProjects.some((p) => p.id === selectedId)) {
       return current
@@ -318,7 +312,7 @@ export function PortfolioSection() {
       
       {/* Ambient glowing orbs */}
       <div className="orb w-[500px] h-[500px] bg-[#ECFF8A]/2 -top-20 -left-20" />
-      <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/2 -bottom-20 -right-20" />
+      <div className="orb w-[500px] h-[500px] bg-[#FFFFFF]/1 -bottom-20 -right-20" />
 
       <div className="container relative mx-auto px-4 max-w-5xl">
         {/* Section Header */}
@@ -335,7 +329,10 @@ export function PortfolioSection() {
             </span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight" style={{ fontFamily: "var(--font-bebas-neue)" }}>
+          <h2 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight"
+            style={{ fontFamily: "var(--font-bebas-neue)" }}
+          >
             {t("portfolio_heading_1")} <span className="gradient-text">{t("portfolio_heading_accent")}</span>
           </h2>
           
@@ -349,10 +346,10 @@ export function PortfolioSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px]"
+          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px]"
         >
           {/* Header Row - Col span 10 */}
-          <div className="col-span-10 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
+          <div className="col-span-10 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30 relative z-20">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
@@ -360,16 +357,16 @@ export function PortfolioSection() {
             </div>
             
             {/* Search Input Bar inside Header */}
-            <div className="flex items-center gap-2 bg-background/50 border border-border/60 rounded-lg px-2.5 py-1 w-64 md:w-96 shadow-inner">
-              <Search size={12} className="text-muted-foreground/60" />
+            <div className="flex items-center gap-2 bg-[#080808]/40 border border-white/10 rounded-lg px-2.5 py-1 w-64 md:w-96 shadow-inner">
+              <Search size={12} className="text-muted-foreground/85" />
               <input
                 type="text"
                 placeholder="Search extensions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/45 border-none outline-none w-full"
+                className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
               />
-              <span className="text-[9px] font-mono bg-secondary/80 border border-border/80 px-1 py-0.5 rounded text-muted-foreground">⌘F</span>
+              <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
             </div>
 
             <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
@@ -378,10 +375,10 @@ export function PortfolioSection() {
           </div>
 
           {/* Left Column: Side categories filter & list (Col span 5) */}
-          <div className="col-span-5 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-hidden">
+          <div className="col-span-5 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between bg-[#080808]/40 md:h-[calc(100%-48px)] overflow-hidden">
             <div className="flex flex-col h-full">
               {/* Category selector row */}
-              <div className="flex gap-1.5 p-3 overflow-x-auto border-b border-border/60 no-scrollbar">
+              <div className="flex gap-1.5 p-3 overflow-x-auto border-b border-white/10 no-scrollbar">
                 {categories.map((category) => {
                   const isActive = activeCategory === category
                   return (
@@ -390,16 +387,16 @@ export function PortfolioSection() {
                       onClick={() => {
                         setActiveCategory(category)
                       }}
-                      className={`relative px-3.5 py-1.5 text-[10px] font-mono font-medium rounded-full cursor-pointer transition-all duration-300 ${
+                      className={`relative px-3.5 py-1.5 text-xs md:text-[10px] font-mono font-medium rounded-full cursor-pointer transition-all duration-300 ${
                         isActive 
                           ? "text-foreground font-semibold" 
-                          : "text-muted-foreground hover:text-foreground border border-border/30 hover:border-border"
+                          : "text-muted-foreground hover:text-foreground border border-white/10 hover:border-[#5a5a5a]"
                       }`}
                     >
                       {isActive && (
                         <motion.div
                           layoutId="activeStoreCategory"
-                          className="absolute inset-0 rounded-full bg-secondary border border-border/60 shadow-sm"
+                          className="absolute inset-0 rounded-full bg-[#242424] border border-white/10"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -411,7 +408,7 @@ export function PortfolioSection() {
 
               {/* Extensions list */}
               <div className="flex-grow overflow-y-auto p-3 space-y-1.5 no-scrollbar">
-                <div className="text-[9px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold flex items-center justify-between">
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold flex items-center justify-between">
                   <span>Results</span>
                   <span>{filteredProjects.length} matching</span>
                 </div>
@@ -443,7 +440,7 @@ export function PortfolioSection() {
           </div>
 
           {/* Right Column: Extension Detailed View (Col span 5) - hidden on mobile, flex on desktop */}
-          <div className="hidden md:flex col-span-5 flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-hidden relative">
+          <div className="hidden md:flex col-span-5 flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/40 overflow-hidden relative">
             {activeProject ? (
               <>
                 {/* Ambient glow */}
@@ -469,7 +466,7 @@ export function PortfolioSection() {
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex items-center gap-4">
                           <div 
-                            className="w-14 h-14 rounded-xl flex items-center justify-center border border-border/80 shadow-md"
+                            className="w-14 h-14 rounded-lg flex items-center justify-center border border-white/10"
                             style={{ 
                               background: `radial-gradient(circle, ${activeProject.color}25, transparent 80%)`
                             }}
@@ -493,7 +490,7 @@ export function PortfolioSection() {
                         </div>
 
                         <div className="flex flex-col items-end gap-1.5 shrink-0">
-                          <span className="text-[9px] font-mono bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
+                          <span className="text-[10px] font-mono bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
                             RELEASED
                           </span>
                           {activeProject.url && (
@@ -501,7 +498,7 @@ export function PortfolioSection() {
                               href={activeProject.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-[9px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2 py-0.5 rounded transition-colors"
+                              className="inline-flex items-center gap-1 text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2 py-0.5 rounded-lg transition-colors"
                             >
                               <span>View Web</span>
                               <ArrowRight size={10} className="-rotate-45" />
@@ -509,7 +506,7 @@ export function PortfolioSection() {
                           )}
                           <Link
                             href={`/portfolio/${activeProject.slug}`}
-                            className="inline-flex items-center gap-1 text-[9px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2 py-0.5 rounded transition-colors"
+                            className="inline-flex items-center gap-1 text-[10px] font-mono text-white bg-white/5 hover:bg-white/10 border border-white/20 px-2 py-0.5 rounded transition-colors"
                           >
                             <span>{lang === "en" ? "Read Case Study" : "Baca Studi Kasus"}</span>
                             <ArrowRight size={10} />
@@ -519,12 +516,12 @@ export function PortfolioSection() {
 
                       {/* Case Study Readme section */}
                       <div className="space-y-2">
-                        <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5">
+                        <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5">
                           <BookOpen size={11} style={{ color: activeProject.color }} />
                           README.md / Problem Statement
                         </div>
                         <div 
-                          className="bg-secondary/40 border border-border/50 rounded-xl p-4 text-xs text-muted-foreground leading-relaxed font-sans text-justify border-l-2"
+                          className="bg-[#242424]/30 border border-white/10 rounded-lg p-4 text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify border-l-2"
                           style={{ borderLeftColor: activeProject.color }}
                         >
                           {activeProject.caseStudy}
@@ -533,24 +530,24 @@ export function PortfolioSection() {
 
                       {/* Solution section */}
                       <div className="space-y-2">
-                        <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                        <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                           Our Engineered Solution
                         </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed font-sans text-justify">
+                        <p className="text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify">
                           {activeProject.solution}
                         </p>
                       </div>
 
                       {/* Key Features list */}
                       <div className="space-y-2">
-                        <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                        <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                           Key Features
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {activeProject.features.map((feature) => (
                             <span 
                               key={feature}
-                              className="px-2.5 py-1 text-[10px] font-mono bg-secondary/80 border border-border/60 rounded text-foreground/80"
+                              className="px-2.5 py-1 text-xs md:text-[10px] font-mono bg-[#242424]/30 border border-white/5 rounded-lg text-foreground/85"
                             >
                               {feature}
                             </span>
@@ -560,15 +557,15 @@ export function PortfolioSection() {
 
                       {/* Installation terminal snippet */}
                       <div className="space-y-2">
-                        <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
+                        <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                           Installation Command
                         </div>
-                        <div className="bg-[#050505] border border-border/80 rounded-xl p-4 font-mono text-[11px] text-foreground/85 flex items-center justify-between shadow-inner">
+                        <div className="bg-[#080808] border border-white/10 rounded-lg p-4 font-mono text-xs md:text-[11px] text-foreground/85 flex items-center justify-between shadow-inner">
                           <div className="flex items-center gap-2">
-                            <Terminal size={12} className="text-muted-foreground/60" />
+                            <Terminal size={12} className="text-muted-foreground/85" />
                             <span>npx rcs install {activeProject.slug}</span>
                           </div>
-                          <span className="text-[9px] font-mono text-muted-foreground/45 uppercase">bash</span>
+                          <span className="text-[10px] font-mono text-muted-foreground/75 uppercase">bash</span>
                         </div>
                       </div>
 
@@ -577,15 +574,14 @@ export function PortfolioSection() {
                 </div>
 
                 {/* Bottom status keys bar */}
-                <div className="h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+                <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
                   <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">↵</span> Install</span>
-                    <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">⌘K</span> Action Panel</span>
+                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Install</span>
+                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌘K</span> Action Panel</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <span>Rating:</span>
-                    <Star size={10} className="fill-amber-500/80 text-amber-500/80 inline" />
-                    <span className="text-foreground">{activeProject.rating}</span>
+                    <span>Year:</span>
+                    <span className="text-foreground">{activeProject.year}</span>
                   </div>
                 </div>
               </>

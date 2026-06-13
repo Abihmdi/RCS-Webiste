@@ -5,7 +5,7 @@ import { ServicesSection } from "@/components/services-section"
 import { TeamSection } from "@/components/team-section"
 import { PortfolioSection } from "@/components/portfolio-section"
 import { ContactSection } from "@/components/contact-section"
-import { FallingLetters } from "@/components/falling-letters"
+import { AnimatedRevealText } from "@/components/animated-reveal-text"
 import { Footer } from "@/components/footer"
 import { CommandPalette } from "@/components/command-palette"
 
@@ -18,7 +18,7 @@ export default function Home() {
       <ServicesSection />
       <TeamSection />
       <PortfolioSection />
-      <FallingLetters />
+      <AnimatedRevealText />
       <ContactSection />
       <Footer />
       <CommandPalette />

@@ -170,7 +170,7 @@ export function AIAssistant() {
         <button
           onClick={handleOpenToggle}
           aria-label="Open AI Assistant"
-          className="relative w-14 h-14 rounded-full bg-secondary border border-border/80 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:border-[#ECFF8A]/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-[#ECFF8A]"
+          className="relative w-14 h-14 rounded-full bg-secondary border border-border/80 hover:border-accent/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-accent"
         >
           {/* Notification Ping Alert */}
           {hasNewMessage && (
@@ -191,7 +191,7 @@ export function AIAssistant() {
       {/* Floating Chat Window */}
       {isOpen && (
         <div
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_80px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col font-sans animate-in fade-in slide-in-from-bottom-5 duration-200"
+          className="glass noise rounded-lg border border-border/80 overflow-hidden flex flex-col font-sans animate-in fade-in slide-in-from-bottom-5 duration-200"
           style={{
             position: 'fixed',
             bottom: '88px',
@@ -208,15 +208,15 @@ export function AIAssistant() {
             <div className="h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30 relative z-20">
               <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="w-6 h-6 rounded-lg border border-border bg-[#ECFF8A]/5 flex items-center justify-center text-[#ECFF8A]">
+                  <div className="w-6 h-6 rounded-lg border border-border bg-accent/5 flex items-center justify-center text-accent">
                     <Bot size={13} />
                   </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-green-500 border border-background animate-pulse" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#ECFF8A] border border-background animate-pulse" />
                 </div>
                 <div>
                   <div className="text-xs font-mono font-bold text-foreground leading-none flex items-center gap-1">
                     RCS Copilot
-                    <Sparkles size={10} className="text-[#ECFF8A] fill-current animate-pulse" />
+                    <Sparkles size={10} className="text-accent fill-current animate-pulse" />
                   </div>
                   <div className="text-[9px] font-mono text-muted-foreground mt-0.5">rcs-ai-assistant.sh</div>
                 </div>
@@ -256,12 +256,12 @@ export function AIAssistant() {
                         className={`p-3 rounded-xl leading-relaxed whitespace-pre-wrap ${
                           isBot 
                             ? "bg-secondary/40 border border-border/60 text-foreground" 
-                            : "bg-[#ECFF8A] text-black font-medium"
+                            : "bg-accent text-accent-foreground font-medium"
                         }`}
                       >
                         {msg.text}
                       </div>
-                      <div className={`text-[8px] font-mono text-muted-foreground/50 ${isBot ? "text-left" : "text-right"}`}>
+                      <div className={`text-[8px] font-mono text-muted-foreground/75 ${isBot ? "text-left" : "text-right"}`}>
                         {msg.timestamp}
                       </div>
                     </div>
@@ -291,20 +291,20 @@ export function AIAssistant() {
               onSubmit={handleSend}
               className="p-3 border-t border-border/70 bg-[#0d0d0e]/60 flex items-center gap-2 relative z-20"
             >
-              <div className="flex-grow flex items-center gap-2 bg-background/50 border border-border/60 rounded-xl px-3 py-2 focus-within:border-[#ECFF8A]/65 transition-colors">
-                <span className="text-white/20 font-mono text-xs select-none">$</span>
+              <div className="flex-grow flex items-center gap-2 bg-background/50 border border-border/60 rounded-lg px-3 py-2 focus-within:border-accent/65 transition-colors">
+                <span className="text-[#ECFF8A]/75 font-mono text-xs select-none">$</span>
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={lang === "en" ? "Type command/query..." : "Ketik perintah/tanya..."}
-                  className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/35 border-none outline-none w-full"
+                  className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
                 />
               </div>
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="w-8 h-8 rounded-xl bg-[#ECFF8A] hover:bg-[#f2ffa2] text-black flex items-center justify-center cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:hover:bg-[#ECFF8A] active:scale-90"
+                className="w-8 h-8 rounded-lg bg-accent hover:bg-accent/90 text-accent-foreground flex items-center justify-center cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:hover:bg-accent active:scale-90"
               >
                 <Send size={12} />
               </button>

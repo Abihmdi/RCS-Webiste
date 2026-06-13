@@ -81,34 +81,35 @@ export function TeamSection() {
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl border border-border/80 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col md:grid md:grid-cols-5 md:h-[580px]"
+          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-5 md:h-[580px]"
         >
           {/* Header Row (Always at Top) - Col span 5 */}
-          <div className="col-span-5 h-12 border-b border-border/70 flex items-center justify-between px-4 bg-secondary/30">
+          <div className="col-span-5 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-            <div className="text-[11px] font-mono text-muted-foreground font-medium tracking-wide">
-              rcs-founder-console -- v1.0.0
+            <div className="text-[10px] xs:text-[11px] font-mono text-muted-foreground font-medium tracking-wide truncate max-w-[200px] xs:max-w-none">
+              <span className="inline sm:hidden">rcs-team-console</span>
+              <span className="hidden sm:inline">rcs-founder-console -- v1.0.0</span>
             </div>
             <div className="w-12" /> {/* Spacer */}
           </div>
 
           {/* Left Column: Command Directory Sidebar (Col span 2) */}
-          <div className="col-span-2 border-b md:border-b-0 md:border-r border-border/70 flex flex-col justify-between bg-[#0a0a0a]/50 md:h-[calc(100%-48px)] overflow-auto">
+          <div className="col-span-2 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-between bg-[#080808]/40 md:h-[calc(100%-48px)] overflow-auto">
             <div>
               {/* Search Mockup */}
-              <div className="p-4 border-b border-border/60 flex items-center gap-2">
+              <div className="p-4 border-b border-white/10 flex items-center gap-2">
                 <span className="text-muted-foreground font-mono text-xs">🔍</span>
                 <input 
                   type="text" 
                   placeholder="Search directory..." 
                   disabled
-                  className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/45 border-none outline-none w-full"
+                  className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
                 />
-                <span className="text-[9px] font-mono bg-secondary/80 border border-border px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+                <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
               </div>
 
               {/* Founder List */}
@@ -122,21 +123,21 @@ export function TeamSection() {
                     <button
                       key={founder.name}
                       onClick={() => setActiveIndex(index)}
-                      className={`w-full flex items-center justify-between p-3 rounded-xl transition-all duration-300 group/item cursor-pointer border text-left ${
+                      className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-300 group/item cursor-pointer border text-left ${
                         isActive 
-                          ? "bg-secondary border-border/80 shadow-md" 
-                          : "bg-transparent border-transparent hover:bg-secondary/40"
+                          ? "bg-[#242424] border-white/10" 
+                          : "bg-transparent border-transparent hover:bg-[#242424]/30"
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-lg bg-background flex items-center justify-center font-mono font-bold text-xs border ${isActive ? "border-[#ECFF8A]/40" : "border-border/60"}`}>
-                          <span className={`${isActive ? "text-[#ECFF8A]" : "text-muted-foreground"}`}>{founder.initials}</span>
+                        <div className={`w-8 h-8 rounded-lg bg-background flex items-center justify-center font-mono font-bold text-xs border ${isActive ? "border-accent/40" : "border-white/5"}`}>
+                          <span className={`${isActive ? "text-accent" : "text-muted-foreground"}`}>{founder.initials}</span>
                         </div>
                         <div>
-                          <div className={`text-xs font-mono font-semibold ${isActive ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"}`}>
+                          <div className={`text-sm md:text-xs font-mono font-semibold ${isActive ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"}`}>
                             {founder.name}
                           </div>
-                          <div className="text-[10px] text-muted-foreground font-mono">
+                          <div className="text-xs md:text-[10px] text-muted-foreground font-mono">
                             {founder.role}
                           </div>
                         </div>
@@ -149,25 +150,25 @@ export function TeamSection() {
             </div>
 
             {/* Quick stats bottom */}
-            <div className="p-4 border-t border-border/50 bg-[#0a0a0a]/30 hidden md:block">
+            <div className="p-4 border-t border-white/10 bg-[#0a0a0a]/30 hidden md:block">
               <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
                 Status Summary
               </div>
               <div className="grid grid-cols-2 gap-2 text-center">
-                <div className="bg-secondary/40 border border-border/50 rounded-lg p-2">
-                  <div className="text-[10px] font-mono text-muted-foreground">Status</div>
-                  <div className="text-xs font-mono font-semibold text-green-400">ONLINE</div>
+                <div className="bg-[#242424]/40 border border-white/5 rounded-lg p-2">
+                  <div className="text-xs md:text-[10px] font-mono text-muted-foreground">Status</div>
+                  <div className="text-sm md:text-xs font-mono font-semibold text-green-400">ONLINE</div>
                 </div>
-                <div className="bg-secondary/40 border border-border/50 rounded-lg p-2">
-                  <div className="text-[10px] font-mono text-muted-foreground">Version</div>
-                  <div className="text-xs font-mono font-semibold text-foreground">v1.2.6</div>
+                <div className="bg-[#242424]/40 border border-white/5 rounded-lg p-2">
+                  <div className="text-xs md:text-[10px] font-mono text-muted-foreground">Version</div>
+                  <div className="text-sm md:text-xs font-mono font-semibold text-foreground">v1.2.6</div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Right Column: Profile Workspace (Col span 3) */}
-          <div className="col-span-3 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/60 overflow-auto relative">
+          <div className="col-span-3 flex flex-col justify-between md:h-[calc(100%-48px)] bg-[#0d0d0e]/40 overflow-auto relative">
             
             {/* Ambient Background Glow matching active founder */}
             <div 
@@ -191,7 +192,7 @@ export function TeamSection() {
                 >
                   {/* Top Profile Header */}
                   <div className="flex items-center gap-5">
-                    <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center relative overflow-hidden border border-border/80 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]">
+                    <div className="w-16 h-16 rounded-lg bg-secondary flex items-center justify-center relative overflow-hidden border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)]">
                       <div 
                         className="absolute inset-0 opacity-25"
                         style={{ background: `linear-gradient(135deg, ${activeFounder.accent}, transparent)` }}
@@ -199,7 +200,6 @@ export function TeamSection() {
                       <span 
                         className="text-2xl font-black relative z-10"
                         style={{ 
-                          fontFamily: "var(--font-bebas-neue)",
                           color: activeFounder.accent
                         }}
                       >
@@ -223,28 +223,28 @@ export function TeamSection() {
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                       Biography / Background
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed font-sans text-justify">
+                    <p className="text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify">
                       {activeFounder.bio}
                     </p>
                   </div>
 
                   {/* Experience Grid */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-secondary/40 border border-border/50 rounded-xl p-3.5">
-                      <div className="text-[9px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
+                    <div className="bg-[#242424]/30 border border-white/5 rounded-lg p-3.5">
+                      <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
                         <Briefcase size={12} style={{ color: activeFounder.accent }} />
                         Experience
                       </div>
-                      <div className="text-xs font-mono font-bold text-foreground">
+                      <div className="text-sm md:text-xs font-mono font-bold text-foreground">
                         {activeFounder.experience}
                       </div>
                     </div>
-                    <div className="bg-secondary/40 border border-border/50 rounded-xl p-3.5">
-                      <div className="text-[9px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
+                    <div className="bg-[#242424]/30 border border-white/5 rounded-lg p-3.5">
+                      <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
                         <Code size={12} style={{ color: activeFounder.accent }} />
                         Core Skills
                       </div>
-                      <div className="text-xs font-mono font-bold text-foreground">
+                      <div className="text-sm md:text-xs font-mono font-bold text-foreground">
                         {activeFounder.skills.length} Areas
                       </div>
                     </div>
@@ -255,8 +255,8 @@ export function TeamSection() {
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
                       Tech Workspace Properties
                     </div>
-                    <div className="bg-[#050505] border border-border/80 rounded-xl p-4 font-mono text-[11px] text-[#ECFF8A]/80 space-y-1 overflow-x-auto shadow-inner relative">
-                      <div className="absolute top-3 right-3 text-[9px] text-muted-foreground/35 uppercase">ts</div>
+                    <div className="bg-[#080808] border border-white/10 rounded-lg p-4 font-mono text-xs md:text-[11px] text-[#ECFF8A]/80 space-y-1 overflow-x-auto shadow-inner relative">
+                      <div className="absolute top-3 right-3 text-[10px] text-muted-foreground/65 uppercase">ts</div>
                       <div>
                         <span className="text-purple-400">const</span> <span className="text-blue-400">founder</span> = &#123;
                       </div>
@@ -287,10 +287,10 @@ export function TeamSection() {
             </div>
 
             {/* Bottom Keyboard shortcuts bar */}
-            <div className="h-10 border-t border-border/70 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+            <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">↵</span> Open Profile</span>
-                <span className="flex items-center gap-1"><span className="bg-secondary px-1 py-0.5 rounded border border-border/60 text-foreground">Tab</span> Navigate</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Open Profile</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Navigate</span>
               </div>
             </div>
 
