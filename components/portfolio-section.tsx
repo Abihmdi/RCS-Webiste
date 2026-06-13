@@ -2,7 +2,7 @@
 
 import { useState, useRef, useMemo, useCallback, memo } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence, useInView } from "framer-motion"
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useSpring } from "framer-motion"
 import { Smartphone, Globe, Database, Building2, Search, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
 
@@ -270,6 +270,23 @@ export function PortfolioSection() {
   const { lang, t } = useLanguage()
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+
+  // Spring-based 3D tilt logic
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { damping: 25, stiffness: 200 })
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { damping: 25, stiffness: 200 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    x.set((e.clientX - rect.left - rect.width / 2) / rect.width)
+    y.set((e.clientY - rect.top - rect.height / 2) / rect.height)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
   
   const [activeCategory, setActiveCategory] = useState<Category>("All")
   const [searchQuery, setSearchQuery] = useState("")
@@ -305,7 +322,7 @@ export function PortfolioSection() {
     <section 
       id="portfolio" 
       ref={sectionRef}
-      className="relative py-24 md:py-32 bg-background overflow-hidden"
+      className="relative pt-24 pb-12 md:pt-32 md:pb-16 bg-background overflow-hidden"
     >
       <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
@@ -342,12 +359,16 @@ export function PortfolioSection() {
         </motion.div>
 
         {/* Raycast Store Console Window */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px]"
-        >
+        <div style={{ perspective: 1200 }} className="w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px] will-change-transform"
+          >
           {/* Header Row - Col span 10 */}
           <div className="col-span-10 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30 relative z-20">
             <div className="flex items-center gap-2">
@@ -592,6 +613,7 @@ export function PortfolioSection() {
             )}
           </div>
         </motion.div>
+      </div>
       </div>
     </section>
   )

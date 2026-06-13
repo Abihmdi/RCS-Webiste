@@ -5,6 +5,7 @@ import { LanguageProvider } from '@/components/language-context'
 import { AIAssistant } from '@/components/ai-assistant'
 import { HeroBackground } from '@/components/hero-background'
 import { SmoothScroll } from '@/components/smooth-scroll'
+import { Preloader } from '@/components/preloader'
 import './globals.css'
 
 const inter = Inter({ 
@@ -116,6 +117,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-background text-foreground">
+        <Preloader />
         {/* JSON-LD Structured Data */}
         <script
           type="application/ld+json"

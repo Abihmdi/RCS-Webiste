@@ -1,86 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { motion, useInView } from "framer-motion"
-import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
 import { useLanguage } from "@/components/language-context"
-
-interface HighlightTextProps extends React.HTMLAttributes<HTMLDivElement> {
-  text: string
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span"
-  textClassName?: string
-  highlightClassName?: string
-  duration?: number
-  highlightColor?: string
-  ease?: "easeIn" | "easeOut" | "easeInOut" | "linear"
-}
-
-const HighlightText = React.forwardRef<HTMLDivElement, HighlightTextProps>(
-  ({
-    text,
-    as: Component = "h1",
-    className,
-    textClassName,
-    highlightClassName,
-    duration = 1.2,
-    highlightColor = "#ECFF8A", // Lime Green brand accent color
-    ease = "easeInOut",
-    ...props
-  }, ref) => {
-    const internalRef = React.useRef(null)
-    const isInView = useInView(internalRef, { once: true, amount: 0.3 })
-
-    return (
-      <div 
-        ref={ref}
-        className={cn("text-center flex justify-center w-full select-none", className)} 
-        {...props}
-      >
-        <Component 
-          ref={internalRef}
-          className={cn(
-            "text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.3] tracking-tight max-w-4xl text-center",
-            textClassName
-          )}
-          style={{ fontFamily: "var(--font-sans)" }}
-        >
-          <motion.span
-            className={cn(
-              "relative inline-block py-[8px] px-[16px] sm:py-[12px] sm:px-[24px] rounded-[16px]",
-              "text-black dark:text-black font-black shadow-lg",
-              highlightClassName
-            )}
-            initial={{
-              clipPath: "inset(0% 100% 0% 0%)",
-              backgroundColor: highlightColor
-            }}
-            animate={isInView ? {
-              clipPath: "inset(0% 0% 0% 0%)",
-            } : {
-              clipPath: "inset(0% 100% 0% 0%)",
-            }}
-            transition={{
-              duration,
-              ease
-            }}
-          >
-            {text}
-          </motion.span>
-        </Component>
-      </div>
-    )
-  }
-)
-HighlightText.displayName = "HighlightText"
+import { AnimatedText } from "@/components/ui/animated-shiny-text"
 
 const content = {
   en: {
     badge: "Digital Transformation Partner",
-    tagline: "Ruang Cipta Solusi"
+    tagline: "RCS"
   },
   id: {
     badge: "Digital Transformation Partner",
-    tagline: "Ruang Cipta Solusi"
+    tagline: "RCS"
   }
 }
 
@@ -108,7 +40,7 @@ export function AnimatedRevealText() {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full py-28 md:py-36 overflow-hidden bg-black flex flex-col items-center justify-center border-t border-[#141414]"
+      className="relative w-full py-5 md:py-6 overflow-hidden bg-black flex flex-col items-center justify-center border-t border-[#141414]"
     >
       {/* Background dot grid */}
       <div className="absolute inset-0 dot-grid opacity-10 pointer-events-none" />
@@ -130,7 +62,7 @@ export function AnimatedRevealText() {
         />
       )}
 
-      <div className="w-full max-w-5xl px-6 flex flex-col items-center justify-center gap-6 relative z-10">
+      <div className="w-full max-w-5xl px-6 flex flex-col items-center justify-center gap-2 md:gap-3 relative z-10">
         
         {/* Section Pill Badge */}
         <motion.div 
@@ -138,17 +70,22 @@ export function AnimatedRevealText() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="section-pill"
+          className="section-pill animate-fade-in"
         >
           <span className="section-pill-dot" />
           <span className="text-xs font-semibold tracking-widest">{translation.badge}</span>
         </motion.div>
 
-        {/* Animated Highlight Text Reveal */}
-        <HighlightText 
-          text={translation.tagline} 
-          className="mt-2"
-        />
+        {/* Animated Shiny Text */}
+        <AnimatedText 
+          gradientColors="linear-gradient(90deg, #18181b, #ffffff, #18181b)" // A gorgeous shiny metallic look on black background!
+          hoverEffect={true}
+          textClassName="font-black tracking-[0.08em] uppercase select-none flex items-baseline justify-center"
+          style={{ fontFamily: "var(--font-display)" }} // Use Bebas Neue display font
+        >
+          <span>{translation.tagline}</span>
+          <span className="text-accent" style={{ background: "none", WebkitBackgroundClip: "unset", WebkitTextFillColor: "var(--accent)", color: "var(--accent)" }}>.</span>
+        </AnimatedText>
 
       </div>
 

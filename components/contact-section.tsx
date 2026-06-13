@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { motion, useInView } from "framer-motion"
+import { motion, useInView, useMotionValue, useTransform, useSpring } from "framer-motion"
 import { Mail, MapPin, Send, Terminal as TermIcon, ArrowRight, Copy, Compass } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useLanguage } from "@/components/language-context"
@@ -17,6 +17,23 @@ export function ContactSection() {
   const { t } = useLanguage()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+
+  // Spring-based 3D tilt logic
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { damping: 25, stiffness: 200 })
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { damping: 25, stiffness: 200 })
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    x.set((e.clientX - rect.left - rect.width / 2) / rect.width)
+    y.set((e.clientY - rect.top - rect.height / 2) / rect.height)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
   
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -166,7 +183,7 @@ export function ContactSection() {
   }
 
   return (
-    <section id="contact" className="py-24 md:py-32 relative overflow-hidden bg-background">
+    <section id="contact" className="pt-12 pb-24 md:pt-16 md:pb-32 relative overflow-hidden bg-background">
       {/* Background patterns */}
       <div className="absolute inset-0 dot-grid opacity-15 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
@@ -202,12 +219,16 @@ export function ContactSection() {
         </motion.div>
 
         {/* Raycast Command Form Launcher Window */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10"
-        >
+        <div style={{ perspective: 1200 }} className="w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 will-change-transform"
+          >
           {/* Header Row - Col span 10 */}
           <div className="col-span-10 h-12 border-b border-white/10 flex items-center justify-between px-4 bg-[#242424]/30 relative z-20">
             <div className="flex items-center gap-2">
@@ -418,6 +439,7 @@ export function ContactSection() {
           </div>
 
         </motion.div>
+      </div>
       </div>
     </section>
   )
