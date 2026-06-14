@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useMemo } from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
 import { Code, Briefcase } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
@@ -28,17 +28,59 @@ const founders = [
   },
 ]
 
+const foundersTranslations = {
+  en: [
+    {
+      role: "Founder",
+      bio: "With over 7 years of experience in the field of information technology, have been involved in various projects including website development, application development, network management, security, and other aspects.",
+      skills: ["Website Development", "Application Development", "Network Management", "Cyber Security", "Infrastructure"],
+      experience: "7+ Years"
+    },
+    {
+      role: "Founder",
+      bio: "Having over 5 years of experience in product management across various stages, from early-stage startups to mid-stage companies, and at one of the largest e-commerce companies in Southeast Asia. Possessing several certifications in product management training as well as business consulting.",
+      skills: ["Product Strategy", "Market Analysis", "Business Development", "UX Research", "Consulting"],
+      experience: "5+ Years"
+    }
+  ],
+  id: [
+    {
+      role: "Pendiri",
+      bio: "Memiliki pengalaman lebih dari 7 tahun di bidang teknologi informasi, telah terlibat dalam berbagai proyek skala nasional maupun global mencakup pengembangan website, pembuatan aplikasi, manajemen jaringan, keamanan siber, dan infrastruktur sistem.",
+      skills: ["Pengembangan Website", "Pengembangan Aplikasi", "Manajemen Jaringan", "Keamanan Siber", "Infrastruktur Sistem"],
+      experience: "7+ Tahun"
+    },
+    {
+      role: "Pendiri",
+      bio: "Memiliki pengalaman lebih dari 5 tahun di bidang manajemen produk pada berbagai tahapan, mulai dari startup tahap awal hingga perusahaan berkembang pesat, termasuk di salah satu perusahaan e-commerce terbesar di Asia Tenggara. Mengantongi berbagai sertifikasi pelatihan manajemen produk dan konsultasi bisnis.",
+      skills: ["Strategi Produk", "Analisis Pasar", "Pengembangan Bisnis", "Riset UX", "Konsultasi Bisnis"],
+      experience: "5+ Tahun"
+    }
+  ]
+}
+
 interface FounderCardProps {
   founder: typeof founders[0]
   index: number
 }
 
 export function TeamSection() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
   const [activeIndex, setActiveIndex] = useState(0)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const activeFounder = founders[activeIndex]
+
+  const localizedFounders = useMemo(() => {
+    return founders.map((founder, idx) => ({
+      ...founder,
+      role: foundersTranslations[lang][idx].role,
+      bio: foundersTranslations[lang][idx].bio,
+      skills: foundersTranslations[lang][idx].skills,
+      experience: foundersTranslations[lang][idx].experience,
+    }))
+  }, [lang])
+
+  const activeFounder = localizedFounders[activeIndex]
 
   return (
     <section id="team" className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -105,19 +147,19 @@ export function TeamSection() {
                 <span className="text-muted-foreground font-mono text-xs">🔍</span>
                 <input 
                   type="text" 
-                  placeholder="Search directory..." 
+                  placeholder={lang === "en" ? "Search directory..." : "Cari direktori..."} 
                   disabled
                   className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
                 />
-                <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+                <span className="hidden sm:inline-block text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
               </div>
 
               {/* Founder List */}
               <div className="p-3 space-y-1.5">
                 <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-3 mb-2 font-semibold">
-                  Founders Directory
+                  {lang === "en" ? "Founders Directory" : "Direktori Pendiri"}
                 </div>
-                {founders.map((founder, index) => {
+                {localizedFounders.map((founder, index) => {
                   const isActive = activeIndex === index
                   return (
                     <button
@@ -131,7 +173,7 @@ export function TeamSection() {
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-lg bg-background flex items-center justify-center font-mono font-bold text-xs border ${isActive ? "border-accent/40" : "border-white/5"}`}>
-                          <span className={`${isActive ? "text-accent" : "text-muted-foreground"}`}>{founder.initials}</span>
+                           <span className={`${isActive ? "text-accent" : "text-muted-foreground"}`}>{founder.initials}</span>
                         </div>
                         <div>
                           <div className={`text-sm md:text-xs font-mono font-semibold ${isActive ? "text-foreground" : "text-muted-foreground group-hover/item:text-foreground"}`}>
@@ -152,7 +194,7 @@ export function TeamSection() {
             {/* Quick stats bottom */}
             <div className="p-4 border-t border-white/10 bg-[#0a0a0a]/30 hidden md:block">
               <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
-                Status Summary
+                {lang === "en" ? "Status Summary" : "Ringkasan Status"}
               </div>
               <div className="grid grid-cols-2 gap-2 text-center">
                 <div className="bg-[#242424]/40 border border-white/5 rounded-lg p-2">
@@ -221,7 +263,7 @@ export function TeamSection() {
                   {/* Profile Bio */}
                   <div className="space-y-2">
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                      Biography / Background
+                      {lang === "en" ? "Biography / Background" : "Biografi / Latar Belakang"}
                     </div>
                     <p className="text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify">
                       {activeFounder.bio}
@@ -233,7 +275,7 @@ export function TeamSection() {
                     <div className="bg-[#242424]/30 border border-white/5 rounded-lg p-3.5">
                       <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
                         <Briefcase size={12} style={{ color: activeFounder.accent }} />
-                        Experience
+                        {lang === "en" ? "Experience" : "Pengalaman"}
                       </div>
                       <div className="text-sm md:text-xs font-mono font-bold text-foreground">
                         {activeFounder.experience}
@@ -242,10 +284,10 @@ export function TeamSection() {
                     <div className="bg-[#242424]/30 border border-white/5 rounded-lg p-3.5">
                       <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-1 font-semibold flex items-center gap-1.5">
                         <Code size={12} style={{ color: activeFounder.accent }} />
-                        Core Skills
+                        {lang === "en" ? "Core Skills" : "Keahlian Utama"}
                       </div>
                       <div className="text-sm md:text-xs font-mono font-bold text-foreground">
-                        {activeFounder.skills.length} Areas
+                        {activeFounder.skills.length} {lang === "en" ? "Areas" : "Bidang"}
                       </div>
                     </div>
                   </div>
@@ -253,9 +295,9 @@ export function TeamSection() {
                   {/* Terminal Code Mockup for Skills */}
                   <div className="space-y-2">
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                      Tech Workspace Properties
+                      {lang === "en" ? "Tech Workspace Properties" : "Properti Ruang Kerja Teknologi"}
                     </div>
-                    <div className="bg-[#080808] border border-white/10 rounded-lg p-4 font-mono text-xs md:text-[11px] text-[#ECFF8A]/80 space-y-1 overflow-x-auto shadow-inner relative">
+                    <div className="bg-[#080808] border border-white/10 rounded-lg p-4 font-mono text-xs md:text-[11px] text-[#ECFF8A]/80 space-y-1 overflow-x-auto custom-scrollbar-x shadow-inner relative">
                       <div className="absolute top-3 right-3 text-[10px] text-muted-foreground/65 uppercase">ts</div>
                       <div>
                         <span className="text-purple-400">const</span> <span className="text-blue-400">founder</span> = &#123;
@@ -287,10 +329,10 @@ export function TeamSection() {
             </div>
 
             {/* Bottom Keyboard shortcuts bar */}
-            <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+            <div className="hidden sm:flex h-10 border-t border-white/10 bg-[#0a0a0a]/65 items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Open Profile</span>
-                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Navigate</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> {lang === "en" ? "Open Profile" : "Buka Profil"}</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> {lang === "en" ? "Navigate" : "Navigasi"}</span>
               </div>
             </div>
 

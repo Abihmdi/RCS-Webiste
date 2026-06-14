@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
+import { AnimatedText } from "@/components/ui/animated-shiny-text"
 
 export function Navbar() {
   const { lang, setLang, t } = useLanguage()

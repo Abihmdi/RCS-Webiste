@@ -170,7 +170,7 @@ export function AIAssistant() {
         <button
           onClick={handleOpenToggle}
           aria-label="Open AI Assistant"
-          className="relative w-14 h-14 rounded-full bg-secondary border border-border/80 hover:border-accent/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-accent"
+          className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-secondary border border-border/80 hover:border-accent/60 flex items-center justify-center cursor-pointer transition-all duration-300 group hover:scale-105 active:scale-95 text-foreground hover:text-accent opacity-75 md:opacity-100 hover:opacity-100 transition-opacity"
         >
           {/* Notification Ping Alert */}
           {hasNewMessage && (

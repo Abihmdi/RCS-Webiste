@@ -1,11 +1,11 @@
 "use client"
 
-import { use, useState, useEffect } from "react"
+import { use, useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowLeft, Terminal, Bot, Sparkles, ShieldCheck, Cpu, Building2, Calendar, Globe, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
-import { projects } from "@/components/portfolio-section"
+import { projects, projectsTranslations } from "@/components/portfolio-section"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -24,7 +24,20 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
     }
   }, [])
 
-  const project = projects.find((p) => p.slug === slug)
+  const rawProject = projects.find((p) => p.slug === slug)
+  const projectIndex = projects.findIndex((p) => p.slug === slug)
+
+  const project = useMemo(() => {
+    if (!rawProject || projectIndex === -1) return null
+    return {
+      ...rawProject,
+      subtitle: projectsTranslations[lang][projectIndex].subtitle,
+      caseStudy: projectsTranslations[lang][projectIndex].caseStudy,
+      solution: projectsTranslations[lang][projectIndex].solution,
+      features: projectsTranslations[lang][projectIndex].features,
+      type: projectsTranslations[lang][projectIndex].type
+    }
+  }, [rawProject, projectIndex, lang])
 
   // Diagnostics simulator logs
   useEffect(() => {
@@ -152,7 +165,7 @@ export default function ProjectCaseStudyPage({ params }: PageProps) {
             <div className="space-y-3">
               <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5 select-none">
                 <Cpu size={12} style={{ color: project.color }} />
-                <span>01 — {lang === "en" ? "PROBLEM STATEMENT" : "MASALAH UTAMA"}</span>
+                <span>01 — {lang === "en" ? "PROBLEM STATEMENT" : "PERNYATAAN MASALAH"}</span>
               </div>
               <div 
                 className="bg-secondary/20 border border-border/50 rounded-2xl p-6 text-sm text-muted-foreground leading-relaxed border-l-4 font-sans text-justify"

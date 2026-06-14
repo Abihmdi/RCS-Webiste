@@ -51,12 +51,92 @@ const processSteps = [
   { icon: Shield,        num: "04", title: "Monitoring & Maintenance",  desc: "Long-term monitoring to ensure our systems deliver value." },
 ]
 
+const servicesTranslations = {
+  en: [
+    {
+      title: "Technology Modernization",
+      desc: "End-to-end business transformation — management systems, automation, customer data management, and more.",
+      actions: ["System Auditing", "Workflow Automation", "CRM/ERP Development", "API Integrations"]
+    },
+    {
+      title: "Data Analysis & AI",
+      desc: "Identifying patterns, trends, and opportunities using AI to provide insights that drive better decisions.",
+      actions: ["Data Pipeline Engineering", "Predictive Analytics", "Custom ML Models", "BI Dashboarding"]
+    },
+    {
+      title: "Product & Service Innovation",
+      desc: "Conceiving, developing, and launching new digital products — from apps to full-stack web platforms.",
+      actions: ["MVP Rapid Prototyping", "Fullstack SaaS Platforms", "Mobile App Development", "UI/UX System Design"]
+    },
+    {
+      title: "Technology Infrastructure",
+      desc: "Planning, implementation, and management of networks, servers, hardware, CCTV, and software.",
+      actions: ["Cloud Infrastructure Setup", "Network Architecture Design", "Cybersecurity Audits", "Hardware Provisioning"]
+    }
+  ],
+  id: [
+    {
+      title: "Modernisasi Teknologi",
+      desc: "Transformasi bisnis menyeluruh (end-to-end) — sistem manajemen, otomatisasi alur kerja, pengelolaan data pelanggan, dan lainnya.",
+      actions: ["Audit Sistem", "Otomatisasi Alur Kerja", "Pengembangan CRM/ERP", "Integrasi API"]
+    },
+    {
+      title: "Analisis Data & AI",
+      desc: "Mengidentifikasi pola, tren, dan peluang menggunakan AI untuk memberikan wawasan yang mendorong keputusan lebih baik.",
+      actions: ["Rekayasa Pipa Data", "Analisis Prediktif", "Model ML Kustom", "Dashboard Intelijen Bisnis"]
+    },
+    {
+      title: "Inovasi Produk & Layanan",
+      desc: "Merancang, mengembangkan, dan meluncurkan produk digital baru — mulai dari aplikasi hingga platform web full-stack.",
+      actions: ["Prototipe Cepat MVP", "Platform SaaS Full-Stack", "Pengembangan Aplikasi Mobile", "Desain Sistem UI/UX"]
+    },
+    {
+      title: "Infrastruktur Teknologi",
+      desc: "Perencanaan, implementasi, dan pengelolaan jaringan, server, perangkat keras, CCTV, serta perangkat lunak.",
+      actions: ["Penyusunan Infrastruktur Cloud", "Desain Arsitektur Jaringan", "Audit Keamanan Siber", "Penyediaan Perangkat Keras"]
+    }
+  ]
+}
+
+const processTranslations = {
+  en: [
+    { title: "Business Diagnosis", desc: "Thoroughly diagnosing your business to identify opportunities." },
+    { title: "Discussion & Solutions", desc: "Engaging in deep discussions to find the most effective solutions." },
+    { title: "Technology Implementation", desc: "Taking full responsibility for pixel-perfect implementation." },
+    { title: "Monitoring & Maintenance", desc: "Long-term monitoring to ensure our systems deliver value." }
+  ],
+  id: [
+    { title: "Diagnosis Bisnis", desc: "Mendiagnosis bisnis Anda secara mendalam untuk mengidentifikasi peluang perkembangan." },
+    { title: "Diskusi & Solusi", desc: "Melakukan diskusi mendalam untuk menemukan solusi yang paling efektif." },
+    { title: "Implementasi Teknologi", desc: "Mengambil tanggung jawab penuh atas implementasi teknis yang sempurna." },
+    { title: "Pemantauan & Pemeliharaan", desc: "Pemantauan jangka panjang untuk memastikan sistem kami terus memberikan nilai bagi Anda." }
+  ]
+}
+
 export function ServicesSection() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [activeIdx, setActiveIdx] = useState(0)
-  const activeSvc = services[activeIdx]
+
+  const localizedServices = useMemo(() => {
+    return services.map((svc, idx) => ({
+      ...svc,
+      title: servicesTranslations[lang][idx].title,
+      desc: servicesTranslations[lang][idx].desc,
+      actions: servicesTranslations[lang][idx].actions,
+    }))
+  }, [lang])
+
+  const localizedSteps = useMemo(() => {
+    return processSteps.map((step, idx) => ({
+      ...step,
+      title: processTranslations[lang][idx].title,
+      desc: processTranslations[lang][idx].desc,
+    }))
+  }, [lang])
+
+  const activeSvc = localizedServices[activeIdx]
 
   // Spring-based 3D tilt logic
   const x = useMotionValue(0)
@@ -145,19 +225,19 @@ export function ServicesSection() {
                 <span className="text-muted-foreground font-mono text-xs">🔍</span>
                 <input 
                    type="text" 
-                  placeholder="Search capabilities..." 
+                  placeholder={lang === "en" ? "Search capabilities..." : "Cari keahlian/layanan..."} 
                   disabled
                   className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
                 />
-                <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+                <span className="hidden sm:inline-block text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
               </div>
 
               {/* Commands list */}
               <div className="p-3 space-y-1.5 overflow-y-auto no-scrollbar">
                 <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold">
-                  Service Actions
+                  {lang === "en" ? "Service Actions" : "Aksi Layanan"}
                 </div>
-                {services.map((svc, index) => {
+                {localizedServices.map((svc, index) => {
                   const isSelected = activeIdx === index
                   const SvcIcon = svc.icon
                   return (
@@ -189,7 +269,7 @@ export function ServicesSection() {
                         </div>
                       </div>
                       
-                      <span className="text-[10px] font-mono bg-background border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground ml-2">
+                      <span className="hidden sm:inline-block text-[10px] font-mono bg-background border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground ml-2">
                         ⌥ {index + 1}
                       </span>
                     </button>
@@ -201,10 +281,12 @@ export function ServicesSection() {
             {/* Quick Summary bottom */}
             <div className="p-4 border-t border-white/10 bg-[#0a0a0a]/30 hidden md:block">
               <div className="text-[10px] font-mono text-muted-foreground tracking-wider uppercase mb-2 font-semibold">
-                Capability Framework
+                {lang === "en" ? "Capability Framework" : "Kerangka Kerja Kapabilitas"}
               </div>
               <p className="text-xs md:text-[10px] text-muted-foreground/80 leading-relaxed font-sans">
-                We diagnose, design, implement, and monitor. Every system is built to maximize cost efficiency and boost operational output.
+                {lang === "en" 
+                  ? "We diagnose, design, implement, and monitor. Every system is built to maximize cost efficiency and boost operational output."
+                  : "Kami mendiagnosis, merancang, mengimplementasikan, dan memantau. Setiap sistem dibangun untuk memaksimalkan efisiensi biaya dan meningkatkan hasil operasional."}
               </p>
             </div>
           </div>
@@ -248,7 +330,7 @@ export function ServicesSection() {
                         {activeSvc.title}
                       </div>
                       <div className="text-[10px] font-mono text-muted-foreground mt-0.5">
-                        Operation Code: active_service_0{activeSvc.id}
+                        {lang === "en" ? "Operation Code" : "Kode Operasi"}: active_service_0{activeSvc.id}
                       </div>
                     </div>
                   </div>
@@ -261,7 +343,7 @@ export function ServicesSection() {
                   {/* Core Actions checklist */}
                   <div className="space-y-2.5">
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                      Executed Modules
+                      {lang === "en" ? "Executed Modules" : "Modul Ter-eksekusi"}
                     </div>
                     <div className="grid grid-cols-1 xs:grid-cols-2 gap-2">
                       {activeSvc.actions.map((act) => (
@@ -276,11 +358,11 @@ export function ServicesSection() {
                   {/* Process workflow steps */}
                   <div className="space-y-3">
                     <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                      Execution Lifecycle (4-Step Pipeline)
+                      {lang === "en" ? "Execution Lifecycle (4-Step Pipeline)" : "Siklus Eksekusi (4-Langkah Pipeline)"}
                     </div>
                     
                     <div className="space-y-2">
-                      {processSteps.map((step, sIdx) => {
+                      {localizedSteps.map((step, sIdx) => {
                         const StepIcon = step.icon
                         return (
                           <div 
@@ -307,13 +389,13 @@ export function ServicesSection() {
             </div>
 
             {/* Bottom bar */}
-            <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
+            <div className="hidden sm:flex h-10 border-t border-white/10 bg-[#0a0a0a]/65 items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
               <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Execute</span>
-                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Switch Pane</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> {lang === "en" ? "Execute" : "Eksekusi"}</span>
+                <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> {lang === "en" ? "Switch Pane" : "Ganti Panel"}</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌥ 1-4</span> Select
+                <span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌥ 1-4</span> {lang === "en" ? "Select" : "Pilih"}
               </div>
             </div>
 
@@ -328,7 +410,9 @@ export function ServicesSection() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center mt-12"
         >
-          <p className="text-muted-foreground mb-4 text-xs font-mono">Need a custom technical roadmap? Let&apos;s interface.</p>
+          <p className="text-muted-foreground mb-4 text-xs font-mono">
+            {lang === "en" ? "Need a custom technical roadmap? Let's interface." : "Butuh peta jalan teknis kustom? Hubungi kami."}
+          </p>
           <a href="mailto:ruangciptasolusi@gmail.com" className="btn-brand inline-flex text-xs font-mono">
             {t("services_cta")} →
           </a>

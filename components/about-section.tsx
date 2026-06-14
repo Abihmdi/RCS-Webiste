@@ -379,7 +379,7 @@ export function AboutSection() {
               <span>Status: <span className="text-green-400">{t("about_status_synced")}</span></span>
               <span>Modules: <span className="text-foreground">{t("about_status_modules")}</span></span>
             </div>
-            <div>
+            <div className="hidden sm:block">
               <span>Press <span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold font-mono">⌥ D</span> to open docs</span>
             </div>
           </div>

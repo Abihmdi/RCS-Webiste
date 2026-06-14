@@ -1,8 +1,10 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Linkedin, Instagram, ArrowUp, Mail, MapPin, Globe } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
+import { AnimatedText } from "@/components/ui/animated-shiny-text"
 
 const socials = [
   { icon: Linkedin, href: "https://linkedin.com/company/ruangciptasolusi", label: "LinkedIn", color: "#0A66C2" },
@@ -10,7 +12,17 @@ const socials = [
 ]
 
 export function Footer() {
-  const { t } = useLanguage()
+  const { lang, t } = useLanguage()
+  const [email, setEmail] = useState("")
+  const [subscribed, setSubscribed] = useState(false)
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    setSubscribed(true)
+    setEmail("")
+  }
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -31,12 +43,15 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
-            <span
-              className="text-[28px] font-black tracking-[0.08em] text-white leading-none flex items-center select-none"
+            <AnimatedText
+              gradientColors="linear-gradient(90deg, #18181b, #ffffff, #18181b)"
+              textClassName="text-[22px] font-black tracking-[0.08em] text-white leading-none flex items-center select-none"
+              className="py-0 flex-shrink-0 justify-start"
               style={{ fontFamily: "var(--font-bebas-neue)" }}
             >
-              RCS<span className="text-accent">.</span>
-            </span>
+              <span>RCS</span>
+              <span className="text-accent" style={{ background: "none", WebkitBackgroundClip: "unset", WebkitTextFillColor: "var(--accent)", color: "var(--accent)" }}>.</span>
+            </AnimatedText>
             <p className="text-xs text-muted-foreground leading-relaxed max-w-xs font-sans">
               {t("footer_tagline")}
             </p>
@@ -83,20 +98,24 @@ export function Footer() {
             <p className="text-xs text-muted-foreground leading-normal font-sans">
               Get notified of telemetry logs and technical roadmap updates.
             </p>
-            <div className="flex items-center gap-2 bg-[#141414]/40 border border-white/10 rounded-lg p-2 max-w-sm group focus-within:border-white/20 transition-all">
+            <form onSubmit={handleSubscribe} className="flex items-center gap-2 bg-[#141414]/40 border border-white/10 rounded-lg p-2 max-w-sm group focus-within:border-white/20 transition-all">
               <input
                 type="email"
-                placeholder="developer@domain.com"
-                className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/50 border-none outline-none w-full px-2"
-                readOnly
+                placeholder={subscribed ? (lang === "en" ? "Subscribed!" : "Terdaftar!") : "developer@domain.com"}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={subscribed}
+                className="bg-transparent text-xs font-mono text-foreground placeholder:text-muted-foreground/50 border-none outline-none w-full px-2 disabled:text-accent font-semibold"
+                required
               />
               <button 
-                disabled 
-                className="text-[10px] font-mono text-accent bg-accent/8 border border-accent/20 px-2.5 py-1 rounded-md shrink-0 cursor-not-allowed"
+                type="submit"
+                disabled={subscribed || !email}
+                className="text-[10px] font-mono text-accent bg-accent/8 border border-accent/20 px-2.5 py-1 rounded-md shrink-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent/15 transition-colors"
               >
-                Join
+                {subscribed ? (lang === "en" ? "Done" : "Selesai") : "Join"}
               </button>
-            </div>
+            </form>
           </div>
 
         </div>

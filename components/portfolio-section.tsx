@@ -133,6 +133,125 @@ export const projects = [
   },
 ]
 
+export const projectsTranslations = {
+  en: [
+    {
+      subtitle: "Chrome Extension & Second Brain",
+      caseStudy: "Users struggle to digest long-form web articles, draft context-aware replies, and retain knowledge across multiple browser tabs, causing information overload and fractured productivity.",
+      solution: "We engineered Aksara AI, a Chrome extension that serves as a context-aware second brain. It allows users to summarize articles, draft email/social replies with custom tones, translate line-by-line, and save searchable highlights locally.",
+      features: ["Instant Summarizer", "AI Reply Generator", "Local Vector Memory", "Inline Translator", "No-Setup Groq Integration"],
+      type: "Extension"
+    },
+    {
+      subtitle: "CRM Implementation",
+      caseStudy: "Bill Muhdor, juggling art sales, workshops, and client communication, needs a better system. Manual management creates missed leads, booking errors, and hinders client relationships.",
+      solution: "We implement a customized CRM for Bill Muhdor, enhancing his team's ability to manage customer information and communication, as well as facilitating marketing aspects and operational aspects of his art business.",
+      features: ["Customer Management", "Marketing Automation", "Operational Efficiency"],
+      type: "CRM"
+    },
+    {
+      subtitle: "Cognitive Assessment Website",
+      caseStudy: "Traditional methods for assessing cognitive function are unreliable, making it hard to diagnose dementia early. This delays treatment and worsens patient outcomes.",
+      solution: "We created Braincoach, a website designed for cognitive assessment and training. Leveraging AI capabilities, Braincoach supports accurate assessment and provides cognitive training games to enhance brain function.",
+      features: ["Cognitive Assessment (MOCA INA)", "AI Integration", "Training Games"],
+      type: "Web App"
+    },
+    {
+      subtitle: "Beauty Clinic Application",
+      caseStudy: "Beauty clinics juggle scattered data, manual tasks, and weak patient connections. This chaos disrupts appointment bookings, sales, and community building.",
+      solution: "We have developed Heystetik, an innovative application designed for beauty clinics. Heystetik allows users to consult with doctors, book treatments, purchase skincare products, and engage in discussions with other users through streaming features.",
+      features: ["Doctor Consultation", "Treatment Booking", "Commerce", "Stream", "Progress Tracker"],
+      type: "Mobile App"
+    },
+    {
+      subtitle: "ERP Implementation",
+      caseStudy: "Disconnected hospital systems (registration, appointments, inventory, pharmacy, billing) cause delays, errors, and information gaps. This frustrates staff, hinders care, and hurts the overall hospital experience.",
+      solution: "Our Hospital Management System provides an integrated platform to handle all hospital operations efficiently. This system also includes ERP-based medical record management.",
+      features: ["Patient Registration", "Doctor & Clinic Management", "Inventory and Pharmacy", "Billing System", "Medical Record"],
+      type: "ERP"
+    },
+    {
+      subtitle: "Recruitment Management System",
+      caseStudy: "The surge in applications and manual processes for tasks like administering tests, scoring results, and scheduling interviews are creating bottlenecks for recruiters.",
+      solution: "We are developing a Recruitment Tool to automate daily recruitment tasks, including test administration, automated scoring, and interview scheduling integrated with email, Google Calendar, and video conferencing tools.",
+      features: ["Automated Testing", "Interview Scheduling", "Operational Automation"],
+      type: "SaaS"
+    },
+    {
+      subtitle: "Travel ERP Software",
+      caseStudy: "A travel agency using disconnected systems for bookings, quotes, invoices, and operations faces challenges in providing accurate information to clients and tracking overall business performance.",
+      solution: "Travelator is an ERP software specifically designed to simplify travel business operations. It streamlines various aspects of travel management, including bookings, quotations, billing, task management, and financial tracking.",
+      features: ["Order Management", "Offers and Billing", "Task Management", "Revenue & Expenditure Management"],
+      type: "ERP"
+    },
+    {
+      subtitle: "Patrol Management Application",
+      caseStudy: "Inefficient patrol management (gaps, missed patrols, slow response) creates operational risks and eats into profits. Expensive patrol devices add another financial burden.",
+      solution: "Vistral is a patrol management application that simplifies attendance tracking, patrol management, and emergency responses. This application utilizes QR codes for attendance verification and ERP-based patrols.",
+      features: ["Attendance Tracking", "Patrol Management", "SOS Button", "Anti Fake GPS"],
+      type: "Mobile App"
+    }
+  ],
+  id: [
+    {
+      subtitle: "Ekstensi Chrome & Asisten Otak Kedua",
+      caseStudy: "Pengguna kesulitan mencerna artikel web yang panjang, menyusun draf balasan yang peka konteks, dan mempertahankan informasi di banyak tab browser, yang mengakibatkan kelebihan informasi dan produktivitas terhambat.",
+      solution: "Kami merancang Aksara AI, sebuah ekstensi Chrome yang berfungsi sebagai otak kedua yang peka konteks. Memungkinkan pengguna merangkum artikel secara instan, membuat draf email/media sosial dengan nada kustom, menerjemahkan baris demi baris, serta menyimpan poin penting secara lokal.",
+      features: ["Perangkum Instan", "Pembuat Balasan AI", "Memori Vektor Lokal", "Penerjemah Sebaris", "Integrasi Groq Tanpa Setup"],
+      type: "Ekstensi"
+    },
+    {
+      subtitle: "Implementasi CRM",
+      caseStudy: "Bill Muhdor, yang mengelola penjualan karya seni, lokakarya, dan komunikasi klien, membutuhkan sistem yang lebih baik. Manajemen manual menyebabkan hilangnya prospek, kesalahan pemesanan, dan menghambat hubungan dengan klien.",
+      solution: "Kami mengimplementasikan CRM kustom untuk Bill Muhdor, meningkatkan kemampuan timnya dalam mengelola informasi dan komunikasi pelanggan, serta memfasilitasi aspek pemasaran dan operasional bisnis seninya.",
+      features: ["Manajemen Pelanggan", "Otomatisasi Pemasaran", "Efisiensi Operasional"],
+      type: "CRM"
+    },
+    {
+      subtitle: "Website Penilaian Kognitif",
+      caseStudy: "Metode tradisional untuk menilai fungsi kognitif kurang andal, menyulitkan diagnosis dini demensia. Hal ini menunda perawatan dan memperburuk kondisi pasien.",
+      solution: "Kami membangun Braincoach, sebuah platform web untuk penilaian dan pelatihan kognitif. Memanfaatkan kemampuan AI, Braincoach mendukung penilaian yang akurat dan menyediakan permainan latihan kognitif untuk meningkatkan fungsi otak.",
+      features: ["Penilaian Kognitif (MOCA INA)", "Integrasi AI", "Game Latihan Otak"],
+      type: "Web App"
+    },
+    {
+      subtitle: "Aplikasi Klinik Kecantikan",
+      caseStudy: "Klinik kecantikan sering kali menghadapi masalah data yang tersebar, tugas-tugas manual, dan lemahnya hubungan dengan pasien. Hal ini mengacaukan pemesanan janji temu, penjualan, dan pembangunan komunitas.",
+      solution: "Kami mengembangkan Heystetik, aplikasi inovatif untuk klinik kecantikan. Heystetik memungkinkan pengguna berkonsultasi dengan dokter, memesan perawatan, membeli produk perawatan kulit, dan berdiskusi melalui fitur streaming.",
+      features: ["Konsultasi Dokter", "Pemesanan Perawatan", "E-Commerce", "Fitur Streaming", "Pelacak Kemajuan"],
+      type: "Mobile App"
+    },
+    {
+      subtitle: "Implementasi ERP",
+      caseStudy: "Sistem rumah sakit yang terfragmentasi (registrasi, janji temu, inventaris, farmasi, penagihan) menyebabkan penundaan, kesalahan data, dan celah informasi. Hal ini menghambat pelayanan medis.",
+      solution: "Sistem Manajemen Rumah Sakit kami menyediakan platform terintegrasi untuk mengelola seluruh operasional rumah sakit secara efisien, lengkap dengan manajemen rekam medis berbasis ERP.",
+      features: ["Registrasi Pasien", "Manajemen Dokter & Klinik", "Inventaris & Farmasi", "Sistem Penagihan", "Rekam Medis Digital"],
+      type: "ERP"
+    },
+    {
+      subtitle: "Sistem Manajemen Rekrutmen",
+      caseStudy: "Lonjakan lamaran kerja dan proses manual untuk tugas seperti ujian, penilaian, dan penjadwalan wawancara menciptakan hambatan besar bagi perekrut.",
+      solution: "Kami mengembangkan Sistem Rekrutmen untuk mengotomatisasi tugas harian HRD, termasuk pelaksanaan tes online, penilaian otomatis, dan penjadwalan wawancara yang terintegrasi dengan email serta kalender.",
+      features: ["Ujian Otomatis", "Penjadwalan Wawancara", "Otomatisasi Operasional"],
+      type: "SaaS"
+    },
+    {
+      subtitle: "Software ERP Agen Perjalanan",
+      caseStudy: "Agen perjalanan yang menggunakan sistem terpisah untuk pemesanan, penawaran harga, faktur, dan operasional menghadapi kendala dalam menyajikan data akurat dan melacak kinerja keuangan bisnis.",
+      solution: "Travelator adalah software ERP yang dirancang khusus untuk menyederhanakan operasional bisnis agen perjalanan. Membantu pemesanan, pembuatan kuotasi harga, penagihan, manajemen tugas, serta pelacakan arus kas.",
+      features: ["Manajemen Pesanan", "Penawaran & Penagihan", "Manajemen Tugas", "Pengelolaan Pendapatan & Pengeluaran"],
+      type: "ERP"
+    },
+    {
+      subtitle: "Aplikasi Manajemen Patroli Keamanan",
+      caseStudy: "Manajemen patroli yang tidak efisien (adanya celah patroli, keterlambatan respons darurat) memicu risiko keamanan tinggi dan merugikan operasional. Ditambah mahalnya biaya perangkat patroli khusus.",
+      solution: "Vistral adalah aplikasi manajemen patroli yang menyederhanakan pelacakan kehadiran, rute patroli, dan respons darurat. Aplikasi ini memanfaatkan verifikasi berbasis QR code dan patroli terintegrasi ERP.",
+      features: ["Pelacakan Kehadiran", "Manajemen Rute Patroli", "Tombol Darurat SOS", "Anti-GPS Palsu"],
+      type: "Mobile App"
+    }
+  ]
+}
+
 const ProjectCard = memo(({ 
   id,
   project, 
@@ -209,7 +328,7 @@ const ProjectCard = memo(({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-[10px] font-mono text-[#e7c59a] bg-[#e7c59a]/8 hover:bg-[#e7c59a]/15 border border-[#e7c59a]/30 px-2.5 py-1 rounded transition-colors"
                 >
-                  <span>View Web</span>
+                  <span>{lang === "en" ? "View Web" : "Lihat Web"}</span>
                   <ArrowRight size={10} className="-rotate-45" />
                 </a>
               )}
@@ -226,7 +345,7 @@ const ProjectCard = memo(({
             <div className="space-y-1">
               <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5">
                 <BookOpen size={10} style={{ color: project.color }} />
-                Problem Statement
+                {lang === "en" ? "Problem Statement" : "Pernyataan Masalah"}
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed text-justify">
                 {project.caseStudy}
@@ -236,7 +355,7 @@ const ProjectCard = memo(({
             {/* Solution */}
             <div className="space-y-1">
               <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                Solution
+                {lang === "en" ? "Solution" : "Solusi"}
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed text-justify">
                 {project.solution}
@@ -246,7 +365,7 @@ const ProjectCard = memo(({
             {/* Key Features */}
             <div className="space-y-1">
               <div className="text-[9px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                Key Features
+                {lang === "en" ? "Key Features" : "Fitur Utama"}
               </div>
               <div className="flex flex-wrap gap-1">
                 {project.features.map((feat) => (
@@ -296,9 +415,20 @@ export function PortfolioSection() {
     setSelectedId((prev) => (prev === id ? null : id))
   }, [])
 
+  const localizedProjects = useMemo(() => {
+    return projects.map((project, idx) => ({
+      ...project,
+      subtitle: projectsTranslations[lang][idx].subtitle,
+      caseStudy: projectsTranslations[lang][idx].caseStudy,
+      solution: projectsTranslations[lang][idx].solution,
+      features: projectsTranslations[lang][idx].features,
+      type: projectsTranslations[lang][idx].type
+    }))
+  }, [lang])
+
   // Filter projects by category and query
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
+    return localizedProjects.filter((project) => {
       const matchesCategory = activeCategory === "All" || project.category === activeCategory
       const matchesSearch = 
         project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -306,17 +436,17 @@ export function PortfolioSection() {
         project.caseStudy.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
-  }, [activeCategory, searchQuery])
+  }, [localizedProjects, activeCategory, searchQuery])
 
   // Select first match if current selectedId is not in filtered list
   const activeProject = useMemo(() => {
     if (selectedId === null) return null
-    const current = projects.find((p) => p.id === selectedId)
+    const current = localizedProjects.find((p) => p.id === selectedId)
     if (current && filteredProjects.some((p) => p.id === selectedId)) {
       return current
     }
     return filteredProjects[0] || null
-  }, [filteredProjects, selectedId])
+  }, [localizedProjects, filteredProjects, selectedId])
 
   return (
     <section 
@@ -382,12 +512,12 @@ export function PortfolioSection() {
               <Search size={12} className="text-muted-foreground/85" />
               <input
                 type="text"
-                placeholder="Search extensions..."
+                placeholder={lang === "en" ? "Search extensions..." : "Cari karya/proyek..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent text-sm md:text-xs font-mono text-foreground placeholder:text-muted-foreground/60 border-none outline-none w-full"
               />
-              <span className="text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
+              <span className="hidden sm:inline-block text-[10px] font-mono bg-[#242424] border border-white/10 px-1.5 py-0.5 rounded text-muted-foreground">⌘F</span>
             </div>
 
             <div className="hidden md:flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
@@ -421,7 +551,9 @@ export function PortfolioSection() {
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
-                      <span className="relative z-10">{category}</span>
+                      <span className="relative z-10">
+                        {category === "All" ? (lang === "en" ? "All" : "Semua") : category}
+                      </span>
                     </button>
                   )
                 })}
@@ -430,8 +562,8 @@ export function PortfolioSection() {
               {/* Extensions list */}
               <div className="flex-grow overflow-y-auto p-3 space-y-1.5 no-scrollbar">
                 <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest px-2 mb-2 font-semibold flex items-center justify-between">
-                  <span>Results</span>
-                  <span>{filteredProjects.length} matching</span>
+                  <span>{lang === "en" ? "Results" : "Hasil"}</span>
+                  <span>{filteredProjects.length} {lang === "en" ? "matching" : "cocok"}</span>
                 </div>
                 
                 {filteredProjects.length > 0 ? (
@@ -447,12 +579,14 @@ export function PortfolioSection() {
                   ))
                 ) : (
                   <div className="text-center py-12">
-                    <div className="text-xs font-mono text-muted-foreground">No extensions found.</div>
+                    <div className="text-xs font-mono text-muted-foreground">
+                      {lang === "en" ? "No extensions found." : "Proyek tidak ditemukan."}
+                    </div>
                     <button 
                       onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
                       className="mt-3 text-[10px] font-mono text-[#ECFF8A] underline cursor-pointer"
                     >
-                      Clear search filters
+                      {lang === "en" ? "Clear search filters" : "Hapus filter pencarian"}
                     </button>
                   </div>
                 )}
@@ -521,7 +655,7 @@ export function PortfolioSection() {
                               rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 text-[10px] font-mono text-[#ECFF8A] bg-[#ECFF8A]/8 hover:bg-[#ECFF8A]/15 border border-[#ECFF8A]/30 px-2 py-0.5 rounded-lg transition-colors"
                             >
-                              <span>View Web</span>
+                              <span>{lang === "en" ? "View Web" : "Lihat Web"}</span>
                               <ArrowRight size={10} className="-rotate-45" />
                             </a>
                           )}
@@ -539,7 +673,7 @@ export function PortfolioSection() {
                       <div className="space-y-2">
                         <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold flex items-center gap-1.5">
                           <BookOpen size={11} style={{ color: activeProject.color }} />
-                          README.md / Problem Statement
+                          README.md / {lang === "en" ? "Problem Statement" : "Pernyataan Masalah"}
                         </div>
                         <div 
                           className="bg-[#242424]/30 border border-white/10 rounded-lg p-4 text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify border-l-2"
@@ -552,7 +686,7 @@ export function PortfolioSection() {
                       {/* Solution section */}
                       <div className="space-y-2">
                         <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                          Our Engineered Solution
+                          {lang === "en" ? "Our Engineered Solution" : "Solusi Rekayasa Kami"}
                         </div>
                         <p className="text-sm md:text-xs text-muted-foreground leading-relaxed font-sans text-justify">
                           {activeProject.solution}
@@ -562,7 +696,7 @@ export function PortfolioSection() {
                       {/* Key Features list */}
                       <div className="space-y-2">
                         <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                          Key Features
+                          {lang === "en" ? "Key Features" : "Fitur Utama"}
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {activeProject.features.map((feature) => (
@@ -579,7 +713,7 @@ export function PortfolioSection() {
                       {/* Installation terminal snippet */}
                       <div className="space-y-2">
                         <div className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase font-semibold">
-                          Installation Command
+                          {lang === "en" ? "Installation Command" : "Perintah Instalasi"}
                         </div>
                         <div className="bg-[#080808] border border-white/10 rounded-lg p-4 font-mono text-xs md:text-[11px] text-foreground/85 flex items-center justify-between shadow-inner">
                           <div className="flex items-center gap-2">
@@ -596,13 +730,16 @@ export function PortfolioSection() {
 
                 {/* Bottom status keys bar */}
                 <div className="h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground relative z-10">
-                  <div className="flex items-center gap-4">
-                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> Install</span>
-                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌘K</span> Action Panel</span>
+                  <div className="hidden sm:flex items-center gap-4">
+                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">↵</span> {lang === "en" ? "Install" : "Instal"}</span>
+                    <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌘K</span> {lang === "en" ? "Action Panel" : "Panel Aksi"}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <span>Year:</span>
-                    <span className="text-foreground">{activeProject.year}</span>
+                  <div className="flex items-center gap-1 w-full sm:w-auto justify-between sm:justify-end">
+                    <span className="sm:hidden font-semibold">{lang === "en" ? "Project Details" : "Detail Proyek"}</span>
+                    <span className="flex items-center gap-1">
+                      <span>{lang === "en" ? "Year:" : "Tahun:"}</span>
+                      <span className="text-foreground">{activeProject.year}</span>
+                    </span>
                   </div>
                 </div>
               </>

@@ -225,15 +225,15 @@ const en: Translations = {
 
 const id: Translations = {
   // Navbar / Announcement
-  nav_announcement: "RCS Meluncurkan Solusi Enterprise Berbasis AI —",
-  nav_learn_more: "Selengkapnya",
+  nav_announcement: "RCS Luncurkan Solusi Enterprise AI-Native —",
+  nav_learn_more: "Pelajari Selengkapnya",
   nav_home: "Beranda",
-  nav_about: "Tentang",
+  nav_about: "Tentang Kami",
   nav_services: "Layanan",
   nav_team: "Tim",
   nav_portfolio: "Portofolio",
   nav_contact: "Kontak",
-  nav_get_started: "Mulai",
+  nav_get_started: "Mulai Sekarang",
 
   // Hero
   hero_pill: "Mitra Transformasi Digital",
@@ -241,7 +241,7 @@ const id: Translations = {
   hero_heading_accent: "HASIL",
   hero_heading_2: "TERBAIK",
   hero_description:
-    "Kami mengoptimalkan hasil bisnis melalui digitalisasi. Strategi bertemu eksekusi untuk membangun kehadiran digital generasi berikutnya.",
+    "Kami mengoptimalkan kinerja bisnis melalui digitalisasi. Strategi berpadu eksekusi untuk membangun eksistensi digital masa depan Anda.",
   hero_cta_primary: "Mulai Proyek",
   hero_cta_secondary: "Lihat Portofolio",
   hero_telemetry_label: "Telemetri Sistem",
@@ -251,10 +251,10 @@ const id: Translations = {
   about_heading_1: "SIAPA",
   about_heading_accent: "KAMI",
   about_description:
-    "PT Ruang Cipta Solusi (RCS) dirancang untuk menyelaraskan strategi tingkat tinggi dengan eksekusi teknis yang presisi.",
+    "PT Ruang Cipta Solusi (RCS) dirancang untuk menyelaraskan strategi tingkat tinggi dengan eksekusi teknis yang presisi dan sempurna.",
   about_mission_label: "PERNYATAAN_MISI",
   about_mission_text:
-    "Kami mengoptimalkan hasil bisnis melalui digitalisasi. Nilai hanya terwujud ketika diagnosis kondisi bisnis bertemu solusi yang tepat dan berkelanjutan. Kami bertanggung jawab atas seluruh lapisan teknologi Anda.",
+    "Kami mengoptimalkan hasil bisnis melalui digitalisasi. Nilai nyata hanya terwujud ketika diagnosis kondisi bisnis berpadu dengan solusi yang tepat dan berkelanjutan. Kami bertanggung jawab penuh atas seluruh infrastruktur teknologi Anda.",
   about_specs_label: "SPESIFIKASI_SISTEM",
   about_spec_entity: "Entitas:",
   about_spec_entity_value: "PT Ruang Cipta Solusi",
@@ -263,23 +263,23 @@ const id: Translations = {
   about_spec_role: "Cakupan Peran:",
   about_spec_role_value: "Mitra Full-Stack",
   about_spec_address: "Alamat Utama:",
-  about_spec_address_value: "Jakarta Selatan, ID",
+  about_spec_address_value: "Jakarta Selatan, Indonesia",
   about_deliverables_label: "DAFTAR_DELIVERABLE",
   about_deliverable_1: "Meningkatkan efisiensi manajemen",
-  about_deliverable_2: "Manajemen pelanggan yang efektif",
-  about_deliverable_3: "Membangun kehadiran & kepercayaan online klien",
-  about_stacks_label: "STACK_DEPENDENSI",
-  about_status_synced: "TERSINKRON",
+  about_deliverable_2: "Pengelolaan pelanggan secara efektif",
+  about_deliverable_3: "Membangun eksistensi & kredibilitas digital klien",
+  about_stacks_label: "STACK_TEKNOLOGI",
+  about_status_synced: "TERINTEGRASI",
   about_status_modules: "8 Dimuat",
   about_verified: "Mitra Layanan Cloud Terverifikasi",
   about_stat_exp_label: "Pengalaman",
   about_stat_exp_value: "3+ Tahun",
   about_stat_exp_badge: "Senior",
-  about_stat_del_label: "Diselesaikan",
+  about_stat_del_label: "Proyek Selesai",
   about_stat_del_value: "50+ Proyek",
   about_stat_del_badge: "Prod",
-  about_stat_sat_label: "Kepuasan",
-  about_stat_sat_value: "98% Rate",
+  about_stat_sat_label: "Tingkat Kepuasan",
+  about_stat_sat_value: "Tingkat 98%",
   about_stat_sat_badge: "Maks",
 
   // Services
@@ -287,7 +287,7 @@ const id: Translations = {
   services_heading_1: "APA YANG",
   services_heading_accent: "KAMI BANGUN",
   services_description:
-    "Solusi digital end-to-end yang dirancang untuk skala besar. Dari strategi hingga deployment, kami menangani setiap lapisan teknologi Anda.",
+    "Solusi digital end-to-end yang dirancang untuk skala besar. Mulai dari strategi hingga deployment, kami menangani setiap lapisan infrastruktur teknologi Anda.",
   services_cta: "Mulai Proyek",
 
   // Team
@@ -295,14 +295,14 @@ const id: Translations = {
   team_heading_1: "TIM",
   team_heading_accent: "KAMI",
   team_description:
-    "Unit khusus insinyur, desainer, dan ahli strategi yang berfokus pada pencapaian hasil digital terbaik.",
+    "Tim spesialis yang terdiri dari engineer, desainer, dan ahli strategi yang berfokus untuk menghasilkan solusi digital terbaik.",
 
   // Portfolio
   portfolio_pill: "04 — Registri Proyek",
   portfolio_heading_1: "KARYA",
   portfolio_heading_accent: "KAMI",
   portfolio_description:
-    "Proyek-proyek teruji yang telah diluncurkan ke produksi. Klien nyata, dampak nyata, hasil terukur.",
+    "Proyek-proyek teruji yang telah diluncurkan ke tahap produksi. Klien nyata, dampak nyata, dan hasil yang terukur.",
   portfolio_view_live: "Live",
   portfolio_view_code: "Kode",
 
@@ -311,7 +311,7 @@ const id: Translations = {
   contact_heading_1: "MARI",
   contact_heading_accent: "TERHUBUNG",
   contact_description:
-    "Siap mentransformasi bisnis Anda? Kirimkan pesan kepada kami dan kami akan merespons dalam 24 jam.",
+    "Siap mentransformasi bisnis Anda? Hubungi kami dan kami akan merespons pesan Anda dalam waktu 24 jam.",
   contact_name_label: "Nama Lengkap",
   contact_name_placeholder: "Nama Anda",
   contact_email_label: "Alamat Email",
@@ -330,8 +330,8 @@ const id: Translations = {
   contact_info_response: "Waktu Respons",
 
   // Footer
-  footer_tagline: "Membangun masa depan digital untuk bisnis yang ambisius.",
-  footer_rights: "Semua hak dilindungi.",
+  footer_tagline: "Merancang masa depan digital untuk bisnis yang ambisius.",
+  footer_rights: "Seluruh hak cipta dilindungi.",
   footer_links_title: "Tautan Cepat",
   footer_social_title: "Terhubung",
 }

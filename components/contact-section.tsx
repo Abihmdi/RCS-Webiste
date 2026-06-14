@@ -427,7 +427,7 @@ export function ContactSection() {
           </div>
 
           {/* Keyboard Shortcuts status bar - Col span 10 */}
-          <div className="col-span-10 h-10 border-t border-white/10 bg-[#0a0a0a]/65 flex items-center justify-between px-4 text-[10px] font-mono text-muted-foreground">
+          <div className="hidden sm:flex col-span-10 h-10 border-t border-white/10 bg-[#0a0a0a]/65 items-center justify-between px-4 text-[10px] font-mono text-muted-foreground">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">Tab</span> Navigate</span>
               <span className="flex items-center gap-1"><span className="bg-[#242424] px-1 py-0.5 rounded border border-white/10 text-foreground font-semibold">⌘↵</span> Send Message</span>

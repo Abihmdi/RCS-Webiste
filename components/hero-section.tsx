@@ -71,21 +71,11 @@ export function HeroSection() {
       >
         <div className="flex flex-col items-center text-center">
 
-          {/* Badge */}
-          <motion.div variants={fadeUp} className="mb-7">
-            <span className="inline-flex items-center gap-2.5 text-[13px] font-normal text-[#f3f3f3] bg-transparent border border-[#141414] rounded-lg px-4 py-1.5">
-              <span className="relative flex h-2 w-2">
-                <span className="beacon-ping absolute inline-flex h-full w-full rounded-full bg-[#ECFF8A] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#ECFF8A]" />
-              </span>
-              {t("hero_pill")}
-            </span>
-          </motion.div>
 
           {/* Heading — BIG */}
           <motion.h1
             variants={fadeUp}
-            className="text-[44px] xs:text-[52px] sm:text-[68px] md:text-[80px] lg:text-[96px] xl:text-[110px] font-black tracking-tight leading-[1] xs:leading-[0.92] mb-7"
+            className="text-[50px] xs:text-[58px] sm:text-[68px] md:text-[80px] lg:text-[96px] xl:text-[110px] font-black tracking-tight leading-[1] xs:leading-[0.92] mb-7"
             style={{ fontFamily: "var(--font-bebas-neue)" }}
           >
             <span className="text-white">{t("hero_heading_1")}</span>
@@ -117,7 +107,7 @@ export function HeroSection() {
                 <span className="animate-pulse text-[#ECFF8A] select-none ml-0.5">▎</span>
               </span>
             </div>
-            <span className="text-[10px] font-mono text-[#949494] bg-[#242424]/60 border border-white/10 px-2 py-0.5 rounded shrink-0">
+            <span className="text-[10px] font-mono text-[#949494] bg-[#242424]/60 border border-white/10 px-2 py-0.5 rounded shrink-0 hidden sm:inline-block">
               ⌘K
             </span>
           </motion.div>
