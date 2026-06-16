@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowRight, Play } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
 
@@ -18,6 +18,12 @@ export function HeroSection() {
   const [commandIdx, setCommandIdx] = useState(0)
   const [typedText, setTypedText] = useState("")
   const [isDeleting, setIsDeleting] = useState(false)
+
+  // Scroll parallax values
+  const { scrollY } = useScroll()
+  const y = useTransform(scrollY, [0, 600], [0, 180])
+  const opacity = useTransform(scrollY, [0, 500], [1, 0])
+  const scrollIndicatorOpacity = useTransform(scrollY, [0, 150], [1, 0])
 
   // Typewriter
   useEffect(() => {
@@ -64,6 +70,7 @@ export function HeroSection() {
 
       {/* ── Content ── */}
       <motion.div
+        style={{ y, opacity }}
         variants={container}
         initial="hidden"
         animate="show"
@@ -141,6 +148,7 @@ export function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.8 }}
+        style={{ opacity: scrollIndicatorOpacity }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.a

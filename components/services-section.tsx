@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef, useMemo, useEffect } from "react"
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useSpring } from "framer-motion"
 import { Zap, BarChart3, Lightbulb, Server, Search, MessageSquare, Wrench, Shield, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
@@ -138,13 +138,23 @@ export function ServicesSection() {
 
   const activeSvc = localizedServices[activeIdx]
 
-  // Spring-based 3D tilt logic
+  // Detect mobile to disable 3D tilt
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
+
+  // Spring-based 3D tilt logic (desktop only)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { damping: 25, stiffness: 200 })
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { damping: 25, stiffness: 200 })
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return
     const rect = e.currentTarget.getBoundingClientRect()
     x.set((e.clientX - rect.left - rect.width / 2) / rect.width)
     y.set((e.clientY - rect.top - rect.height / 2) / rect.height)
@@ -197,9 +207,9 @@ export function ServicesSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            style={isMobile ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={isMobile ? undefined : handleMouseMove}
+            onMouseLeave={isMobile ? undefined : handleMouseLeave}
             className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[600px] will-change-transform"
           >
           {/* Header Row */}
@@ -263,7 +273,7 @@ export function ServicesSection() {
                           <div className="text-sm md:text-xs font-mono font-bold text-foreground truncate">
                             {svc.title}
                           </div>
-                          <div className="text-xs md:text-[10px] text-muted-foreground font-mono truncate leading-normal">
+                          <div className="hidden md:block text-xs md:text-[10px] text-muted-foreground font-mono truncate leading-normal">
                             {svc.desc}
                           </div>
                         </div>

@@ -1,10 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
 import { Linkedin, Instagram, ArrowUp, Mail, MapPin, Globe } from "lucide-react"
 import { useLanguage } from "@/components/language-context"
-import { AnimatedText } from "@/components/ui/animated-shiny-text"
 
 const socials = [
   { icon: Linkedin, href: "https://linkedin.com/company/ruangciptasolusi", label: "LinkedIn", color: "#0A66C2" },
@@ -43,22 +41,19 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="md:col-span-5 space-y-4">
-            <AnimatedText
-              gradientColors="linear-gradient(90deg, #18181b, #ffffff, #18181b)"
-              textClassName="text-[22px] font-black tracking-[0.08em] text-white leading-none flex items-center select-none"
-              className="py-0 flex-shrink-0 justify-start"
+            <span
+              className="hidden md:flex text-[22px] font-black tracking-[0.08em] text-white leading-none items-center select-none"
               style={{ fontFamily: "var(--font-bebas-neue)" }}
             >
-              <span>RCS</span>
-              <span className="text-accent" style={{ background: "none", WebkitBackgroundClip: "unset", WebkitTextFillColor: "var(--accent)", color: "var(--accent)" }}>.</span>
-            </AnimatedText>
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-xs font-sans">
+              RCS<span className="text-accent">.</span>
+            </span>
+            <p className="hidden md:block text-xs text-muted-foreground leading-relaxed max-w-xs font-sans">
               {t("footer_tagline")}
             </p>
           </div>
 
           {/* Quick Links Col */}
-          <div className="md:col-span-3 space-y-3">
+          <div className="hidden md:block md:col-span-3 space-y-3">
             <h4 className="text-[10px] font-mono font-semibold text-foreground uppercase tracking-widest">
               {t("footer_links_title")}
             </h4>

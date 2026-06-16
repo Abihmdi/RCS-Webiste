@@ -1,12 +1,28 @@
+import dynamic from "next/dynamic"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
-import { AboutSection } from "@/components/about-section"
-import { ServicesSection } from "@/components/services-section"
-import { TeamSection } from "@/components/team-section"
-import { PortfolioSection } from "@/components/portfolio-section"
-import { ContactSection } from "@/components/contact-section"
-import { Footer } from "@/components/footer"
-import { CommandPalette } from "@/components/command-palette"
+
+const AboutSection = dynamic(
+  () => import("@/components/about-section").then(m => ({ default: m.AboutSection }))
+)
+const ServicesSection = dynamic(
+  () => import("@/components/services-section").then(m => ({ default: m.ServicesSection }))
+)
+const TeamSection = dynamic(
+  () => import("@/components/team-section").then(m => ({ default: m.TeamSection }))
+)
+const PortfolioSection = dynamic(
+  () => import("@/components/portfolio-section").then(m => ({ default: m.PortfolioSection }))
+)
+const ContactSection = dynamic(
+  () => import("@/components/contact-section").then(m => ({ default: m.ContactSection }))
+)
+const Footer = dynamic(
+  () => import("@/components/footer").then(m => ({ default: m.Footer }))
+)
+const CommandPalette = dynamic(
+  () => import("@/components/command-palette").then(m => ({ default: m.CommandPalette }))
+)
 
 export default function Home() {
   return (

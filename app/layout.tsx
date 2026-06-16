@@ -1,21 +1,34 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, JetBrains_Mono, Bebas_Neue } from 'next/font/google'
+import dynamic from 'next/dynamic'
+import { Geist, Geist_Mono, Bebas_Neue } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/components/language-context'
-import { AIAssistant } from '@/components/ai-assistant'
-import { HeroBackground } from '@/components/hero-background'
-import { SmoothScroll } from '@/components/smooth-scroll'
-import { Preloader } from '@/components/preloader'
 import './globals.css'
 
-const inter = Inter({ 
+const HeroBackground = dynamic(
+  () => import('@/components/hero-background').then(m => ({ default: m.HeroBackground }))
+)
+
+const AIAssistant = dynamic(
+  () => import('@/components/ai-assistant').then(m => ({ default: m.AIAssistant }))
+)
+
+const SmoothScroll = dynamic(
+  () => import('@/components/smooth-scroll').then(m => ({ default: m.SmoothScroll }))
+)
+
+const Preloader = dynamic(
+  () => import('@/components/preloader').then(m => ({ default: m.Preloader }))
+)
+
+const geist = Geist({ 
   subsets: ["latin"],
-  variable: '--font-inter'
+  variable: '--font-geist'
 })
 
-const jetbrainsMono = JetBrains_Mono({ 
+const geistMono = Geist_Mono({ 
   subsets: ["latin"],
-  variable: '--font-jetbrains-mono'
+  variable: '--font-geist-mono'
 })
 
 const bebasNeue = Bebas_Neue({ 
@@ -95,7 +108,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${bebasNeue.variable} bg-background`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${bebasNeue.variable} bg-background`}>
       <head>
         <script
           dangerouslySetInnerHTML={{

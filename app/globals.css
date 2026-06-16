@@ -54,8 +54,8 @@
   --color-fog: #9c9c9c;
 }
 @theme inline {
-  --font-sans:    var(--font-inter), system-ui, sans-serif;
-  --font-mono:    var(--font-jetbrains-mono), monospace;
+  --font-sans:    var(--font-geist), system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono), monospace;
   --font-display: var(--font-bebas-neue), system-ui, sans-serif;
 
   --color-background:         var(--background);
@@ -144,13 +144,6 @@
   background-clip: text;
 }
 
-.gradient-text-blue {
-  background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* ─── Glass ─────────────────────────────────────────── */
 .glass {
   background: rgba(20, 20, 20, 0.5) !important;
@@ -166,17 +159,6 @@
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
-/* ─── Glow Effects (Removed shadow glows per style guide) ─── */
-.glow-orange {
-  box-shadow: none;
-}
-.glow-purple {
-  box-shadow: none;
-}
-.glow-text {
-  text-shadow: none;
-}
-
 /* ─── Grid dot bg ───────────────────────────────────── */
 .dot-grid {
   background-image: radial-gradient(
@@ -186,32 +168,6 @@
   );
   background-size: 36px 36px;
 }
-
-/* ─── Gradient border card ──────────────────────────── */
-.card-gradient-border {
-  position: relative;
-  border-radius: var(--radius-xl);
-}
-.card-gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, #ECFF8A 0%, #ffffff 50%, #141414 100%);
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-.card-gradient-border:hover::before { opacity: 1; }
 
 /* ─── Noise texture overlay ─────────────────────────── */
 .noise {
@@ -309,30 +265,6 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ─── Flip-flap animation (kept) ───────────────────── */
-@keyframes flip-down {
-  0%   { transform: rotateX(0deg); }
-  100% { transform: rotateX(-90deg); }
-}
-@keyframes flip-up {
-  0%   { transform: rotateX(90deg); }
-  100% { transform: rotateX(0deg); }
-}
-.flip-card { perspective: 1000px; }
-.flip-card-inner { transform-style: preserve-3d; }
-
-/* ─── Service card number ───────────────────────────── */
-.service-number {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 5rem;
-  line-height: 1;
-  background: linear-gradient(135deg, rgba(236, 255, 138, 0.1), rgba(255, 255, 255, 0.05));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  user-select: none;
-}
-
 /* ─── Shimmer gradient heading ──────────────────────── */
 .shimmer-text {
   background: linear-gradient(
@@ -351,6 +283,15 @@
   to { background-position: -200% center; }
 }
 
+/* Generic shimmer for AnimatedText component (replaces framer-motion) */
+.shimmer-bg {
+  animation: shimmer-bg-anim 3s ease-in-out infinite alternate;
+}
+@keyframes shimmer-bg-anim {
+  from { background-position: 0% 0; }
+  to   { background-position: 100% 0; }
+}
+
 /* ─── Aurora background drift (Subtled for accent economy) ─── */
 @keyframes aurora-drift {
   0%   { transform: translate(0px, 0px) scale(1);    opacity: 0.4; }
@@ -361,23 +302,6 @@
   0%   { transform: translate(0px, 0px) scale(1);    opacity: 0.3; }
   50%  { transform: translate(-20px, 15px) scale(1.03); opacity: 0.5; }
   100% { transform: translate(0px, 0px) scale(1);    opacity: 0.3; }
-}
-
-/* ─── Beacon ping (badge dot) ───────────────────────── */
-@keyframes beacon {
-  0%        { transform: scale(1);   opacity: 0.8; }
-  70%, 100% { transform: scale(2.2); opacity: 0;   }
-}
-.beacon-ping {
-  animation: beacon 2s ease-out infinite;
-}
-
-/* ─── Floating spark particles ──────────────────────── */
-@keyframes float-spark {
-  0%   { transform: translateY(0px)   scale(1);   opacity: 0;   }
-  8%   { opacity: 0.7; }
-  90%  { opacity: 0.3; }
-  100% { transform: translateY(-90px) scale(0.2); opacity: 0;   }
 }
 
 /* ─── Lenis Smooth Scroll Recommended Styles ────────── */
@@ -396,18 +320,3 @@ html.lenis, html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
-
-/* ─── Infinite Marquee ──────────────────────── */
-@keyframes marquee {
-  0% { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
-}
-.animate-marquee {
-  display: flex;
-  width: max-content;
-  animation: marquee 35s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-

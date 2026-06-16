@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useMemo, useCallback, memo } from "react"
+import { useState, useRef, useMemo, useCallback, useEffect, memo } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence, useInView, useMotionValue, useTransform, useSpring } from "framer-motion"
 import { Smartphone, Globe, Database, Building2, Search, Terminal, BookOpen, Chrome, ArrowRight } from "lucide-react"
@@ -296,7 +296,7 @@ const ProjectCard = memo(({
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 flex-shrink-0 ml-3">
+        <div className="hidden md:flex items-center gap-2.5 flex-shrink-0 ml-3">
           <div className="flex items-center gap-0.5 text-xs md:text-[10px] font-mono text-muted-foreground/70">
             <Building2 size={10} />
             <span>{project.client}</span>
@@ -304,6 +304,16 @@ const ProjectCard = memo(({
           <div className="flex items-center gap-0.5 text-xs md:text-[10px] font-mono text-muted-foreground/70">
             <span>{project.year}</span>
           </div>
+        </div>
+
+        {/* Mobile Arrow/Chevron Indicator */}
+        <div className="flex md:hidden items-center text-muted-foreground/75 ml-auto">
+          <motion.div
+            animate={{ rotate: isSelected ? 90 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ArrowRight size={14} className="text-[#ECFF8A]" />
+          </motion.div>
         </div>
       </button>
 
@@ -319,6 +329,15 @@ const ProjectCard = memo(({
         <div className="overflow-hidden">
           <div className="p-3.5 mt-2 bg-[#141414]/50 backdrop-blur-md border border-white/5 rounded-lg space-y-3.5">
             
+            {/* Client & Year info for Mobile */}
+            <div className="flex items-center justify-between text-[10px] font-mono text-muted-foreground border-b border-white/5 pb-2">
+              <span className="flex items-center gap-1.5">
+                <Building2 size={11} className="text-[#ECFF8A]" />
+                <span className="text-foreground/90 font-medium">{project.client}</span>
+              </span>
+              <span className="text-foreground/90">{project.year}</span>
+            </div>
+
             {/* Action Links */}
             <div className="flex items-center gap-2">
               {project.url && (
@@ -390,13 +409,23 @@ export function PortfolioSection() {
   const sectionRef = useRef(null)
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
 
-  // Spring-based 3D tilt logic
+  // Detect mobile to disable 3D tilt
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768)
+    check()
+    window.addEventListener("resize", check)
+    return () => window.removeEventListener("resize", check)
+  }, [])
+
+  // Spring-based 3D tilt logic (desktop only)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), { damping: 25, stiffness: 200 })
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), { damping: 25, stiffness: 200 })
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return
     const rect = e.currentTarget.getBoundingClientRect()
     x.set((e.clientX - rect.left - rect.width / 2) / rect.width)
     y.set((e.clientY - rect.top - rect.height / 2) / rect.height)
@@ -494,9 +523,9 @@ export function PortfolioSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
+            style={isMobile ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={isMobile ? undefined : handleMouseMove}
+            onMouseLeave={isMobile ? undefined : handleMouseLeave}
             className="glass noise rounded-2xl overflow-hidden flex flex-col md:grid md:grid-cols-10 md:h-[640px] will-change-transform"
           >
           {/* Header Row - Col span 10 */}
@@ -508,7 +537,7 @@ export function PortfolioSection() {
             </div>
             
             {/* Search Input Bar inside Header */}
-            <div className="flex items-center gap-2 bg-[#080808]/40 border border-white/10 rounded-lg px-2.5 py-1 w-64 md:w-96 shadow-inner">
+            <div className="flex items-center gap-2 bg-[#080808]/40 border border-white/10 rounded-lg px-2.5 py-1 flex-1 max-w-[180px] xs:max-w-[260px] md:w-96 md:flex-initial shadow-inner">
               <Search size={12} className="text-muted-foreground/85" />
               <input
                 type="text"
